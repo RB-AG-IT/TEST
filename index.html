@@ -2,28 +2,34 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mein Jotform Formular</title>
+  <title>Mini Formular</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f7f7f7;
-    }
-    iframe {
-      width: 100%;
-      min-height: 600px;
-      border: none;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
-    }
+    body { font-family: Arial; padding: 20px; }
+    input, button { padding: 10px; margin: 8px 0; width: 100%; max-width: 300px; }
   </style>
 </head>
 <body>
-  <h1>Kontaktformular</h1>
-  <iframe 
-    src="https://form.jotform.com/253155822953360"
-    allowfullscreen>
-  </iframe>
+
+  <h2>Test Formular</h2>
+
+  <form>
+    <label>Name:</label>
+    <input type="text" id="name" name="name">
+
+    <label>Kunde:</label>
+    <input type="text" id="kunde" name="kunde">
+
+    <button type="submit">Absenden</button>
+  </form>
+
+  <script>
+    // Prefill per URL Parameter
+    const params = new URLSearchParams(window.location.search);
+    params.forEach((value, key) => {
+      const field = document.getElementById(key);
+      if (field) field.value = value;
+    });
+  </script>
+
 </body>
 </html>
