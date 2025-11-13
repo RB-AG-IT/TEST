@@ -21,6 +21,8 @@
     <input id="kunde"    placeholder="Kundenname / Firma">
     <input id="strasse"  placeholder="Straße">
     <input id="stadt"    placeholder="Stadt">
+    <!-- NEU: Bild-Upload -->
+    <input id="bild" type="file" accept="image/*">
     <textarea id="bemerkung" placeholder="Bemerkung"></textarea>
     <button type="submit">Speichern</button>
   </form>
@@ -47,6 +49,33 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      // 1) Bild hochladen (falls vorhanden)
+      const fileInput = document.getElementById("bild");
+      let bild_url = null;
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const fileName = `${Date.now()}_${file.name}`;
+
+        const { data: uploadData, error: uploadError } = await db
+          .storage
+          .from("kunden-bilder")   // Bucket-Name
+          .upload(fileName, file);
+
+        if (uploadError) {
+          alert("Fehler beim Bildupload: " + uploadError.message);
+          console.error(uploadError);
+        } else {
+          const { data: publicUrlData } = db
+            .storage
+            .from("kunden-bilder")
+            .getPublicUrl(fileName);
+
+          bild_url = publicUrlData.publicUrl;
+        }
+      }
+
+      // 2) Kunde in Tabelle speichern
       const kunde = {
         vorname:  document.getElementById("vorname").value,
         nachname: document.getElementById("nachname").value,
@@ -56,9 +85,11 @@
         strasse:  document.getElementById("strasse").value,
         stadt:    document.getElementById("stadt").value,
         bemerkung:document.getElementById("bemerkung").value,
+        bild_url: bild_url // NEU
       };
 
       const { error } = await db.from("kunden").insert([kunde]);
+
       if (error) {
         alert("Fehler: " + error.message);
         console.error(error);
