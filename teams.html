@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Teams</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    select, input { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 12px; width: 100%; }
+    .entry { padding: 10px; border: 1px solid #ccc; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Teams</h1>
+
+  <a class="button" href="index.html">Zurück</a>
+
+  <h3>Neues Team anlegen</h3>
+
+  <input id="teamname" placeholder="Teamname">
+
+  <label>Teamleiter</label>
+  <select id="teamleiter"></select>
+
+  <label>Teammitglieder (mehrfach)</label>
+  <select id="teammitglieder" multiple style="height:120px"></select>
+
+  <button onclick="saveTeam()">Team speichern</button>
+
+  <h3>Teamliste</h3>
+  <div id="teamListe"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const db = supabase.createClient(
+      "https://ipitjuyeplkaywatmnxg.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
+    );
+
+    async function loadMitarbeiter() {
+      const { data } = await db.from('mitarbeiter').select('*');
+
+      const leiter = document.getElementById("teamleiter");
+      const mit = document.getElementById("teammitglieder");
+
+      leiter.innerHTML = "";
+      mit.innerHTML = "";
+
+      data.forEach(m => {
+        leiter.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+        mit.innerHTML += `<option value="${m.id}">${m.name}</option>`;
+      });
+    }
+
+    async function saveTeam() {
+      const name = document.getElementById("teamname").value;
+      const teamleiter = document.getElementById("teamleiter").value;
+      const teammitglieder = Array.from(
+        document.getElementById("teammitglieder").selectedOptions
+      ).map(o => o.value);
+
+      await db.from("teams").insert({
+        name,
+        teamleiter,
+        teammitglieder
+      });
+
+      loadTeams();
+    }
+
+    async function loadTeams() {
+      const { data } = await db.from("teams").select("*");
+      const list = document.getElementById("teamListe");
+      list.innerHTML = "";
+
+      data.forEach(t => {
+        list.innerHTML += `
+          <div class="entry">
+            <strong>${t.name}</strong><br>
+            Leiter: ${t.teamleiter}<br>
+            Mitglieder: ${t.teammitglieder?.join(", ")}
+          </div>
+        `;
+      });
+    }
+
+    loadMitarbeiter();
+    loadTeams();
+  </script>
+</body>
+</html>
