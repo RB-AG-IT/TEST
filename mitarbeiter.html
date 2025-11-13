@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Mitarbeiter</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    input { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 12px; width: 100%; }
+    .entry { padding: 10px; border: 1px solid #ccc; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h1>Mitarbeiter</h1>
+
+  <a class="button" href="index.html">Zurück</a>
+
+  <h3>Neuen Mitarbeiter anlegen</h3>
+
+  <input id="name" placeholder="Name">
+  <input id="rolle" placeholder="Rolle">
+  <button onclick="saveMitarbeiter()">Speichern</button>
+
+  <h3>Mitarbeiterliste</h3>
+  <div id="mitarbeiterListe"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const db = supabase.createClient(
+      "https://ipitjuyeplkaywatmnxg.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
+    );
+
+    async function saveMitarbeiter() {
+      const name = document.getElementById('name').value;
+      const rolle = document.getElementById('rolle').value;
+
+      await db.from('mitarbeiter').insert({ name, rolle });
+      loadMitarbeiter();
+    }
+
+    async function loadMitarbeiter() {
+      const { data } = await db.from('mitarbeiter').select('*');
+      const list = document.getElementById('mitarbeiterListe');
+      list.innerHTML = "";
+
+      data.forEach(m => {
+        list.innerHTML += `<div class="entry">${m.name} – ${m.rolle}</div>`;
+      });
+    }
+
+    loadMitarbeiter();
+  </script>
+</body>
+</html>
