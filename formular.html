@@ -97,13 +97,12 @@
     <label for="telefon">Telefon (mobil)</label>
     <input type="text" id="telefon" placeholder="+49 ...">
 
-    <!-- Straße und Hausnummer -->
+    <!-- Adresse -->
     <h2>Adresse</h2>
 
     <label for="strasse">Straße und Hausnummer</label>
     <input type="text" id="strasse" placeholder="z.B. Musterstraße 1">
 
-    <!-- PLZ / Ort -->
     <label for="plz">PLZ</label>
     <input type="text" id="plz" placeholder="z.B. 79353">
 
@@ -117,7 +116,7 @@
     <input 
       type="text" 
       id="iban" 
-      placeholder="z.B. DE12 3456 7890 1234 5678 90" 
+      placeholder="z.B. DE89 3704 0044 0532 0130 00" 
       required
     >
     <div id="ibanError" class="error-text">Die IBAN ist ungültig.</div>
@@ -143,37 +142,37 @@
   const ibanField = document.getElementById("iban");
   const ibanError = document.getElementById("ibanError");
 
-  // IBAN "sauber" machen: Leerzeichen raus, groß schreiben
+  // IBAN "sauber" machen: Leerzeichen raus, groß
   function cleanIban(value) {
     return value.replace(/\s+/g, "").toUpperCase();
   }
 
-  // IBAN für Anzeige formatieren: DE09 0000 0000 ...
+  // IBAN für Anzeige formatieren: XXXX XXXX XXXX ...
   function formatIbanDisplay(value) {
     const clean = cleanIban(value);
-    // in 4er-Gruppen mit Leerzeichen
     return clean.replace(/(.{4})/g, "$1 ").trim();
   }
 
-  // Prüfzifferberechnung nach IBAN-Standard (MOD 97)
+  // Prüfzifferberechnung (MOD 97) für ALLE IBAN-Länder
   function isValidIban(iban) {
     const clean = cleanIban(iban);
-    // grobe Mindestlänge prüfen
-    if (clean.length < 15) return false;
 
-    // Erste 4 Zeichen nach hinten
+    // generelle Längenprüfung laut IBAN-Standard (15–34 Zeichen)
+    if (clean.length < 15 || clean.length > 34) return false;
+
+    // Zeichen neu anordnen: erste 4 nach hinten
     const rearranged = clean.slice(4) + clean.slice(0, 4);
 
-    // Buchstaben in Zahlen umwandeln (A=10 ... Z=35)
+    // Buchstaben -> Zahlen (A=10 ... Z=35)
     let numeric = "";
     for (let i = 0; i < rearranged.length; i++) {
       const char = rearranged[i];
       if (char >= "A" && char <= "Z") {
-        numeric += (char.charCodeAt(0) - 55).toString(); // A(65) -> 10
+        numeric += (char.charCodeAt(0) - 55).toString();
       } else if (char >= "0" && char <= "9") {
         numeric += char;
       } else {
-        return false; // ungültiges Zeichen
+        return false;
       }
     }
 
@@ -184,16 +183,22 @@
       if (isNaN(digit)) return false;
       remainder = (remainder * 10 + digit) % 97;
     }
+
     // gültige IBAN: Rest = 1
     return remainder === 1;
   }
 
-  // Live-Formatierung + Live-Check
+  // Live-Formatierung + Live-Prüfung
   function handleIbanInput() {
     const clean = cleanIban(ibanField.value);
-    ibanField.value = formatIbanDisplay(clean);
+    ibanField.value = formatIbanDisplay(clean); // immer Großbuchstaben + Leerzeichen
 
-    if (clean === "") {
+    // Noch zu kurz? → kein Fehler anzeigen
+    if (clean.length === 0) {
+      ibanError.style.display = "none";
+      return;
+    }
+    if (clean.length < 15) {
       ibanError.style.display = "none";
       return;
     }
@@ -213,32 +218,27 @@
 
     const ibanClean = cleanIban(ibanField.value);
 
-    // Vor dem Speichern endgültig prüfen
+    // finale Prüfung vor dem Speichern
     if (!isValidIban(ibanClean)) {
       ibanError.style.display = "block";
       ibanField.focus();
-      return; // Formular nicht abschicken
+      return;
     }
 
-    // FELDER AUSLESEN
     const data = {
-      // alte Spalten feld1..feld10 weiterverwenden,
-      // nur mit neuen Bedeutungen:
-      feld1: document.getElementById("mitgliedsart").value,  // Mitgliedsart
-      feld2: document.getElementById("vorname").value,       // Vorname
-      feld3: document.getElementById("nachname").value,      // Nachname
-      feld4: document.getElementById("email").value,         // E-Mail
-      feld5: document.getElementById("telefon").value,       // Telefon mobil
-      feld6: document.getElementById("strasse").value,       // Straße+Nr.
-      feld7: document.getElementById("plz").value,           // PLZ
-      feld8: document.getElementById("ort").value,           // Ort
-      feld9: document.getElementById("geburtsdatum").value,  // Geburtsdatum
-      feld10: document.getElementById("hinweise").value,     // Hinweise
-      // NEUES FELD IN TABELLE: IBAN ohne Leerzeichen
-      iban: ibanClean
+      feld1: document.getElementById("mitgliedsart").value,
+      feld2: document.getElementById("vorname").value,
+      feld3: document.getElementById("nachname").value,
+      feld4: document.getElementById("email").value,
+      feld5: document.getElementById("telefon").value,
+      feld6: document.getElementById("strasse").value,
+      feld7: document.getElementById("plz").value,
+      feld8: document.getElementById("ort").value,
+      feld9: document.getElementById("geburtsdatum").value,
+      feld10: document.getElementById("hinweise").value,
+      iban: ibanClean // ohne Leerzeichen & immer GROSS gespeichert
     };
 
-    // IN SUPABASE SPEICHERN
     const { error } = await db
       .from("formular")
       .insert([data]);
@@ -263,4 +263,3 @@
 
 </body>
 </html>
-
