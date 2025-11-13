@@ -3,21 +3,278 @@
 <head>
   <meta charset="UTF-8">
   <title>Start – Kundenverwaltung</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
-    a.button {
-      display: block; padding: 12px; margin: 10px 0;
-      background: #007bff; color: #fff; text-align: center;
-      text-decoration: none; border-radius: 4px;
+    /* Grundlayout */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 0% 0%, #2b6cff, transparent 55%),
+                  radial-gradient(circle at 100% 100%, #ff1fa3, transparent 55%),
+                  radial-gradient(circle at 100% 0%, #21f3ff, transparent 55%),
+                  #020616;
+      color: #f9fafb;
+      padding: 20px;
+    }
+
+    /* Leichter animierter Glow im Hintergrund */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.08), transparent 60%);
+      opacity: 0.7;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: floatGlow 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatGlow {
+      0%   { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(0, -20px, 0); }
+    }
+
+    /* Container-Karte */
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      padding: 26px 22px 26px;
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow:
+        0 0 30px rgba(0,0,0,0.7),
+        0 0 40px rgba(56,189,248,0.25);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: conic-gradient(from 140deg,
+        rgba(56,189,248,0.0),
+        rgba(56,189,248,0.6),
+        rgba(59,130,246,0.0),
+        rgba(236,72,153,0.7),
+        rgba(56,189,248,0.0)
+      );
+      opacity: 0.7;
+      z-index: -1;
+      filter: blur(6px);
+      animation: rotateBorder 16s linear infinite;
+    }
+
+    @keyframes rotateBorder {
+      to { transform: rotate(360deg); }
+    }
+
+    .headline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .headline-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #e5f9ff, #38bdf8);
+      box-shadow: 0 0 18px rgba(56,189,248,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #0f172a;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #6b7280;
+      margin: 10px 0 4px;
+    }
+
+    /* Button-Grid */
+    .nav {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    @media (min-width: 540px) {
+      .nav {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: #e5e7eb;
+      font-size: 0.86rem;
+      background: radial-gradient(circle at 0% 0%, rgba(248,250,252,0.08), transparent 60%),
+                  linear-gradient(135deg, rgba(15,23,42,0.96), rgba(30,64,175,0.9));
+      box-shadow:
+        0 0 0 transparent,
+        0 0 0 transparent;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+      overflow: hidden;
+    }
+
+    .button span.label {
+      z-index: 1;
+    }
+
+    .button span.tag {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-left: 8px;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(248,250,252,0.26), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .button::after {
+      content: "➜";
+      font-size: 0.9rem;
+      margin-left: 10px;
+      opacity: 0.7;
+      z-index: 1;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(248,250,252,0.75);
+      box-shadow:
+        0 0 20px rgba(56,189,248,0.45),
+        0 0 30px rgba(59,130,246,0.4);
+      background: radial-gradient(circle at 0% 0%, rgba(248,250,252,0.14), transparent 60%),
+                  linear-gradient(135deg, #1d4ed8, #7c3aed);
+    }
+
+    .button:hover::before {
+      opacity: 1;
+    }
+
+    .footer {
+      margin-top: 16px;
+      font-size: 0.7rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34,197,94,0.9);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%      { transform: scale(1.5); opacity: 0.4; }
     }
   </style>
 </head>
 <body>
-  <h1>Kundenverwaltung</h1>
+  <div class="card">
+    <div class="headline">
+      <div class="headline-icon">✦</div>
+      <div>
+        <h1>Kunden&nbsp;Cockpit</h1>
+      </div>
+    </div>
+    <div class="subtitle">
+      Schnellzugriff auf Kunden, Kampagnen, Teams & Mitarbeiter – alles an einem Ort.
+    </div>
 
-  <a class="button" href="kunden-liste.html">Kunden anzeigen</a>
-  <a class="button" href="kunde-neu.html">Neuen Kunden anlegen</a>
-  <a class="button" href="formular.html">Formular</a>
+    <div class="section-label">Kunden</div>
+    <div class="nav">
+      <a class="button" href="kunden-liste.html">
+        <span class="label">Kunden anzeigen</span>
+        <span class="tag">Übersicht</span>
+      </a>
+      <a class="button" href="kunde-neu.html">
+        <span class="label">Neuen Kunden anlegen</span>
+        <span class="tag">Neu</span>
+      </a>
+      <a class="button" href="formular.html">
+        <span class="label">Formular Fördermitglied</span>
+        <span class="tag">BV / LV / KV</span>
+      </a>
+    </div>
 
+    <div class="section-label">Organisation</div>
+    <div class="nav">
+      <a class="button" href="mitarbeiter.html">
+        <span class="label">Mitarbeiter</span>
+        <span class="tag">Personen</span>
+      </a>
+      <a class="button" href="teams.html">
+        <span class="label">Teams</span>
+        <span class="tag">Einsätze</span>
+      </a>
+      <a class="button" href="kampagnen.html">
+        <span class="label">Kampagnen</span>
+        <span class="tag">KW Planung</span>
+      </a>
+    </div>
+
+    <div class="footer">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div class="status-dot"></div>
+        <span>System bereit</span>
+      </div>
+      <span>v0.1 · Testumgebung</span>
+    </div>
+  </div>
 </body>
 </html>
