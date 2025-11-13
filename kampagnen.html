@@ -2,80 +2,142 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Kampagnen</title>
+  <title>Kampagnen – Kalenderwochen auswählen</title>
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
-    select, input { width: 100%; padding: 10px; margin: 10px 0; }
-    button { padding: 12px; width: 100%; }
-    .entry { padding: 10px; border: 1px solid #ccc; margin: 10px 0; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    p {
+      margin-top: 0;
+      color: #555;
+    }
+    .kw-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* 5 Felder pro Reihe */
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .kw-item {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      font-size: 18px;
+      background: #f9f9f9;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+    }
+    .kw-item:hover {
+      transform: translateY(-1px);
+    }
+    .kw-item.selected {
+      background: #4caf50;
+      color: #fff;
+      border-color: #4caf50;
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+    #status.error {
+      color: red;
+    }
+    #status.success {
+      color: green;
+    }
   </style>
 </head>
 <body>
-  <h1>Kampagnen</h1>
 
-  <a class="button" href="index.html">Zurück</a>
+<h1>Kampagnen – Kalenderwoche wählen</h1>
+<p>Klicke auf eine Kalenderwoche. Die ausgewählte KW wird in Supabase gespeichert und das Feld wird grün.</p>
 
-  <h3>Neue Kampagne anlegen</h3>
+<div id="kwContainer" class="kw-grid">
+  <!-- KW-Felder werden per JavaScript eingefügt -->
+</div>
 
-  <input id="kampagnenname" placeholder="Kampagnenname">
-  <input id="kw" placeholder="Kalenderwoche (z.B. 12)">
-  <select id="kunde"></select>
+<div id="status"></div>
 
-  <button onclick="saveKampagne()">Speichern</button>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Supabase Client
+  const db = supabase.createClient(
+    "https://ipitjuyeplkaywatmnxg.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
+  );
 
-  <h3>Kampagnen</h3>
-  <div id="kampagnenListe"></div>
+  const kwContainer = document.getElementById("kwContainer");
+  const statusBox = document.getElementById("status");
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const db = supabase.createClient(
-      "https://ipitjuyeplkaywatmnxg.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
-    );
+  // ISO-Kalenderwoche + Jahr berechnen
+  function getISOWeekAndYear(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    return { week: weekNo, year: d.getUTCFullYear() };
+  }
 
-    async function loadKunden() {
-      const { data } = await db.from("kunden").select("*");
+  // nächste 10 KWs erzeugen, beginnend mit aktueller KW
+  function buildKwFields() {
+    const today = new Date();
+    for (let i = 0; i < 10; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() + i * 7); // jede Woche +7 Tage
+      const { week, year } = getISOWeekAndYear(d);
 
-      const k = document.getElementById("kunde");
-      k.innerHTML = "";
+      const div = document.createElement("div");
+      div.className = "kw-item";
+      div.textContent = "KW " + week;
+      div.dataset.kw = week;
+      div.dataset.year = year;
 
-      data.forEach(c => {
-        k.innerHTML += `<option value="${c.id}">${c.vorname} ${c.nachname}</option>`;
-      });
+      div.addEventListener("click", () => onKwClick(div));
+
+      kwContainer.appendChild(div);
     }
+  }
 
-    async function saveKampagne() {
-      const name = document.getElementById("kampagnenname").value;
-      const kw = document.getElementById("kw").value;
-      const kunde = document.getElementById("kunde").value;
+  // Klick auf KW-Feld
+  async function onKwClick(element) {
+    const kw = parseInt(element.dataset.kw, 10);
+    const jahr = parseInt(element.dataset.year, 10);
 
-      await db.from("kampagnen").insert({
-        name,
-        kw,
-        kunde
-      });
+    // Optik: alle abwählen, dieses grün markieren
+    document.querySelectorAll(".kw-item").forEach(el => el.classList.remove("selected"));
+    element.classList.add("selected");
 
-      loadKampagnen();
+    // Status zurücksetzen
+    statusBox.textContent = "Speichere KW " + kw + " (" + jahr + ")...";
+    statusBox.className = "";
+
+    // in Supabase speichern
+    const { error } = await db
+      .from("kampagnen")
+      .insert([{ kw: kw, jahr: jahr }]);
+
+    if (error) {
+      console.error(error);
+      statusBox.textContent = "Fehler beim Speichern: " + error.message;
+      statusBox.className = "error";
+    } else {
+      statusBox.textContent = "Gespeichert: KW " + kw + " (" + jahr + ") in Supabase.";
+      statusBox.className = "success";
     }
+  }
 
-    async function loadKampagnen() {
-      const { data } = await db.from("kampagnen").select("*");
-      const list = document.getElementById("kampagnenListe");
-      list.innerHTML = "";
+  // beim Laden der Seite: Felder aufbauen
+  buildKwFields();
+</script>
 
-      data.forEach(k => {
-        list.innerHTML += `
-          <div class="entry">
-            <strong>${k.name}</strong><br>
-            KW: ${k.kw}<br>
-            Kunde: ${k.kunde}
-          </div>
-        `;
-      });
-    }
-
-    loadKunden();
-    loadKampagnen();
-  </script>
 </body>
 </html>
