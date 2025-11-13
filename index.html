@@ -1,53 +1,41 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>Mini Formular</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    input, button { padding: 10px; margin: 8px 0; width: 100%; max-width: 300px; }
-  </style>
-</head>
+<html>
 <body>
 
+<input type="file" id="fileInput">
+<button onclick="uploadFile()">Datei hochladen</button>
 
-  
-  <h2>Test Formular</h2>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+  // Supabase Client aktivieren
+  const supabase = supabase.createClient(
+    "DEINE_SUPABASE_URL",
+    "DEIN_ANON_KEY"
+  );
 
-  
-  <form>
-    <label>Name:</label>
-    <input type="text" id="name" name="name">
+  async function uploadFile() {
+    const file = document.getElementById("fileInput").files[0];
+    if (!file) {
+      alert("Keine Datei ausgewählt!");
+      return;
+    }
 
-    <label>Kunde:</label>
-    <input type="text" id="kunde" name="kunde">
+    const filePath = Date.now() + "-" + file.name;
 
-    <button type="submit">Absenden</button>
-  </form>
+    let { data, error } = await supabase.storage
+      .from("uploads")        // Name deines Buckets
+      .upload(filePath, file);
 
-
-  
- <script>
-  // Hash auslesen
-  const hash = window.location.hash.substring(1); 
-  const params = new URLSearchParams(hash);
-
-  // Felder befüllen
-  params.forEach((value, key) => {
-    const field = document.getElementById(key);
-    if (field) field.value = decodeURIComponent(value);
-  });
-
-  // Hash aus der URL ENTFERNEN
-  if (window.location.hash) {
-    const cleanURL = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, document.title, cleanURL);
+    if (error) {
+      console.log(error);
+      alert("Fehler beim Hochladen");
+    } else {
+      alert("Erfolgreich hochgeladen!");
+      console.log("URL:", data);
+    }
   }
 </script>
-
-
-  
 
 </body>
 </html>
