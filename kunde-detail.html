@@ -49,6 +49,7 @@
       }
 
       const k = data;
+
       detailsDiv.innerHTML = `
         <div class="feld"><span class="label">Vorname:</span> ${k.vorname || ""}</div>
         <div class="feld"><span class="label">Nachname:</span> ${k.nachname || ""}</div>
@@ -57,6 +58,13 @@
         <div class="feld"><span class="label">Kunde / Firma:</span> ${k.kunde || ""}</div>
         <div class="feld"><span class="label">Straße:</span> ${k.strasse || ""}</div>
         <div class="feld"><span class="label">Stadt:</span> ${k.stadt || ""}</div>
+        ${
+          k.bild_url
+            ? `<div class="feld"><span class="label">Bild:</span><br>
+                 <img src="${k.bild_url}" alt="Kundenbild" style="max-width:200px; max-height:200px; object-fit:cover;">
+               </div>`
+            : ""
+        }
         <div class="feld"><span class="label">Bemerkung:</span><br>${k.bemerkung || ""}</div>
       `;
     }
