@@ -2,43 +2,134 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Testformular</title>
+  <title>Nachbarschaftssteckbrief</title>
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    body { 
+      font-family: Arial; 
+      padding: 20px; 
+      max-width: 700px; 
+      margin: auto; 
+      background: #e9e9ff;
+    }
+    .form-box {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-top: 25px;
+      margin-bottom: 5px;
+    }
+    p.sub {
+      margin-top: 0;
+      color: #555;
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    label span.req {
+      color: red;
+    }
     input, textarea, select {
-      width: 100%; padding: 10px; margin: 10px 0; font-size: 16px;
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 80px;
     }
     button {
-      padding: 12px 20px; font-size: 18px; cursor: pointer;
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-<h2>Testformular (10 Felder)</h2>
+<div class="form-box">
+  <h1>Nachbarschaftssteckbrief</h1>
+  <p class="sub">DRK Ortsverein Bahlingen e.V.</p>
 
-<form id="myForm">
-  <input type="text" id="feld1" placeholder="Feld 1: Vorname" required>
-  <input type="text" id="feld2" placeholder="Feld 2: Nachname" required>
-  <input type="email" id="feld3" placeholder="Feld 3: E-Mail" required>
-  <input type="text" id="feld4" placeholder="Feld 4: Telefonnummer">
-  <input type="text" id="feld5" placeholder="Feld 5: Kunde">
-  <input type="date" id="feld6" placeholder="Feld 6: Datum">
-  <input type="number" id="feld7" placeholder="Feld 7: Nummer">
-  <input type="text" id="feld8" placeholder="Feld 8: Straße">
-  <input type="text" id="feld9" placeholder="Feld 9: Stadt">
-  <textarea id="feld10" placeholder="Feld 10: Nachricht"></textarea>
+  <form id="myForm">
+    <!-- Mitgliedsart -->
+    <label for="mitgliedsart">Mitgliedsart <span class="req">*</span></label>
+    <select id="mitgliedsart" required>
+      <option value="">Bitte wählen</option>
+      <option value="NMG">NMG</option>
+      <option value="ERH">ERH</option>
+    </select>
 
-  <button type="submit">Absenden</button>
-</form>
+    <!-- Vor- und Nachname -->
+    <label for="vorname">Vorname <span class="req">*</span></label>
+    <input type="text" id="vorname" required>
+
+    <label for="nachname">Nachname <span class="req">*</span></label>
+    <input type="text" id="nachname" required>
+
+    <!-- Geburtsdatum -->
+    <label for="geburtsdatum">Geburtsdatum</label>
+    <input type="date" id="geburtsdatum">
+
+    <!-- E-Mail -->
+    <label for="email">E-Mail <span class="req">*</span></label>
+    <input type="email" id="email" required>
+
+    <!-- Telefon mobil -->
+    <label for="telefon">Telefon (mobil)</label>
+    <input type="text" id="telefon" placeholder="+49 ...">
+
+    <!-- Straße und Hausnummer -->
+    <h2>Adresse</h2>
+
+    <label for="strasse">Straße und Hausnummer</label>
+    <input type="text" id="strasse" placeholder="z.B. Musterstraße 1">
+
+    <!-- PLZ / Ort -->
+    <label for="plz">PLZ</label>
+    <input type="text" id="plz" placeholder="z.B. 79353">
+
+    <label for="ort">Ort</label>
+    <input type="text" id="ort" placeholder="z.B. Bahlingen">
+
+    <!-- IBAN -->
+    <h2>Zahlungsinformationen</h2>
+
+    <label for="iban">IBAN <span class="req">*</span></label>
+    <input 
+      type="text" 
+      id="iban" 
+      placeholder="z.B. DE12 3456 7890 1234 5678 90" 
+      required
+    >
+
+    <!-- Freitext / Hinweise -->
+    <label for="hinweise">Hinweise / Nachricht</label>
+    <textarea id="hinweise" placeholder="Optionale Hinweise"></textarea>
+
+    <button type="submit">Absenden</button>
+  </form>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   // Supabase Client aktivieren
   const db = supabase.createClient(
-    "https://ipitjuyeplkaywatmnxg.supabase.co",     // <--- URL eintragen
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"           // <--- ANON KEY eintragen
+    "https://ipitjuyeplkaywatmnxg.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
   );
 
   const form = document.getElementById("myForm");
@@ -48,21 +139,25 @@
 
     // FELDER AUSLESEN
     const data = {
-      feld1: document.getElementById("feld1").value,
-      feld2: document.getElementById("feld2").value,
-      feld3: document.getElementById("feld3").value,
-      feld4: document.getElementById("feld4").value,
-      feld5: document.getElementById("feld5").value,
-      feld6: document.getElementById("feld6").value,
-      feld7: document.getElementById("feld7").value,
-      feld8: document.getElementById("feld8").value,
-      feld9: document.getElementById("feld9").value,
-      feld10: document.getElementById("feld10").value,
+      // alte Spalten feld1..feld10 weiterverwenden,
+      // nur mit neuen Bedeutungen:
+      feld1: document.getElementById("mitgliedsart").value,  // Mitgliedsart
+      feld2: document.getElementById("vorname").value,       // Vorname
+      feld3: document.getElementById("nachname").value,      // Nachname
+      feld4: document.getElementById("email").value,         // E-Mail
+      feld5: document.getElementById("telefon").value,       // Telefon mobil
+      feld6: document.getElementById("strasse").value,       // Straße+Nr.
+      feld7: document.getElementById("plz").value,           // PLZ
+      feld8: document.getElementById("ort").value,           // Ort
+      feld9: document.getElementById("geburtsdatum").value,  // Geburtsdatum
+      feld10: document.getElementById("hinweise").value,     // Hinweise
+      // NEUES FELD IN TABELLE:
+      iban: document.getElementById("iban").value            // IBAN
     };
 
     // IN SUPABASE SPEICHERN
     const { error } = await db
-      .from("formular")   // <--- Name deiner Tabelle
+      .from("formular")
       .insert([data]);
 
     if (error) {
@@ -73,13 +168,13 @@
       form.reset();
     }
   });
-  
+
+  // Enter in normalen Feldern blocken (außer Textarea)
   form.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
-    e.preventDefault(); // Enter blockieren
-  }
-});
-  
+    if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+      e.preventDefault();
+    }
+  });
 </script>
 
 </body>
