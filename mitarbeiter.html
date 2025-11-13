@@ -4,52 +4,154 @@
   <meta charset="UTF-8">
   <title>Mitarbeiter</title>
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
-    input { width: 100%; padding: 10px; margin: 10px 0; }
-    button { padding: 12px; width: 100%; }
-    .entry { padding: 10px; border: 1px solid #ccc; margin: 10px 0; }
+    body {
+      font-family: Arial;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 { margin-bottom: 10px; }
+    form {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    label {
+      display: block;
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 3px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    th {
+      background: #f2f2f2;
+    }
   </style>
 </head>
 <body>
-  <h1>Mitarbeiter</h1>
 
-  <a class="button" href="index.html">Zurück</a>
+<h1>Mitarbeiter</h1>
 
+<form id="mitarbeiterForm">
   <h3>Neuen Mitarbeiter anlegen</h3>
 
-  <input id="name" placeholder="Name">
-  <input id="rolle" placeholder="Rolle">
-  <button onclick="saveMitarbeiter()">Speichern</button>
+  <label for="name">Name *</label>
+  <input type="text" id="name" required>
 
-  <h3>Mitarbeiterliste</h3>
-  <div id="mitarbeiterListe"></div>
+  <label for="rolle">Rolle / Funktion</label>
+  <input type="text" id="rolle">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const db = supabase.createClient(
-      "https://ipitjuyeplkaywatmnxg.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
-    );
+  <label for="email">E-Mail</label>
+  <input type="email" id="email">
 
-    async function saveMitarbeiter() {
-      const name = document.getElementById('name').value;
-      const rolle = document.getElementById('rolle').value;
+  <label for="telefon">Telefon</label>
+  <input type="text" id="telefon">
 
-      await db.from('mitarbeiter').insert({ name, rolle });
-      loadMitarbeiter();
+  <button type="submit">Speichern</button>
+</form>
+
+<h3>Liste der Mitarbeiter</h3>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Rolle</th>
+      <th>E-Mail</th>
+      <th>Telefon</th>
+    </tr>
+  </thead>
+  <tbody id="mitarbeiterListe">
+    <!-- wird per JS gefüllt -->
+  </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const db = supabase.createClient(
+    "https://ipitjuyeplkaywatmnxg.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
+  );
+
+  const form = document.getElementById("mitarbeiterForm");
+  const listeBody = document.getElementById("mitarbeiterListe");
+
+  // Mitarbeiter aus Supabase laden und in Tabelle anzeigen
+  async function loadMitarbeiter() {
+    const { data, error } = await db
+      .from("mitarbeiter")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error(error);
+      alert("Fehler beim Laden der Mitarbeiter: " + error.message);
+      return;
     }
 
-    async function loadMitarbeiter() {
-      const { data } = await db.from('mitarbeiter').select('*');
-      const list = document.getElementById('mitarbeiterListe');
-      list.innerHTML = "";
+    // Tabelle leeren
+    listeBody.innerHTML = "";
 
-      data.forEach(m => {
-        list.innerHTML += `<div class="entry">${m.name} – ${m.rolle}</div>`;
-      });
+    // Zeilen einfügen
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.id}</td>
+        <td>${row.name ?? ""}</td>
+        <td>${row.rolle ?? ""}</td>
+        <td>${row.email ?? ""}</td>
+        <td>${row.telefon ?? ""}</td>
+      `;
+      listeBody.appendChild(tr);
+    });
+  }
+
+  // Neuen Mitarbeiter speichern
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const rolle = document.getElementById("rolle").value;
+    const email = document.getElementById("email").value;
+    const telefon = document.getElementById("telefon").value;
+
+    const { error } = await db
+      .from("mitarbeiter")
+      .insert([
+        { name, rolle, email, telefon }
+      ]);
+
+    if (error) {
+      console.error(error);
+      alert("Fehler beim Speichern: " + error.message);
+    } else {
+      form.reset();
+      loadMitarbeiter(); // Liste neu laden
     }
+  });
 
-    loadMitarbeiter();
-  </script>
+  // Beim Laden der Seite: Mitarbeiter anzeigen
+  loadMitarbeiter();
+</script>
+
 </body>
 </html>
