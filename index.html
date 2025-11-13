@@ -1,40 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Testformular</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    input, textarea, select {
+      width: 100%; padding: 10px; margin: 10px 0; font-size: 16px;
+    }
+    button {
+      padding: 12px 20px; font-size: 18px; cursor: pointer;
+    }
+  </style>
+</head>
 <body>
 
-<input type="file" id="fileInput">
-<button onclick="uploadFile()">Datei hochladen</button>
+<h2>Testformular (10 Felder)</h2>
+
+<form id="myForm">
+  <input type="text" id="feld1" placeholder="Feld 1: Vorname" required>
+  <input type="text" id="feld2" placeholder="Feld 2: Nachname" required>
+  <input type="email" id="feld3" placeholder="Feld 3: E-Mail" required>
+  <input type="text" id="feld4" placeholder="Feld 4: Telefonnummer">
+  <input type="text" id="feld5" placeholder="Feld 5: Kunde">
+  <input type="date" id="feld6" placeholder="Feld 6: Datum">
+  <input type="number" id="feld7" placeholder="Feld 7: Nummer">
+  <input type="text" id="feld8" placeholder="Feld 8: Straße">
+  <input type="text" id="feld9" placeholder="Feld 9: Stadt">
+  <textarea id="feld10" placeholder="Feld 10: Nachricht"></textarea>
+
+  <button type="submit">Absenden</button>
+</form>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   // Supabase Client aktivieren
   const supabase = supabase.createClient(
-    "https://ipitjuyeplkaywatmnxg.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"
+    "https://ipitjuyeplkaywatmnxg.supabase.co",     // <--- URL eintragen
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec"           // <--- ANON KEY eintragen
   );
 
-  async function uploadFile() {
-    const file = document.getElementById("fileInput").files[0];
-    if (!file) {
-      alert("Keine Datei ausgewählt!");
-      return;
-    }
+  const form = document.getElementById("myForm");
 
-    const filePath = Date.now() + "-" + file.name;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    let { data, error } = await supabase.storage
-      .from("uploads")        // Name deines Buckets
-      .upload(filePath, file);
+    // FELDER AUSLESEN
+    const data = {
+      feld1: document.getElementById("feld1").value,
+      feld2: document.getElementById("feld2").value,
+      feld3: document.getElementById("feld3").value,
+      feld4: document.getElementById("feld4").value,
+      feld5: document.getElementById("feld5").value,
+      feld6: document.getElementById("feld6").value,
+      feld7: document.getElementById("feld7").value,
+      feld8: document.getElementById("feld8").value,
+      feld9: document.getElementById("feld9").value,
+      feld10: document.getElementById("feld10").value,
+      created_at: new Date().toISOString()
+    };
+
+    // IN SUPABASE SPEICHERN
+    const { error } = await supabase
+      .from("formular")   // <--- Name deiner Tabelle
+      .insert([data]);
 
     if (error) {
-      console.log(error);
-      alert("Fehler beim Hochladen");
+      alert("Fehler beim Speichern: " + error.message);
+      console.error(error);
     } else {
-      alert("Erfolgreich hochgeladen!");
-      console.log("URL:", data);
+      alert("Erfolgreich gespeichert!");
+      form.reset();
     }
-  }
+  });
 </script>
 
 </body>
