@@ -73,6 +73,13 @@
       form.reset();
     }
   });
+  
+  form.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+    e.preventDefault(); // Enter blockieren
+  }
+});
+  
 </script>
 
 </body>
