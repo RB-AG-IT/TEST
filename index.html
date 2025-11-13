@@ -10,8 +10,12 @@
 </head>
 <body>
 
+
+  
   <h2>Test Formular</h2>
 
+
+  
   <form>
     <label>Name:</label>
     <input type="text" id="name" name="name">
@@ -22,14 +26,28 @@
     <button type="submit">Absenden</button>
   </form>
 
-  <script>
-    // Prefill per URL Parameter
-    const params = new URLSearchParams(window.location.search);
-    params.forEach((value, key) => {
-      const field = document.getElementById(key);
-      if (field) field.value = value;
-    });
-  </script>
+
+  
+ <script>
+  // Hash auslesen
+  const hash = window.location.hash.substring(1); 
+  const params = new URLSearchParams(hash);
+
+  // Felder befüllen
+  params.forEach((value, key) => {
+    const field = document.getElementById(key);
+    if (field) field.value = decodeURIComponent(value);
+  });
+
+  // Hash aus der URL ENTFERNEN
+  if (window.location.hash) {
+    const cleanURL = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanURL);
+  }
+</script>
+
+
+  
 
 </body>
 </html>
