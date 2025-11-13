@@ -22,7 +22,7 @@
       margin-top: 8px;
       font-weight: bold;
     }
-    input {
+    input, select {
       width: 100%;
       padding: 8px 10px;
       margin-top: 3px;
@@ -57,8 +57,14 @@
   <label for="name">Name *</label>
   <input type="text" id="name" required>
 
-  <label for="rolle">Rolle / Funktion</label>
-  <input type="text" id="rolle">
+  <label for="rolle">Rolle / Berechtigung *</label>
+  <select id="rolle" required>
+    <option value="">Bitte wählen</option>
+    <option value="Entwickler">Entwickler</option>
+    <option value="Führungsebene">Führungsebene</option>
+    <option value="Kadermanager">Kadermanager</option>
+    <option value="Botschafter">Botschafter</option>
+  </select>
 
   <label for="email">E-Mail</label>
   <input type="email" id="email">
@@ -95,7 +101,6 @@
   const form = document.getElementById("mitarbeiterForm");
   const listeBody = document.getElementById("mitarbeiterListe");
 
-  // Mitarbeiter aus Supabase laden und in Tabelle anzeigen
   async function loadMitarbeiter() {
     const { data, error } = await db
       .from("mitarbeiter")
@@ -108,10 +113,8 @@
       return;
     }
 
-    // Tabelle leeren
     listeBody.innerHTML = "";
 
-    // Zeilen einfügen
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -125,7 +128,6 @@
     });
   }
 
-  // Neuen Mitarbeiter speichern
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -145,11 +147,10 @@
       alert("Fehler beim Speichern: " + error.message);
     } else {
       form.reset();
-      loadMitarbeiter(); // Liste neu laden
+      loadMitarbeiter();
     }
   });
 
-  // Beim Laden der Seite: Mitarbeiter anzeigen
   loadMitarbeiter();
 </script>
 
