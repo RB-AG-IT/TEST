@@ -61,6 +61,28 @@
       margin-top: 4px;
       display: none;
     }
+
+    /* Autocomplete Styles */
+    .autocomplete-list {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      font-size: 14px;
+    }
+
+    .autocomplete-list .item {
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .autocomplete-list .item:hover {
+      background: #eee;
+    }
   </style>
 </head>
 <body>
@@ -142,28 +164,20 @@
   const ibanField = document.getElementById("iban");
   const ibanError = document.getElementById("ibanError");
 
-  // IBAN "sauber" machen: Leerzeichen raus, groß
   function cleanIban(value) {
     return value.replace(/\s+/g, "").toUpperCase();
   }
 
-  // IBAN für Anzeige formatieren: XXXX XXXX XXXX ...
   function formatIbanDisplay(value) {
     const clean = cleanIban(value);
     return clean.replace(/(.{4})/g, "$1 ").trim();
   }
 
-  // Prüfzifferberechnung (MOD 97) für ALLE IBAN-Länder
   function isValidIban(iban) {
     const clean = cleanIban(iban);
-
-    // generelle Längenprüfung laut IBAN-Standard (15–34 Zeichen)
     if (clean.length < 15 || clean.length > 34) return false;
-
-    // Zeichen neu anordnen: erste 4 nach hinten
     const rearranged = clean.slice(4) + clean.slice(0, 4);
 
-    // Buchstaben -> Zahlen (A=10 ... Z=35)
     let numeric = "";
     for (let i = 0; i < rearranged.length; i++) {
       const char = rearranged[i];
@@ -176,38 +190,25 @@
       }
     }
 
-    // Modulo 97 iterativ berechnen
     let remainder = 0;
     for (let i = 0; i < numeric.length; i++) {
       const digit = parseInt(numeric[i], 10);
       if (isNaN(digit)) return false;
       remainder = (remainder * 10 + digit) % 97;
     }
-
-    // gültige IBAN: Rest = 1
     return remainder === 1;
   }
 
-  // Live-Formatierung + Live-Prüfung
   function handleIbanInput() {
     const clean = cleanIban(ibanField.value);
-    ibanField.value = formatIbanDisplay(clean); // immer Großbuchstaben + Leerzeichen
+    ibanField.value = formatIbanDisplay(clean);
 
-    // Noch zu kurz? → kein Fehler anzeigen
-    if (clean.length === 0) {
-      ibanError.style.display = "none";
-      return;
-    }
     if (clean.length < 15) {
       ibanError.style.display = "none";
       return;
     }
 
-    if (!isValidIban(clean)) {
-      ibanError.style.display = "block";
-    } else {
-      ibanError.style.display = "none";
-    }
+    ibanError.style.display = isValidIban(clean) ? "none" : "block";
   }
 
   ibanField.addEventListener("input", handleIbanInput);
@@ -217,8 +218,6 @@
     e.preventDefault();
 
     const ibanClean = cleanIban(ibanField.value);
-
-    // finale Prüfung vor dem Speichern
     if (!isValidIban(ibanClean)) {
       ibanError.style.display = "block";
       ibanField.focus();
@@ -236,16 +235,13 @@
       feld8: document.getElementById("ort").value,
       feld9: document.getElementById("geburtsdatum").value,
       feld10: document.getElementById("hinweise").value,
-      iban: ibanClean // ohne Leerzeichen & immer GROSS gespeichert
+      iban: ibanClean
     };
 
-    const { error } = await db
-      .from("formular")
-      .insert([data]);
+    const { error } = await db.from("formular").insert([data]);
 
     if (error) {
       alert("Fehler beim Speichern: " + error.message);
-      console.error(error);
     } else {
       alert("Erfolgreich gespeichert!");
       form.reset();
@@ -253,10 +249,83 @@
     }
   });
 
-  // Enter in normalen Feldern blocken (außer Textarea)
   form.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
       e.preventDefault();
+    }
+  });
+</script>
+
+<!-- GEOAPIFY AUTOCOMPLETE -->
+<script>
+  const GEOAPIFY_KEY = "bbb56e4d3e5447a89b834ac1c3b8875d";
+
+  const strasseInput = document.getElementById("strasse");
+  const plzInput = document.getElementById("plz");
+  const ortInput = document.getElementById("ort");
+
+  const box = document.createElement("div");
+  box.className = "autocomplete-list";
+  strasseInput.parentNode.insertBefore(box, strasseInput.nextSibling);
+
+  let lastController = null;
+
+  strasseInput.addEventListener("input", () => {
+    const text = strasseInput.value.trim();
+    if (text.length < 3) {
+      box.style.display = "none";
+      return;
+    }
+
+    if (lastController) lastController.abort();
+    lastController = new AbortController();
+
+    const url =
+      "https://api.geoapify.com/v1/geocode/autocomplete?text=" +
+      encodeURIComponent(text) +
+      "&filter=countrycode:de&format=json&apiKey=" + GEOAPIFY_KEY;
+
+    fetch(url, { signal: lastController.signal })
+      .then(r => r.json())
+      .then(data => {
+        const results = data.results || [];
+        if (!results.length) {
+          box.style.display = "none";
+          return;
+        }
+
+        box.innerHTML = results.slice(0, 5).map(r => `
+          <div class="item"
+            data-street="${r.street || ""}"
+            data-housenumber="${r.housenumber || ""}"
+            data-postcode="${r.postcode || ""}"
+            data-city="${r.city || ""}">
+            ${r.street || ""} ${r.housenumber || ""}, ${r.postcode || ""} ${r.city || ""}
+          </div>`
+        ).join("");
+
+        box.style.display = "block";
+      })
+      .catch(err => {
+        if (err.name !== "AbortError") console.error(err);
+      });
+  });
+
+  box.addEventListener("click", (e) => {
+    const item = e.target.closest(".item");
+    if (!item) return;
+
+    strasseInput.value = `${item.dataset.street} ${item.dataset.housenumber}`.trim();
+    plzInput.value = item.dataset.postcode;
+    ortInput.value = item.dataset.city;
+
+    box.style.display = "none";
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".autocomplete-list") &&
+        e.target !== strasseInput) {
+      box.style.display = "none";
     }
   });
 </script>
