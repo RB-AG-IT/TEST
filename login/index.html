@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Login - RB-INSIDE</title>
+  <title>Login - RHODENBURG AG</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -20,20 +20,28 @@
       box-shadow: 0 0 12px rgba(0,0,0,0.08);
       max-width: 360px;
       width: 100%;
+      text-align: center;
     }
     h1 {
-      font-size: 22px;
-      margin-top: 0;
-      margin-bottom: 10px;
-      text-align: center;
+      font-size: 26px;
+      margin: 0;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    .subtitle {
+      font-size: 10px;
+      letter-spacing: 6px;
+      margin-bottom: 20px;
+      margin-top: 4px;
+      color: #444;
     }
     h2 {
       font-size: 18px;
-      margin: 10px 0 12px;
-      text-align: center;
+      margin: 10px 0 20px;
     }
     .field {
       margin-bottom: 12px;
+      text-align: left;
     }
     label {
       display: block;
@@ -62,20 +70,19 @@
     }
     .small-text {
       font-size: 13px;
-      text-align: center;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     a {
       color: #4b6cff;
       text-decoration: none;
+      font-size: 13px;
     }
     a:hover {
       text-decoration: underline;
     }
     #message {
-      margin-top: 10px;
-      font-size: 13px;
-      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
     }
     #message.error {
       color: #c0392b;
@@ -86,8 +93,11 @@
   </style>
 </head>
 <body>
+
   <div class="auth-box">
-    <h1>RB-INSIDE</h1>
+    <h1>RHODENBURG</h1>
+    <div class="subtitle">A K T I E N G E S E L L S C H A F T</div>
+
     <h2>Login</h2>
 
     <form id="login-form">
@@ -95,10 +105,12 @@
         <label for="login-email">E-Mail</label>
         <input type="email" id="login-email" required>
       </div>
+
       <div class="field">
         <label for="login-password">Passwort</label>
         <input type="password" id="login-password" required>
       </div>
+
       <button type="submit" class="btn-primary">Einloggen</button>
     </form>
 
@@ -117,17 +129,19 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlwaXRqdXllcGxrYXl3YXRtbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNTU3NjEsImV4cCI6MjA3ODYzMTc2MX0.JZ71lI049-_Z0bJvXIyIOoMFNR_Cgg7wLgbuOEsXCec';
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const messageBox = document.getElementById('message');
 
     function showMessage(text, isError = false) {
-  messageBox.innerHTML = text;
-  messageBox.className = '';
-  if (text) {
-    messageBox.classList.add(isError ? 'error' : 'success');
-  }
-}
+      messageBox.innerHTML = text;
+      messageBox.className = '';
+      if (text) {
+        messageBox.classList.add(isError ? 'error' : 'success');
+      }
+    }
 
     const loginForm = document.getElementById('login-form');
+
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       showMessage('Bitte warten...', false);
@@ -140,24 +154,31 @@
         password
       });
 
-      // Falsche Login-Daten
-        if (msg.toLowerCase().includes('invalid login credentials')) {
-        msg = 'E-Mail oder Passwort ist falsch.<br><small>Bitte überprüfe deine Eingaben.</small>';
-}
+      if (error) {
+        let msg = error.message || 'Login fehlgeschlagen';
 
-        // Englische Supabase-Meldung auf Deutsch umbiegen
+        // E-Mail nicht bestätigt
         if (msg.toLowerCase().includes('email not confirmed')) {
-        msg = 'Bitte bestätige zuerst deine E-Mail-Adresse.<br><small>Prüfe dein Postfach!</small>';
-       }
+          msg = 'Bitte bestätige zuerst deine E-Mail-Adresse.<br><small>Prüfe dein Postfach!</small>';
+        }
+
+        // Falsche Login-Daten
+        if (msg.toLowerCase().includes('invalid login credentials')) {
+          msg = 'E-Mail oder Passwort ist falsch.<br><small>Bitte überprüfe deine Eingaben.</small>';
+        }
 
         showMessage(msg, true);
         return;
       }
 
-      showMessage('Erfolgreich eingeloggt!', false);
-      // Weiterleitung zum Dashboard
-      window.location.href = '/dashboard/';
+      // Erfolgreich
+      showMessage('Erfolgreich eingeloggt...', false);
+
+      setTimeout(() => {
+        window.location.href = '/dashboard/';
+      }, 700);
     });
   </script>
+
 </body>
 </html>
