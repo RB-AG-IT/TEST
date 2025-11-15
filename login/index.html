@@ -140,8 +140,10 @@
         password
       });
 
-       if (error) {
-        let msg = error.message || 'Login fehlgeschlagen';
+      // Falsche Login-Daten
+        if (msg.toLowerCase().includes('invalid login credentials')) {
+        msg = 'E-Mail oder Passwort ist falsch.<br><small>Bitte überprüfe deine Eingaben.</small>';
+}
 
         // Englische Supabase-Meldung auf Deutsch umbiegen
         if (msg.toLowerCase().includes('email not confirmed')) {
