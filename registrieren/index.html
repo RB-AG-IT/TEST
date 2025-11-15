@@ -151,11 +151,11 @@
       });
 
       if (error) {
-        showMessage(error.message || 'Registrierung fehlgeschlagen', true);
+        showMessage(error.message || 'Anfrage zur Registrierung fehlgeschlagen!', true);
         return;
       }
 
-      showMessage('Registrierung erfolgreich! Du kannst dich jetzt einloggen.', false);
+      showMessage('Anfrage erfolgreich. Bitte die Registrierung mit Klick auf den Link in der Mail bestätigen und anschließend einloggen.', false);
 
       // Nach kurzer Zeit zum Login
       setTimeout(() => {
