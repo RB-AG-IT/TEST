@@ -145,8 +145,8 @@
 
         // Englische Supabase-Meldung auf Deutsch umbiegen
         if (msg.toLowerCase().includes('email not confirmed')) {
-          msg = 'Bitte bestätige zuerst deine E-Mail-Adresse. Prüfe dein Postfach.';
-        }
+        msg = 'Bitte bestätige zuerst deine E-Mail-Adresse.<br><small>Prüfe dein Postfach!</small>';
+       }
 
         showMessage(msg, true);
         return;
