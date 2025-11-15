@@ -120,12 +120,12 @@
     const messageBox = document.getElementById('message');
 
     function showMessage(text, isError = false) {
-      messageBox.textContent = text;
-      messageBox.className = '';
-      if (text) {
-        messageBox.classList.add(isError ? 'error' : 'success');
-      }
-    }
+  messageBox.innerHTML = text;
+  messageBox.className = '';
+  if (text) {
+    messageBox.classList.add(isError ? 'error' : 'success');
+  }
+}
 
     const loginForm = document.getElementById('login-form');
     loginForm.addEventListener('submit', async (e) => {
