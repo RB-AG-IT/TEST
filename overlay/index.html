@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE Layout mit News-Overlay</title>
+  <title>RB-INSIDE Layout mit News-Rechteck</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f3f3ff; }
@@ -11,9 +11,9 @@
       min-height: 100vh;
     }
 
-    /* KOPFLEISTE OBEN (dicker für News/Overlay) */
+    /* KOPFLEISTE OBEN */
     .topbar {
-      height: 110px; /* etwas höher, damit News-Banner reinpasst */
+      height: 90px;
       background: #151a2b;
       color: #fff;
       display: flex;
@@ -59,22 +59,6 @@
       opacity: 0.7;
     }
 
-    /* Bereich für eingeblendete News (Overlay-Banner) */
-    .news-frame-wrapper {
-      margin-top: 6px;
-      width: 100%;
-      max-width: 420px; /* optional Begrenzung */
-      height: 40px;     /* Höhe deines Banners */
-      overflow: hidden;
-      border-radius: 6px;
-    }
-    .news-frame {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: transparent;
-    }
-
     /* Runder Menü-Button oben rechts (unabhängig) */
     .top-menu-button {
       width: 42px;
@@ -88,6 +72,32 @@
       justify-content: center;
       cursor: pointer;
       font-size: 20px;
+    }
+
+    /* NEWS-OVERLAY: zentriertes unsichtbares Rechteck */
+    .news-overlay-container {
+      height: 90px;               /* gleiche Höhe wie Kopf-Balken */
+      display: flex;
+      align-items: center;        /* vertikal mittig */
+      justify-content: center;    /* horizontal mittig */
+      pointer-events: none;       /* Overlay selbst nicht klickbar */
+    }
+
+    .news-frame-wrapper {
+      height: 100%;
+      width: 70%;                 /* Breite des Rechtecks */
+      max-width: 700px;
+      overflow: hidden;           /* nur in diesem Rechteck anzeigen */
+      border-radius: 12px;
+      /* KEIN border, KEINE Linie – unsichtbarer Rahmen */
+      pointer-events: auto;       /* Inhalt im iframe darf klickbar sein */
+    }
+
+    .news-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: transparent;
     }
 
     /* Hauptinhalt */
@@ -221,7 +231,7 @@
     <!-- DUNKLES OVERLAY FÜR SIDEBAR -->
     <div id="overlay" class="overlay"></div>
 
-    <!-- KOPFLEISTE MIT NEWS-OVERLAY -->
+    <!-- KOPFLEISTE -->
     <header class="topbar">
       <div class="topbar-left">
         <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Sidebar öffnen">
@@ -231,16 +241,6 @@
         <div class="topbar-title-wrap">
           <div class="topbar-title">RB-INSIDE</div>
           <div class="topbar-subtitle">Interne Verwaltungsoberfläche</div>
-
-          <!-- HIER WIRD DEINE /news/index.html ALS BANNER GELADEN -->
-          <div class="news-frame-wrapper">
-            <iframe
-              src="/news/"
-              class="news-frame"
-              title="RB-INSIDE News Banner"
-              loading="lazy"
-            ></iframe>
-          </div>
         </div>
       </div>
 
@@ -248,6 +248,18 @@
         ⚙
       </button>
     </header>
+
+    <!-- ZENTRIERTES NEWS-RECHTECK (iframe) -->
+    <section class="news-overlay-container">
+      <div class="news-frame-wrapper">
+        <iframe
+          src="/news/"
+          class="news-frame"
+          title="RB-INSIDE News"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
 
     <!-- INHALT -->
     <main class="main-content">
