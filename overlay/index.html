@@ -151,7 +151,15 @@
 
   overflow-y: auto;     /* Scrollbar aktiv */
   overflow-x: hidden;   /* horizontal verhindern */
+    }
+      .sidebar-menu {
+  scrollbar-width: none;      /* Firefox */
 }
+
+.sidebar-menu::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari, Edge */
+}
+
 
     .sidebar-link {
       padding: 10px 14px;
@@ -329,22 +337,23 @@
           <span class="sidebar-icon">👨‍👩‍👧‍👦</span>
           <span class="sidebar-label">Teams</span>
         </a>
+        <a class="sidebar-link">
+          <span class="sidebar-icon">📦</span>
+          <span class="sidebar-label">Lager</span>
+        </a>
+
+        <a class="sidebar-link">
+        <span class="sidebar-icon">📁</span>
+        <span class="sidebar-label">Archive</span>
+        </a>
+
+        <a class="sidebar-link">
+        <span class="sidebar-icon">⚡</span>
+        <span class="sidebar-label">Schnellzugriff</span>
+        </a>
       </div>
 
-      <a class="sidebar-link">
-  <span class="sidebar-icon">📦</span>
-  <span class="sidebar-label">Lager</span>
-</a>
-
-<a class="sidebar-link">
-  <span class="sidebar-icon">📁</span>
-  <span class="sidebar-label">Archive</span>
-</a>
-
-<a class="sidebar-link">
-  <span class="sidebar-icon">⚡</span>
-  <span class="sidebar-label">Schnellzugriff</span>
-</a>
+      
       
 
       <div class="sidebar-footer">
