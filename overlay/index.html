@@ -7,20 +7,45 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f3f3ff; }
 
-    /* GESAMTE APP-FLÄCHE */
     .app-wrapper {
       min-height: 100vh;
     }
 
-    /* KOPFLEISTE OBEN */
+    /* KOPFLEISTE OBEN (dicker für News/Overlay) */
     .topbar {
-      height: 60px;
+      height: 90px; /* dicker */
       background: #151a2b;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Button oben links für Sidebar */
+    .sidebar-toggle-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: #ffffff22;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    .topbar-title-wrap {
+      display: flex;
+      flex-direction: column;
     }
     .topbar-title {
       font-size: 18px;
@@ -30,11 +55,12 @@
       font-size: 13px;
       opacity: 0.7;
     }
+    /* Hier könnte später ein News-Overlay rein (z.B. eine zweite Zeile) */
 
-    /* RUNDER MENÜ-BUTTON RECHTS OBEN */
-    .menu-button {
-      width: 40px;
-      height: 40px;
+    /* Runder Menü-Button oben rechts (unabhängig) */
+    .top-menu-button {
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
       background: #ffffff22;
@@ -46,7 +72,7 @@
       font-size: 20px;
     }
 
-    /* HAUPTINHALT */
+    /* Hauptinhalt */
     .main-content {
       padding: 24px;
     }
@@ -66,7 +92,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    /* SIDEBAR (ÜBER DEM INHALT) */
+    /* Sidebar über dem Inhalt */
     .sidebar {
       position: fixed;
       top: 0;
@@ -112,7 +138,7 @@
       background: #20263a;
     }
 
-    /* BUTTON LINKS UNTEN */
+    /* Button unten links – nur sichtbar, wenn Sidebar offen */
     .sidebar-footer {
       padding: 16px;
       border-top: 1px solid rgba(255,255,255,0.1);
@@ -131,7 +157,7 @@
       background: #00a383;
     }
 
-    /* OVERLAY BEI OFFENER SIDEBAR */
+    /* Overlay bei offener Sidebar */
     .overlay {
       position: fixed;
       inset: 0;
@@ -170,7 +196,7 @@
         <a class="sidebar-link" data-page="einstellungen">Einstellungen</a>
       </div>
       <div class="sidebar-footer">
-        <button type="button">Support kontaktieren</button>
+        <button type="button">Aktion unten links</button>
       </div>
     </nav>
 
@@ -179,12 +205,17 @@
 
     <!-- KOPFLEISTE -->
     <header class="topbar">
-      <div>
-        <div class="topbar-title">RB-INSIDE</div>
-        <div class="topbar-subtitle">Interne Verwaltungsoberfläche</div>
+      <div class="topbar-left">
+        <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Sidebar öffnen">
+          ☰
+        </button>
+        <div class="topbar-title-wrap">
+          <div class="topbar-title">RB-INSIDE</div>
+          <div class="topbar-subtitle">Interne Verwaltungsoberfläche</div>
+        </div>
       </div>
-      <button id="menuToggle" class="menu-button" aria-label="Menü öffnen">
-        ☰
+      <button id="topMenuButton" class="top-menu-button" aria-label="Menü oben rechts">
+        ⚙
       </button>
     </header>
 
@@ -204,7 +235,8 @@
   <script>
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
-    const menuToggle = document.getElementById('menuToggle');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const topMenuButton = document.getElementById('topMenuButton');
 
     function openSidebar() {
       sidebar.classList.add('open');
@@ -216,15 +248,19 @@
       overlay.classList.remove('visible');
     }
 
-    menuToggle.addEventListener('click', openSidebar);
+    sidebarToggle.addEventListener('click', openSidebar);
     overlay.addEventListener('click', closeSidebar);
 
-    // später können wir hier auf data-page reagieren und Inhalte laden
     document.querySelectorAll('.sidebar-link').forEach(link => {
       link.addEventListener('click', () => {
-        // hier später: Seite wechseln
+        // später: Seiteninhalt wechseln
         closeSidebar();
       });
+    });
+
+    // oberer rechter Menü-Button (noch ohne Funktion)
+    topMenuButton.addEventListener('click', () => {
+      alert('Hier können wir später Profil/Logout/Settings einbauen.');
     });
   </script>
 </body>
