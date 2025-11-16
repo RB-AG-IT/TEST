@@ -20,8 +20,8 @@
       color: #fff;
 
       display: flex;
-      align-items: center;            /* alles vertikal mittig */
-      justify-content: space-between; /* Buttons außen */
+      align-items: center;            
+      justify-content: space-between;
       padding: 0 16px;
       gap: 16px;
     }
@@ -44,25 +44,48 @@
     }
 
     /* --------------------------------------------- */
-    /* MITTLERER NEWS-BEREICH */
+    /* MITTLERER NEWS-BEREICH (90px hoch) */
     /* --------------------------------------------- */
     .news-center {
-      height: 90px;                /* exakt gleiche Höhe wie Topbar */
-      flex: 1;                     /* nimmt Platz zwischen Buttons ein */
+      position: relative;
+      height: 90px;
+      flex: 1;
+
       display: flex;
       align-items: center;
-      justify-content: center;     /* Banner bleibt mittig */
+      justify-content: center;
+
+      overflow: hidden; 
     }
 
-    /* Das sichtbare Rechteck für News (iframe) */
+    /* IFRAME-BANNER */
     .news-frame {
-      width: 70%;                  /* Breite des Banners */
-      height: 90px;                /* volle Höhe */
+      width: 70%;
+      height: 90px;
       border: none;
-      overflow: hidden;
-      border-radius: 12px;         /* leichte Rundung */
       background: transparent;
     }
+
+    /* PERMANENTER FADE LINKS */
+    .news-fade-left {
+      position: absolute;
+      left: 15%;
+      height: 90px;
+      width: 50px;
+      pointer-events: none;
+      background: linear-gradient(to right, #151a2b 0%, transparent 100%);
+    }
+
+    /* PERMANENTER FADE RECHTS */
+    .news-fade-right {
+      position: absolute;
+      right: 15%;
+      height: 90px;
+      width: 50px;
+      pointer-events: none;
+      background: linear-gradient(to left, #151a2b 0%, transparent 100%);
+    }
+
 
     /* --------------------------------------------- */
     /* SIDEBAR */
@@ -144,6 +167,7 @@
       pointer-events: auto;
     }
 
+
     /* --------------------------------------------- */
     /* INHALTSBEREICH */
     /* --------------------------------------------- */
@@ -157,6 +181,7 @@
       padding: 16px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
   </style>
 </head>
 <body>
@@ -182,20 +207,28 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <!-- TOPBAR MIT MITTLEREM NEWS-BANNER -->
+    <!-- --------------------------------------------- -->
+    <!-- TOPBAR MIT NEWS-BANNER + FADES -->
+    <!-- --------------------------------------------- -->
     <header class="topbar">
 
       <!-- LINKS -->
       <button id="sidebarToggle" class="sidebar-toggle-btn">☰</button>
 
-      <!-- MITTE: 90px NEWS-BANNER -->
+      <!-- MITTE (News 90px) -->
       <div class="news-center">
+
+        <div class="news-fade-left"></div>
+
         <iframe 
           src="/news/" 
           class="news-frame"
           title="RB-INSIDE News"
           loading="lazy">
         </iframe>
+
+        <div class="news-fade-right"></div>
+        
       </div>
 
       <!-- RECHTS -->
