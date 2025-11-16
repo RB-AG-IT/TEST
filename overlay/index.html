@@ -238,17 +238,20 @@
   position: absolute;
   bottom: 48px;
 
-  /* exakt wie sichtbare Breite des Buttons (220px - 24px padding) */
-  width: 196px;
-  left: 12px;              /* identischer Innenabstand wie der Button */
-  
+  /* rechts vom Einstellungen-Button */
+  left: 100%;           /* direkt rechts neben dem Button */
+  margin-left: 10px;    /* kleiner Abstand vom Button */
+
+  width: 220px;         /* feste Breite, immer gleich */
   z-index: 2001;
+
   background: #20263a;
   border-radius: 8px;
   padding: 4px 0;
   display: none;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
+
 
     .settings-menu.open { display: block; }
 
