@@ -66,24 +66,35 @@
       background: transparent;
     }
 
-  .news-fade-left {
-  position: absolute;
-  left: 0;
-  height: 90px;
-  width: 120px; /* breiter → sicherer */
-  pointer-events: none;
-  background: linear-gradient(to right, #151a2b 0%, transparent 100%);
-}
+    /* STÄRKERER UND BREITERER FADE LINKS */
+    .news-fade-left {
+      position: absolute;
+      left: 0;
+      height: 90px;
+      width: 220px; /* breiter */
+      pointer-events: none;
+      background: linear-gradient(
+        to right,
+        #151a2b 0%,           /* voll Topbar-Farbe */
+        #151a2b 40%,          /* lange dunkel */
+        rgba(21,26,43,0) 100% /* dann weich ausblenden */
+      );
+    }
 
-.news-fade-right {
-  position: absolute;
-  right: 0;
-  height: 90px;
-  width: 120px; /* breiter → sicherer */
-  pointer-events: none;
-  background: linear-gradient(to left, #151a2b 0%, transparent 100%);
-}
-
+    /* STÄRKERER UND BREITERER FADE RECHTS */
+    .news-fade-right {
+      position: absolute;
+      right: 0;
+      height: 90px;
+      width: 220px; /* breiter */
+      pointer-events: none;
+      background: linear-gradient(
+        to left,
+        #151a2b 0%,
+        #151a2b 40%,
+        rgba(21,26,43,0) 100%
+      );
+    }
 
     /* --------------------------------------------- */
     /* SIDEBAR */
@@ -165,7 +176,6 @@
       pointer-events: auto;
     }
 
-
     /* --------------------------------------------- */
     /* INHALTSBEREICH */
     /* --------------------------------------------- */
@@ -205,9 +215,7 @@
 
     <div id="overlay" class="overlay"></div>
 
-    <!-- --------------------------------------------- -->
     <!-- TOPBAR MIT NEWS-BANNER + FADES -->
-    <!-- --------------------------------------------- -->
     <header class="topbar">
 
       <!-- LINKS -->
