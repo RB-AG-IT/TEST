@@ -223,18 +223,20 @@
     }
 
      .settings-menu {
-      position: absolute;
-      bottom: 48px;
-      left: 6px;
-      right: 6px;          /* rechter Abstand – garantiert gleiche Breite */
-      width: auto;         /* Breite automatisch */
-      min-width: 200px;    /* Drop-Up bleibt breit genug */
-      background: #20263a;
-      border-radius: 8px;
-      padding: 4px 0;
-      display: none;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
-    }
+  position: absolute;
+  bottom: 48px;
+  
+  /* exakt gleiche Breite wie der Button */
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  background: #20263a;
+  border-radius: 8px;
+  padding: 4px 0;
+  display: none;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
+}
 
     .settings-menu.open { display: block; }
 
