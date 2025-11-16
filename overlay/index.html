@@ -436,12 +436,14 @@ settingsToggle.addEventListener('click', (e) => {
   const btnRect = settingsToggle.getBoundingClientRect();
   const menuRect = settingsMenu.getBoundingClientRect();
 
-  // 12px rechts neben der Sidebar, vertikal zentriert zum Button
-  const left = sidebarWidth + 12;
-  const top  = btnRect.top + (btnRect.height - menuRect.height) / 2;
+  // 12px rechts neben der Sidebar, unten bündig mit dem Einstellungen-Button
+const left = sidebarWidth + 12;
 
-  settingsMenu.style.left = left + 'px';
-  settingsMenu.style.top  = top + 'px';
+// Unterkante des Menüs = Unterkante des Buttons
+const top = btnRect.bottom - menuRect.height;
+
+settingsMenu.style.left = left + 'px';
+settingsMenu.style.top  = top + 'px';
 });
 
     // Top-Dropdown rechts
