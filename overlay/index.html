@@ -43,6 +43,44 @@
       flex-shrink: 0;
     }
 
+    /* Wrapper oben rechts für Dropdown */
+    .top-right-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .top-dropdown {
+      position: absolute;
+      right: 0;
+      top: 48px;
+      background: #ffffff;
+      color: #151a2b;
+      border-radius: 8px;
+      min-width: 170px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      padding: 4px 0;
+      display: none;
+      z-index: 1100;
+    }
+
+    .top-dropdown.open {
+      display: block;
+    }
+
+    .top-dropdown button {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .top-dropdown button:hover {
+      background: #f3f3ff;
+    }
+
     /* --------------------------------------------- */
     /* MITTLERER NEWS-BEREICH (90px hoch) */
     /* --------------------------------------------- */
@@ -71,13 +109,13 @@
       position: absolute;
       left: 0;
       height: 90px;
-      width: 220px; /* breiter */
+      width: 220px;
       pointer-events: none;
       background: linear-gradient(
         to right,
-        #151a2b 0%,           /* voll Topbar-Farbe */
-        #151a2b 40%,          /* lange dunkel */
-        rgba(21,26,43,0) 100% /* dann weich ausblenden */
+        #151a2b 0%,
+        #151a2b 40%,
+        rgba(21,26,43,0) 100%
       );
     }
 
@@ -86,7 +124,7 @@
       position: absolute;
       right: 0;
       height: 90px;
-      width: 220px; /* breiter */
+      width: 220px;
       pointer-events: none;
       background: linear-gradient(
         to left,
@@ -150,15 +188,48 @@
       border-top: 1px solid rgba(255,255,255,0.1);
     }
 
-    .sidebar-footer button {
+    /* Einstellungen-Dropdown unten links */
+    .settings-dropdown {
+      position: relative;
+    }
+
+    .settings-btn {
       width: 100%;
-      padding: 10px;
+      padding: 10px 14px;
       border-radius: 999px;
       border: none;
-      background: #00b894;
+      background: #2d3347;
       color: #fff;
       font-size: 14px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .settings-menu {
+      margin-top: 8px;
+      background: #20263a;
+      border-radius: 8px;
+      padding: 4px 0;
+      display: none;
+    }
+
+    .settings-menu.open {
+      display: block;
+    }
+
+    .settings-menu a {
+      display: block;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .settings-menu a:hover {
+      background: #2d3347;
     }
 
     /* Overlay */
@@ -201,15 +272,27 @@
 
       <div class="sidebar-menu">
         <a class="sidebar-link" data-page="dashboard">Dashboard</a>
-        <a class="sidebar-link" data-page="benutzer">Benutzer</a>
-        <a class="sidebar-link" data-page="kunden">Kunden</a>
-        <a class="sidebar-link" data-page="formulare">Formulare</a>
-        <a class="sidebar-link" data-page="berichte">Berichte</a>
-        <a class="sidebar-link" data-page="einstellungen">Einstellungen</a>
+        <a class="sidebar-link" data-page="ranking">Ranking</a>
+        <a class="sidebar-link" data-page="statistik">Statistik</a>
+        <a class="sidebar-link" data-page="kampagnen">Kampagnen</a>
+        <a class="sidebar-link" data-page="investments">Investments</a>
+        <a class="sidebar-link" data-page="recruiting">Recruiting</a>
+        <a class="sidebar-link" data-page="abrechnung">Abrechnung</a>
+        <a class="sidebar-link" data-page="uebersicht-tc">Übersicht TC</a>
       </div>
 
       <div class="sidebar-footer">
-        <button>Aktion unten links</button>
+        <div class="settings-dropdown">
+          <button id="settingsToggle" class="settings-btn">
+            <span>Einstellungen</span>
+            <span>▾</span>
+          </button>
+          <div id="settingsMenu" class="settings-menu">
+            <a>Allgemein</a>
+            <a>Benutzer & Rollen</a>
+            <a>System</a>
+          </div>
+        </div>
       </div>
     </nav>
 
@@ -237,8 +320,17 @@
         
       </div>
 
-      <!-- RECHTS -->
-      <button id="topMenuButton" class="top-menu-button">⚙</button>
+      <!-- RECHTS: Dropdown -->
+      <div class="top-right-wrapper">
+        <button id="topMenuButton" class="top-menu-button">⚙</button>
+        <div id="topDropdown" class="top-dropdown">
+          <button>Profil</button>
+          <button>Benachrichtigungen</button>
+          <button>Hilfe</button>
+          <button>Einstellungen</button>
+          <button>Logout</button>
+        </div>
+      </div>
     </header>
 
     <!-- INHALT -->
@@ -256,6 +348,12 @@
     const overlay = document.getElementById('overlay');
     const sidebarToggle = document.getElementById('sidebarToggle');
 
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsMenu = document.getElementById('settingsMenu');
+
+    const topMenuButton = document.getElementById('topMenuButton');
+    const topDropdown = document.getElementById('topDropdown');
+
     function openSidebar() {
       sidebar.classList.add('open');
       overlay.classList.add('visible');
@@ -264,13 +362,40 @@
     function closeSidebar() {
       sidebar.classList.remove('open');
       overlay.classList.remove('visible');
+      settingsMenu.classList.remove('open');
+      topDropdown.classList.remove('open');
     }
 
-    sidebarToggle.addEventListener('click', openSidebar);
+    sidebarToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openSidebar();
+    });
     overlay.addEventListener('click', closeSidebar);
 
     document.querySelectorAll('.sidebar-link').forEach(link => {
       link.addEventListener('click', closeSidebar);
+    });
+
+    // Einstellungen-Dropdown unten
+    settingsToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      settingsMenu.classList.toggle('open');
+    });
+
+    // Top-Dropdown rechts
+    topMenuButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      topDropdown.classList.toggle('open');
+    });
+
+    // Klick außerhalb: Dropdowns schließen
+    document.addEventListener('click', (e) => {
+      if (!sidebar.contains(e.target) && e.target !== settingsToggle) {
+        settingsMenu.classList.remove('open');
+      }
+      if (!topDropdown.contains(e.target) && e.target !== topMenuButton) {
+        topDropdown.classList.remove('open');
+      }
     });
   </script>
 
