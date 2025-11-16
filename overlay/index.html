@@ -9,6 +9,7 @@
 
     .app-wrapper {
       min-height: 100vh;
+      padding-left: 70px; /* Platz für eingeklappte Sidebar */
     }
 
     /* --------------------------------------------- */
@@ -18,7 +19,6 @@
       height: 90px;
       background: #151a2b;
       color: #fff;
-
       display: flex;
       align-items: center;            
       justify-content: space-between;
@@ -26,7 +26,6 @@
       gap: 16px;
     }
 
-    /* Buttons links und rechts */
     .sidebar-toggle-btn,
     .top-menu-button {
       width: 42px;
@@ -43,7 +42,6 @@
       flex-shrink: 0;
     }
 
-    /* Wrapper oben rechts für Dropdown */
     .top-right-wrapper {
       position: relative;
       flex-shrink: 0;
@@ -88,15 +86,12 @@
       position: relative;
       height: 90px;
       flex: 1;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       overflow: hidden; 
     }
 
-    /* IFRAME-BANNER */
     .news-frame {
       width: 70%;
       height: 90px;
@@ -104,7 +99,6 @@
       background: transparent;
     }
 
-    /* STÄRKERER UND BREITERER FADE LINKS */
     .news-fade-left {
       position: absolute;
       left: 0;
@@ -119,7 +113,6 @@
       );
     }
 
-    /* STÄRKERER UND BREITERER FADE RECHTS */
     .news-fade-right {
       position: absolute;
       right: 0;
@@ -135,25 +128,26 @@
     }
 
     /* --------------------------------------------- */
-    /* SIDEBAR */
+    /* SIDEBAR – wie ChatGPT */
     /* --------------------------------------------- */
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
       height: 100vh;
-      width: 240px;
+      width: 70px; /* eingeklappt */
       background: #151a2b;
       color: #fff;
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
       z-index: 1000;
       display: flex;
       flex-direction: column;
       padding: 16px 0;
+      transition: width 0.25s ease;
+      overflow: hidden;
     }
-    .sidebar.open {
-      transform: translateX(0);
+
+    .sidebar.expanded {
+      width: 240px; /* ausgeklappt */
     }
 
     .sidebar-header {
@@ -161,6 +155,15 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
       font-weight: bold;
       font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .sidebar-header-text {
+      display: none;
+    }
+
+    .sidebar.expanded .sidebar-header-text {
+      display: inline;
     }
 
     .sidebar-menu {
@@ -168,34 +171,54 @@
       padding: 16px 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
     }
 
     .sidebar-link {
-      padding: 10px 16px;
+      padding: 10px 14px;
       color: #fff;
       text-decoration: none;
       font-size: 14px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
     }
 
     .sidebar-link:hover {
       background: #20263a;
     }
 
-    .sidebar-footer {
-      padding: 16px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+    .sidebar-icon {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+      flex-shrink: 0;
     }
 
-    /* Einstellungen-Dropdown unten links */
+    .sidebar-label {
+      display: none;
+    }
+
+    .sidebar.expanded .sidebar-label {
+      display: inline;
+    }
+
+    .sidebar-footer {
+      padding: 12px 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    /* Einstellungen Drop-Up unten links */
     .settings-dropdown {
       position: relative;
     }
 
     .settings-btn {
       width: 100%;
-      padding: 10px 14px;
+      padding: 10px 12px;
       border-radius: 999px;
       border: none;
       background: #2d3347;
@@ -205,14 +228,39 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
+    }
+
+    .settings-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .settings-label {
+      flex: 1;
+      text-align: left;
+      white-space: nowrap;
+      display: none;
+    }
+
+    .sidebar.expanded .settings-label {
+      display: inline;
+    }
+
+    .settings-caret {
+      font-size: 12px;
     }
 
     .settings-menu {
-      margin-top: 8px;
+      position: absolute;
+      bottom: 48px; /* nach oben (Drop-Up) */
+      left: 0;
+      right: 0;
       background: #20263a;
       border-radius: 8px;
       padding: 4px 0;
       display: none;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
     }
 
     .settings-menu.open {
@@ -226,25 +274,11 @@
       font-size: 13px;
       text-decoration: none;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .settings-menu a:hover {
       background: #2d3347;
-    }
-
-    /* Overlay */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 900;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
     }
 
     /* --------------------------------------------- */
@@ -268,24 +302,51 @@
 
     <!-- SIDEBAR -->
     <nav id="sidebar" class="sidebar">
-      <div class="sidebar-header">RB-INSIDE Menü</div>
+      <div class="sidebar-header">
+        <span class="sidebar-header-text">RB-INSIDE Menü</span>
+      </div>
 
       <div class="sidebar-menu">
-        <a class="sidebar-link" data-page="dashboard">Dashboard</a>
-        <a class="sidebar-link" data-page="ranking">Ranking</a>
-        <a class="sidebar-link" data-page="statistik">Statistik</a>
-        <a class="sidebar-link" data-page="kampagnen">Kampagnen</a>
-        <a class="sidebar-link" data-page="investments">Investments</a>
-        <a class="sidebar-link" data-page="recruiting">Recruiting</a>
-        <a class="sidebar-link" data-page="abrechnung">Abrechnung</a>
-        <a class="sidebar-link" data-page="uebersicht-tc">Übersicht TC</a>
+        <a class="sidebar-link" data-page="dashboard">
+          <span class="sidebar-icon">🏠</span>
+          <span class="sidebar-label">Dashboard</span>
+        </a>
+        <a class="sidebar-link" data-page="ranking">
+          <span class="sidebar-icon">🏆</span>
+          <span class="sidebar-label">Ranking</span>
+        </a>
+        <a class="sidebar-link" data-page="statistik">
+          <span class="sidebar-icon">📊</span>
+          <span class="sidebar-label">Statistik</span>
+        </a>
+        <a class="sidebar-link" data-page="kampagnen">
+          <span class="sidebar-icon">🎯</span>
+          <span class="sidebar-label">Kampagnen</span>
+        </a>
+        <a class="sidebar-link" data-page="investments">
+          <span class="sidebar-icon">💰</span>
+          <span class="sidebar-label">Investments</span>
+        </a>
+        <a class="sidebar-link" data-page="recruiting">
+          <span class="sidebar-icon">👥</span>
+          <span class="sidebar-label">Recruiting</span>
+        </a>
+        <a class="sidebar-link" data-page="abrechnung">
+          <span class="sidebar-icon">💼</span>
+          <span class="sidebar-label">Abrechnung</span>
+        </a>
+        <a class="sidebar-link" data-page="uebersicht-tc">
+          <span class="sidebar-icon">📋</span>
+          <span class="sidebar-label">Übersicht TC</span>
+        </a>
       </div>
 
       <div class="sidebar-footer">
         <div class="settings-dropdown">
           <button id="settingsToggle" class="settings-btn">
-            <span>Einstellungen</span>
-            <span>▾</span>
+            <span class="settings-icon">⚙</span>
+            <span class="settings-label">Einstellungen</span>
+            <span class="settings-caret">▴</span>
           </button>
           <div id="settingsMenu" class="settings-menu">
             <a>Allgemein</a>
@@ -296,28 +357,21 @@
       </div>
     </nav>
 
-    <div id="overlay" class="overlay"></div>
-
     <!-- TOPBAR MIT NEWS-BANNER + FADES -->
     <header class="topbar">
-
       <!-- LINKS -->
       <button id="sidebarToggle" class="sidebar-toggle-btn">☰</button>
 
       <!-- MITTE (News 90px) -->
       <div class="news-center">
-
         <div class="news-fade-left"></div>
-
         <iframe 
           src="/news/" 
           class="news-frame"
           title="RB-INSIDE News"
           loading="lazy">
         </iframe>
-
         <div class="news-fade-right"></div>
-        
       </div>
 
       <!-- RECHTS: Dropdown -->
@@ -337,7 +391,7 @@
     <main class="main-content">
       <div class="dummy-box">
         <p>Dies ist nur ein Platzhalter-Inhalt.</p>
-        <p>Der 90px hohe News-Banner funktioniert perfekt.</p>
+        <p>News-Banner und Sidebar-Verhalten kannst du jetzt testen.</p>
       </div>
     </main>
 
@@ -345,7 +399,6 @@
 
   <script>
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
     const sidebarToggle = document.getElementById('sidebarToggle');
 
     const settingsToggle = document.getElementById('settingsToggle');
@@ -354,43 +407,34 @@
     const topMenuButton = document.getElementById('topMenuButton');
     const topDropdown = document.getElementById('topDropdown');
 
-    function openSidebar() {
-      sidebar.classList.add('open');
-      overlay.classList.add('visible');
-    }
-
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('visible');
-      settingsMenu.classList.remove('open');
-      topDropdown.classList.remove('open');
-    }
-
+    // Sidebar ein/ausklappen
     sidebarToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      openSidebar();
+      sidebar.classList.toggle('expanded');
     });
-    overlay.addEventListener('click', closeSidebar);
 
+    // Sidebar-Links: hier später Seitenwechsel einbauen
     document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', closeSidebar);
+      link.addEventListener('click', () => {
+        // Platz für Navigation
+      });
     });
 
-    // Einstellungen-Dropdown unten
+    // Einstellungen Drop-Up
     settingsToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       settingsMenu.classList.toggle('open');
     });
 
-    // Top-Dropdown rechts
+    // Top Dropdown rechts
     topMenuButton.addEventListener('click', (e) => {
       e.stopPropagation();
       topDropdown.classList.toggle('open');
     });
 
-    // Klick außerhalb: Dropdowns schließen
+    // Klick außerhalb: Menüs schließen
     document.addEventListener('click', (e) => {
-      if (!sidebar.contains(e.target) && e.target !== settingsToggle) {
+      if (!settingsMenu.contains(e.target) && e.target !== settingsToggle) {
         settingsMenu.classList.remove('open');
       }
       if (!topDropdown.contains(e.target) && e.target !== topMenuButton) {
