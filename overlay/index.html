@@ -9,7 +9,7 @@
 
     .app-wrapper {
       min-height: 100vh;
-      padding-left: 60px; /* Platz für eingeklappte Sidebar (jetzt 60px) */
+      padding-left: 60px; /* Platz für eingeklappte Sidebar (60px) */
     }
 
     /* TOGGLE-BUTTON LINKS OBEN */
@@ -29,6 +29,7 @@
       justify-content: center;
       cursor: pointer;
       z-index: 1200;
+      padding: 0;
     }
 
     /* TOPBAR */
@@ -54,6 +55,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      padding: 0;
     }
 
     .top-right-wrapper {
@@ -127,7 +129,7 @@
       top: 0;
       left: 0;
       height: 100vh;
-      width: 60px;              /* eingeklappt jetzt schmaler */
+      width: 60px;              /* eingeklappt */
       background: #151a2b;
       color: #fff;
       z-index: 1000;
@@ -148,8 +150,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      overflow-y: auto;     /* Scrollbar aktiv */
-      overflow-x: hidden;   /* horizontal verhindern */
+      overflow-y: auto;
+      overflow-x: hidden;
     }
     .sidebar-menu {
       scrollbar-width: none;      /* Firefox */
@@ -158,64 +160,64 @@
       display: none;              /* Chrome, Safari, Edge */
     }
 
+    /* Menüpunkte: Icon-Spalte ist immer 60px breit.
+       Icon bleibt damit IMMER an der gleichen Stelle. */
     .sidebar-link {
-      padding: 10px 14px;
+      padding: 8px 0;
       color: #fff;
       text-decoration: none;
       font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
       white-space: nowrap;
     }
 
-    /* Eingeklappt: Icons mittig, gleicher Abstand links/rechts */
-    .sidebar:not(.expanded) .sidebar-link {
-      justify-content: center;
-      padding: 10px 0;
-    }
-
-    .sidebar-link:hover { background: #20263a; }
-
     .sidebar-icon {
       font-size: 18px;
-      width: 22px;
+      width: 60px;                /* ganze Sidebar-Breite im eingeklappten Zustand */
+      display: flex;
+      justify-content: center;    /* Icon mittig in der Spalte */
       text-align: center;
       flex-shrink: 0;
     }
 
     .sidebar-label {
-      display: none;            /* nur Icons, wenn eingeklappt */
+      display: none;
     }
     .sidebar.expanded .sidebar-label {
-      display: inline;          /* Text klappt mit auf */
+      display: inline;
     }
 
+    .sidebar-link:hover { background: #20263a; }
+
     .sidebar-footer {
-      padding: 12px 10px;
+      padding: 12px 0;
       position: relative;
+      display: flex;
+      justify-content: center;
     }
 
     /* DROP-UP UNTEN LINKS */
     .settings-dropdown {
       position: relative;
-      z-index: 2000; /* Drop-Up immer über Sidebar */
+      z-index: 2000;
     }
 
+    /* Zahnrad unten: perfekter Kreis, gleiche Logik wie oben rechts */
     .settings-btn {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
       border: none;
       background: #2d3347;
       color: #fff;
-      font-size: 14px;
+      font-size: 18px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center; /* Zahnrad mittig */
-      gap: 0;
+      justify-content: center;
+      padding: 0;
     }
 
     .settings-icon {
@@ -224,8 +226,8 @@
     }
 
     .settings-menu {
-      position: fixed;              /* nicht mehr an die Sidebar „festgeklebt“ */
-      width: 220px;                 /* feste Breite des Menüs */
+      position: fixed;
+      width: 220px;
       z-index: 2001;
       background: #20263a;
       border-radius: 8px;
