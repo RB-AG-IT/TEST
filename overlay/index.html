@@ -164,7 +164,7 @@
       /* Inhalt nach unten verschoben, damit nichts mit Toggle überlappt */
       padding: 70px 0 16px;
       transition: width 0.25s ease;
-      overflow: visible; /* Drop-Up nicht mehr abgeschnitten */
+      overflow: visible; /* Drop-Up nicht abgeschnitten */
     }
 
     .sidebar.expanded {
@@ -173,7 +173,7 @@
 
     .sidebar-header {
       padding: 0 16px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      /* Trennlinie entfernt */
       font-weight: bold;
       font-size: 16px;
       white-space: nowrap;
@@ -228,7 +228,7 @@
 
     .sidebar-footer {
       padding: 12px 10px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      /* Trennlinie entfernt */
       position: relative;
     }
 
@@ -276,7 +276,8 @@
       position: absolute;
       bottom: 48px; /* nach oben (Drop-Up) */
       left: 0;
-      right: 0;
+      right: auto;
+      min-width: 200px; /* breiter als Sidebar → ragt nach rechts raus */
       background: #20263a;
       border-radius: 8px;
       padding: 4px 0;
@@ -413,7 +414,7 @@
     <main class="main-content">
       <div class="dummy-box">
         <p>Dies ist nur ein Platzhalter-Inhalt.</p>
-        <p>Teste Sidebar-Toggle oben links + Drop-Up unten.</p>
+        <p>Teste Sidebar-Toggle, Drop-Up unten & neue Breite.</p>
       </div>
     </main>
 
