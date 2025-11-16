@@ -13,6 +13,27 @@
     }
 
     /* --------------------------------------------- */
+    /* FESTER TOGGLE-BUTTON LINKS OBEN */
+    /* --------------------------------------------- */
+    .sidebar-toggle-floating {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: #151a2b;
+      color: #fff;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1200; /* über Sidebar */
+    }
+
+    /* --------------------------------------------- */
     /* TOPBAR (90px hoch) */
     /* --------------------------------------------- */
     .topbar {
@@ -26,7 +47,6 @@
       gap: 16px;
     }
 
-    .sidebar-toggle-btn,
     .top-menu-button {
       width: 42px;
       height: 42px;
@@ -298,6 +318,10 @@
   </style>
 </head>
 <body>
+
+  <!-- Fester Toggle-Button links oben -->
+  <button id="sidebarToggle" class="sidebar-toggle-floating">☰</button>
+
   <div class="app-wrapper">
 
     <!-- SIDEBAR -->
@@ -359,9 +383,6 @@
 
     <!-- TOPBAR MIT NEWS-BANNER + FADES -->
     <header class="topbar">
-      <!-- LINKS -->
-      <button id="sidebarToggle" class="sidebar-toggle-btn">☰</button>
-
       <!-- MITTE (News 90px) -->
       <div class="news-center">
         <div class="news-fade-left"></div>
@@ -391,7 +412,7 @@
     <main class="main-content">
       <div class="dummy-box">
         <p>Dies ist nur ein Platzhalter-Inhalt.</p>
-        <p>News-Banner und Sidebar-Verhalten kannst du jetzt testen.</p>
+        <p>Teste Sidebar-Toggle oben links + Drop-Up unten.</p>
       </div>
     </main>
 
@@ -411,13 +432,6 @@
     sidebarToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       sidebar.classList.toggle('expanded');
-    });
-
-    // Sidebar-Links: hier später Seitenwechsel einbauen
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', () => {
-        // Platz für Navigation
-      });
     });
 
     // Einstellungen Drop-Up
