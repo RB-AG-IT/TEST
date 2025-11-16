@@ -9,7 +9,7 @@
 
     .app-wrapper {
       min-height: 100vh;
-      padding-left: 70px; /* Platz für eingeklappte Sidebar */
+      padding-left: 60px; /* Platz für eingeklappte Sidebar (jetzt 60px) */
     }
 
     /* TOGGLE-BUTTON LINKS OBEN */
@@ -127,7 +127,7 @@
       top: 0;
       left: 0;
       height: 100vh;
-      width: 70px;              /* eingeklappt */
+      width: 60px;              /* eingeklappt jetzt schmaler */
       background: #151a2b;
       color: #fff;
       z-index: 1000;
@@ -143,23 +143,20 @@
     }
 
     .sidebar-menu {
-  flex: 1;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  overflow-y: auto;     /* Scrollbar aktiv */
-  overflow-x: hidden;   /* horizontal verhindern */
+      flex: 1;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;     /* Scrollbar aktiv */
+      overflow-x: hidden;   /* horizontal verhindern */
     }
-      .sidebar-menu {
-  scrollbar-width: none;      /* Firefox */
-}
-
-.sidebar-menu::-webkit-scrollbar {
-  display: none;              /* Chrome, Safari, Edge */
-}
-
+    .sidebar-menu {
+      scrollbar-width: none;      /* Firefox */
+    }
+    .sidebar-menu::-webkit-scrollbar {
+      display: none;              /* Chrome, Safari, Edge */
+    }
 
     .sidebar-link {
       padding: 10px 14px;
@@ -171,6 +168,12 @@
       align-items: center;
       gap: 10px;
       white-space: nowrap;
+    }
+
+    /* Eingeklappt: Icons mittig, gleicher Abstand links/rechts */
+    .sidebar:not(.expanded) .sidebar-link {
+      justify-content: center;
+      padding: 10px 0;
     }
 
     .sidebar-link:hover { background: #20263a; }
@@ -196,9 +199,9 @@
 
     /* DROP-UP UNTEN LINKS */
     .settings-dropdown {
-  position: relative;
-  z-index: 2000; /* Drop-Up immer über Sidebar */
-}
+      position: relative;
+      z-index: 2000; /* Drop-Up immer über Sidebar */
+    }
 
     .settings-btn {
       width: 100%;
@@ -211,8 +214,8 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      justify-content: center; /* Zahnrad mittig */
+      gap: 0;
     }
 
     .settings-icon {
@@ -220,36 +223,19 @@
       flex-shrink: 0;
     }
 
-    .settings-label {
-      flex: 1;
-      text-align: left;
-      white-space: nowrap;
-      display: none;
-    }
-    .sidebar.expanded .settings-label {
-      display: inline;
-    }
-
-    .settings-caret {
-      font-size: 12px;
-    }
-
     .settings-menu {
-  position: fixed;              /* nicht mehr an die Sidebar „festgeklebt“ */
-  width: 220px;                 /* feste Breite des Menüs */
-  z-index: 2001;
-  background: #20263a;
-  border-radius: 8px;
-  padding: 4px 0;
-  display: none;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
-}
-.settings-menu.open {
-  display: block;
-}
-
-
-    .settings-menu.open { display: block; }
+      position: fixed;              /* nicht mehr an die Sidebar „festgeklebt“ */
+      width: 220px;                 /* feste Breite des Menüs */
+      z-index: 2001;
+      background: #20263a;
+      border-radius: 8px;
+      padding: 4px 0;
+      display: none;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
+    }
+    .settings-menu.open {
+      display: block;
+    }
 
     .settings-menu a {
       display: block;
@@ -343,25 +329,20 @@
         </a>
 
         <a class="sidebar-link">
-        <span class="sidebar-icon">📁</span>
-        <span class="sidebar-label">Archive</span>
+          <span class="sidebar-icon">📁</span>
+          <span class="sidebar-label">Archive</span>
         </a>
 
         <a class="sidebar-link">
-        <span class="sidebar-icon">⚡</span>
-        <span class="sidebar-label">Schnellzugriff</span>
+          <span class="sidebar-icon">⚡</span>
+          <span class="sidebar-label">Schnellzugriff</span>
         </a>
       </div>
-
-      
-      
 
       <div class="sidebar-footer">
         <div class="settings-dropdown">
           <button id="settingsToggle" class="settings-btn">
             <span class="settings-icon">⚙</span>
-            <span class="settings-label">Einstellungen</span>
-            <span class="settings-caret">▴</span>
           </button>
           <div id="settingsMenu" class="settings-menu">
             <a>Allgemein</a>
@@ -419,32 +400,32 @@
     });
 
     // Einstellungen Drop-Menü rechts von der Sidebar
-settingsToggle.addEventListener('click', (e) => {
-  e.stopPropagation();
+    settingsToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
 
-  // Wenn offen -> schließen
-  if (settingsMenu.classList.contains('open')) {
-    settingsMenu.classList.remove('open');
-    return;
-  }
+      // Wenn offen -> schließen
+      if (settingsMenu.classList.contains('open')) {
+        settingsMenu.classList.remove('open');
+        return;
+      }
 
-  // Sidebar-Breite ermitteln (eingeklappt 70px, ausgeklappt 220px)
-  const sidebarWidth = sidebar.classList.contains('expanded') ? 220 : 70;
+      // Sidebar-Breite ermitteln (eingeklappt 60px, ausgeklappt 220px)
+      const sidebarWidth = sidebar.classList.contains('expanded') ? 220 : 60;
 
-  // Menü kurz öffnen, um die Höhe zu messen
-  settingsMenu.classList.add('open');
-  const btnRect = settingsToggle.getBoundingClientRect();
-  const menuRect = settingsMenu.getBoundingClientRect();
+      // Menü kurz öffnen, um die Höhe zu messen
+      settingsMenu.classList.add('open');
+      const btnRect = settingsToggle.getBoundingClientRect();
+      const menuRect = settingsMenu.getBoundingClientRect();
 
-  // 12px rechts neben der Sidebar, unten bündig mit dem Einstellungen-Button
-const left = sidebarWidth + 12;
+      // 12px rechts neben der Sidebar, unten bündig mit dem Einstellungen-Button
+      const left = sidebarWidth + 12;
 
-// Unterkante des Menüs = Unterkante des Buttons
-const top = btnRect.bottom - menuRect.height;
+      // Unterkante des Menüs = Unterkante des Buttons
+      const top = btnRect.bottom - menuRect.height;
 
-settingsMenu.style.left = left + 'px';
-settingsMenu.style.top  = top + 'px';
-});
+      settingsMenu.style.left = left + 'px';
+      settingsMenu.style.top  = top + 'px';
+    });
 
     // Top-Dropdown rechts
     topMenuButton.addEventListener('click', (e) => {
