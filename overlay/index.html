@@ -222,12 +222,13 @@
       font-size: 12px;
     }
 
-   .settings-menu {
-  position: absolute;
-  bottom: 48px;
-  left: 6px;
-  width: calc(100% - 12px); /* links 6px + rechts 6px */
-      min-width: 200px;             /* auch sichtbar bei 70px Sidebar */
+     .settings-menu {
+      position: absolute;
+      bottom: 48px;
+      left: 6px;
+      right: 6px;          /* rechter Abstand – garantiert gleiche Breite */
+      width: auto;         /* Breite automatisch */
+      min-width: 200px;    /* Drop-Up bleibt breit genug */
       background: #20263a;
       border-radius: 8px;
       padding: 4px 0;
