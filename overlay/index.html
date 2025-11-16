@@ -1,8 +1,8 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE Layout mit News-Rechteck</title>
+  <title>RB-INSIDE Layout</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f3f3ff; }
@@ -11,55 +11,23 @@
       min-height: 100vh;
     }
 
-    /* KOPFLEISTE OBEN */
+    /* --------------------------------------------- */
+    /* TOPBAR (90px hoch) */
+    /* --------------------------------------------- */
     .topbar {
       height: 90px;
       background: #151a2b;
       color: #fff;
+
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      align-items: center;            /* alles vertikal mittig */
+      justify-content: space-between; /* Buttons außen */
       padding: 0 16px;
+      gap: 16px;
     }
 
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      height: 100%;
-    }
-
-    /* Button oben links für Sidebar */
-    .sidebar-toggle-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: #ffffff22;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 22px;
-    }
-
-    .topbar-title-wrap {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      height: 100%;
-    }
-    .topbar-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .topbar-subtitle {
-      font-size: 13px;
-      opacity: 0.7;
-    }
-
-    /* Runder Menü-Button oben rechts (unabhängig) */
+    /* Buttons links und rechts */
+    .sidebar-toggle-btn,
     .top-menu-button {
       width: 42px;
       height: 42px;
@@ -67,60 +35,38 @@
       border: none;
       background: #ffffff22;
       color: #fff;
+      font-size: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 20px;
+      flex-shrink: 0;
     }
 
-    /* NEWS-OVERLAY: zentriertes unsichtbares Rechteck */
-    .news-overlay-container {
-      height: 90px;               /* gleiche Höhe wie Kopf-Balken */
+    /* --------------------------------------------- */
+    /* MITTLERER NEWS-BEREICH */
+    /* --------------------------------------------- */
+    .news-center {
+      height: 90px;                /* exakt gleiche Höhe wie Topbar */
+      flex: 1;                     /* nimmt Platz zwischen Buttons ein */
       display: flex;
-      align-items: center;        /* vertikal mittig */
-      justify-content: center;    /* horizontal mittig */
-      pointer-events: none;       /* Overlay selbst nicht klickbar */
+      align-items: center;
+      justify-content: center;     /* Banner bleibt mittig */
     }
 
-    .news-frame-wrapper {
-      height: 100%;
-      width: 70%;                 /* Breite des Rechtecks */
-      max-width: 700px;
-      overflow: hidden;           /* nur in diesem Rechteck anzeigen */
-      border-radius: 12px;
-      /* KEIN border, KEINE Linie – unsichtbarer Rahmen */
-      pointer-events: auto;       /* Inhalt im iframe darf klickbar sein */
-    }
-
+    /* Das sichtbare Rechteck für News (iframe) */
     .news-frame {
-      width: 100%;
-      height: 100%;
-      border: 0;
+      width: 70%;                  /* Breite des Banners */
+      height: 90px;                /* volle Höhe */
+      border: none;
+      overflow: hidden;
+      border-radius: 12px;         /* leichte Rundung */
       background: transparent;
     }
 
-    /* Hauptinhalt */
-    .main-content {
-      padding: 24px;
-    }
-    .page-heading {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-    .page-subheading {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 24px;
-    }
-    .dummy-box {
-      background: #fff;
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    /* Sidebar über dem Inhalt */
+    /* --------------------------------------------- */
+    /* SIDEBAR */
+    /* --------------------------------------------- */
     .sidebar {
       position: fixed;
       top: 0;
@@ -154,23 +100,24 @@
       flex-direction: column;
       gap: 4px;
     }
+
     .sidebar-link {
       padding: 10px 16px;
       color: #fff;
       text-decoration: none;
       font-size: 14px;
-      display: block;
       cursor: pointer;
     }
+
     .sidebar-link:hover {
       background: #20263a;
     }
 
-    /* Button unten links – nur sichtbar, wenn Sidebar offen */
     .sidebar-footer {
       padding: 16px;
       border-top: 1px solid rgba(255,255,255,0.1);
     }
+
     .sidebar-footer button {
       width: 100%;
       padding: 10px;
@@ -181,11 +128,8 @@
       font-size: 14px;
       cursor: pointer;
     }
-    .sidebar-footer button:hover {
-      background: #00a383;
-    }
 
-    /* Overlay bei offener Sidebar (dunkler Hintergrund über Inhalt) */
+    /* Overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -200,21 +144,28 @@
       pointer-events: auto;
     }
 
-    @media (min-width: 900px) {
-      .main-content {
-        max-width: 1100px;
-        margin: 0 auto;
-      }
+    /* --------------------------------------------- */
+    /* INHALTSBEREICH */
+    /* --------------------------------------------- */
+    .main-content {
+      padding: 24px;
+    }
+
+    .dummy-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
   </style>
 </head>
 <body>
   <div class="app-wrapper">
+
     <!-- SIDEBAR -->
     <nav id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        RB-INSIDE Menü
-      </div>
+      <div class="sidebar-header">RB-INSIDE Menü</div>
+
       <div class="sidebar-menu">
         <a class="sidebar-link" data-page="dashboard">Dashboard</a>
         <a class="sidebar-link" data-page="benutzer">Benutzer</a>
@@ -223,63 +174,48 @@
         <a class="sidebar-link" data-page="berichte">Berichte</a>
         <a class="sidebar-link" data-page="einstellungen">Einstellungen</a>
       </div>
+
       <div class="sidebar-footer">
-        <button type="button">Aktion unten links</button>
+        <button>Aktion unten links</button>
       </div>
     </nav>
 
-    <!-- DUNKLES OVERLAY FÜR SIDEBAR -->
     <div id="overlay" class="overlay"></div>
 
-    <!-- KOPFLEISTE -->
+    <!-- TOPBAR MIT MITTLEREM NEWS-BANNER -->
     <header class="topbar">
-      <div class="topbar-left">
-        <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Sidebar öffnen">
-          ☰
-        </button>
 
-        <div class="topbar-title-wrap">
-          <div class="topbar-title">RB-INSIDE</div>
-          <div class="topbar-subtitle">Interne Verwaltungsoberfläche</div>
-        </div>
-      </div>
+      <!-- LINKS -->
+      <button id="sidebarToggle" class="sidebar-toggle-btn">☰</button>
 
-      <button id="topMenuButton" class="top-menu-button" aria-label="Menü oben rechts">
-        ⚙
-      </button>
-    </header>
-
-    <!-- ZENTRIERTES NEWS-RECHTECK (iframe) -->
-    <section class="news-overlay-container">
-      <div class="news-frame-wrapper">
-        <iframe
-          src="/news/"
+      <!-- MITTE: 90px NEWS-BANNER -->
+      <div class="news-center">
+        <iframe 
+          src="/news/" 
           class="news-frame"
           title="RB-INSIDE News"
-          loading="lazy"
-        ></iframe>
+          loading="lazy">
+        </iframe>
       </div>
-    </section>
+
+      <!-- RECHTS -->
+      <button id="topMenuButton" class="top-menu-button">⚙</button>
+    </header>
 
     <!-- INHALT -->
     <main class="main-content">
-      <h1 class="page-heading">Willkommen im RB-INSIDE Portal</h1>
-      <p class="page-subheading">
-        Hier kommt später der dynamische Seiteninhalt (Benutzer, Kunden, Formulare usw.).
-      </p>
       <div class="dummy-box">
-        <p>Dies ist nur ein Platzhalter-Block, damit du das Layout siehst.</p>
-        <p>Die Sidebar fährt über diesen Inhalt, ohne dass sich etwas verschiebt.</p>
+        <p>Dies ist nur ein Platzhalter-Inhalt.</p>
+        <p>Der 90px hohe News-Banner funktioniert perfekt.</p>
       </div>
     </main>
+
   </div>
 
   <script>
-    // SIDEBAR LOGIK
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     const sidebarToggle = document.getElementById('sidebarToggle');
-    const topMenuButton = document.getElementById('topMenuButton');
 
     function openSidebar() {
       sidebar.classList.add('open');
@@ -295,16 +231,9 @@
     overlay.addEventListener('click', closeSidebar);
 
     document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', () => {
-        // später: Seiteninhalt wechseln
-        closeSidebar();
-      });
-    });
-
-    // oberer rechter Menü-Button (noch ohne echte Funktion)
-    topMenuButton.addEventListener('click', () => {
-      alert('Hier können wir später Profil / Logout / Einstellungen einbauen.');
+      link.addEventListener('click', closeSidebar);
     });
   </script>
+
 </body>
 </html>
