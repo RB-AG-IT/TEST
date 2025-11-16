@@ -171,12 +171,15 @@
       width: 240px; /* ausgeklappt */
     }
 
+    /* Fester Header – gleiche Höhe, egal ob Text sichtbar oder nicht */
     .sidebar-header {
-      padding: 0 16px 16px;
-      /* Trennlinie entfernt */
+      height: 40px;
+      padding: 0 16px 0;
       font-weight: bold;
       font-size: 16px;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
 
     .sidebar-header-text {
@@ -228,7 +231,6 @@
 
     .sidebar-footer {
       padding: 12px 10px;
-      /* Trennlinie entfernt */
       position: relative;
     }
 
@@ -414,7 +416,7 @@
     <main class="main-content">
       <div class="dummy-box">
         <p>Dies ist nur ein Platzhalter-Inhalt.</p>
-        <p>Teste Sidebar-Toggle, Drop-Up unten & neue Breite.</p>
+        <p>Icons sollten jetzt auf gleicher Höhe bleiben (offen/zu).</p>
       </div>
     </main>
 
