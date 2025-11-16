@@ -234,22 +234,18 @@
       font-size: 12px;
     }
 
-     .settings-menu {
-  position: absolute;
-  bottom: 48px;
-
-  /* rechts vom Einstellungen-Button */
-  left: 100%;           /* direkt rechts neben dem Button */
-  margin-left: 10px;    /* kleiner Abstand vom Button */
-
-  width: 220px;         /* feste Breite, immer gleich */
+    .settings-menu {
+  position: fixed;              /* nicht mehr an die Sidebar „festgeklebt“ */
+  width: 220px;                 /* feste Breite des Menüs */
   z-index: 2001;
-
   background: #20263a;
   border-radius: 8px;
   padding: 4px 0;
   display: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
+}
+.settings-menu.open {
+  display: block;
 }
 
 
@@ -422,11 +418,31 @@
       sidebar.classList.toggle('expanded');
     });
 
-    // Einstellungen Drop-Up
-    settingsToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      settingsMenu.classList.toggle('open');
-    });
+    // Einstellungen Drop-Menü rechts von der Sidebar
+settingsToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  // Wenn offen -> schließen
+  if (settingsMenu.classList.contains('open')) {
+    settingsMenu.classList.remove('open');
+    return;
+  }
+
+  // Sidebar-Breite ermitteln (eingeklappt 70px, ausgeklappt 220px)
+  const sidebarWidth = sidebar.classList.contains('expanded') ? 220 : 70;
+
+  // Menü kurz öffnen, um die Höhe zu messen
+  settingsMenu.classList.add('open');
+  const btnRect = settingsToggle.getBoundingClientRect();
+  const menuRect = settingsMenu.getBoundingClientRect();
+
+  // 12px rechts neben der Sidebar, vertikal zentriert zum Button
+  const left = sidebarWidth + 12;
+  const top  = btnRect.top + (btnRect.height - menuRect.height) / 2;
+
+  settingsMenu.style.left = left + 'px';
+  settingsMenu.style.top  = top + 'px';
+});
 
     // Top-Dropdown rechts
     topMenuButton.addEventListener('click', (e) => {
