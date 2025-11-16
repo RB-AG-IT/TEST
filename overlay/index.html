@@ -9,7 +9,7 @@
 
     .app-wrapper {
       min-height: 100vh;
-      padding-left: 70px;
+      padding-left: 70px; /* Platz für eingeklappte Sidebar */
     }
 
     /* TOGGLE-BUTTON LINKS OBEN */
@@ -37,7 +37,7 @@
       background: #151a2b;
       color: #fff;
       display: flex;
-      align-items: center;            
+      align-items: center;
       justify-content: space-between;
       padding: 0 16px;
     }
@@ -82,6 +82,7 @@
       background: transparent;
       text-align: left;
       cursor: pointer;
+      font-size: 14px;
     }
     .top-dropdown button:hover { background: #f3f3ff; }
 
@@ -126,22 +127,24 @@
       top: 0;
       left: 0;
       height: 100vh;
-      width: 70px;
+      width: 70px;              /* eingeklappt */
       background: #151a2b;
       color: #fff;
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      padding: 90px 0 16px; /* 90px Abstand nach oben */
+      padding: 90px 0 16px;     /* 90px Abstand (wie Topbar) */
       transition: width 0.25s ease;
-      overflow: visible;
+      overflow: visible;        /* Drop-Up darf rausstehen */
     }
 
-    .sidebar.expanded { width: 220px; }
+    .sidebar.expanded {
+      width: 220px;             /* ausgeklappt */
+    }
 
     .sidebar-menu {
       flex: 1;
-      padding: 0 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -165,18 +168,25 @@
       font-size: 18px;
       width: 22px;
       text-align: center;
+      flex-shrink: 0;
     }
 
-    .sidebar-label { display: none; }
-    .sidebar.expanded .sidebar-label { display: inline; }
+    .sidebar-label {
+      display: none;            /* nur Icons, wenn eingeklappt */
+    }
+    .sidebar.expanded .sidebar-label {
+      display: inline;          /* Text klappt mit auf */
+    }
 
     .sidebar-footer {
       padding: 12px 10px;
       position: relative;
     }
 
-    /* DROP-UP UNTEN */
-    .settings-dropdown { position: relative; }
+    /* DROP-UP UNTEN LINKS */
+    .settings-dropdown {
+      position: relative;
+    }
 
     .settings-btn {
       width: 100%;
@@ -185,23 +195,39 @@
       border: none;
       background: #2d3347;
       color: #fff;
+      font-size: 14px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
     }
 
-    .settings-icon { font-size: 18px; }
-    .settings-label { display: none; }
-    .sidebar.expanded .settings-label { display: inline; }
+    .settings-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
 
-    .settings-caret { font-size: 12px; }
+    .settings-label {
+      flex: 1;
+      text-align: left;
+      white-space: nowrap;
+      display: none;
+    }
+    .sidebar.expanded .settings-label {
+      display: inline;
+    }
+
+    .settings-caret {
+      font-size: 12px;
+    }
 
     .settings-menu {
       position: absolute;
-      bottom: 48px;
-      left: 0;
-      min-width: 220px;
+      bottom: 48px;                 /* nach oben (Drop-Up) */
+      left: 6px;                    /* kleiner Abstand links */
+      width: calc(100% - 12px);     /* kleiner Abstand rechts */
+      min-width: 200px;             /* auch sichtbar bei 70px Sidebar */
       background: #20263a;
       border-radius: 8px;
       padding: 4px 0;
@@ -215,22 +241,21 @@
       display: block;
       padding: 8px 12px;
       color: #fff;
+      font-size: 13px;
       text-decoration: none;
       white-space: nowrap;
     }
 
     .settings-menu a:hover { background: #2d3347; }
 
-    /* CONTENT-BEREICH (Iframe) */
+    /* CONTENT */
     .main-content {
       padding: 24px;
     }
 
-    .content-frame {
-      width: 100%;
-      height: calc(100vh - 90px - 48px); /* unter der Topbar */
-      border: none;
-      background: #f3f3ff;
+    .dummy-box {
+      background: #fff;
+      padding: 16px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
@@ -246,54 +271,55 @@
     <!-- SIDEBAR -->
     <nav id="sidebar" class="sidebar">
 
-      <div class="sidebar-menu>
-        <!-- bestehende + neue Menüpunkte mit data-page -->
-        <a class="sidebar-link" data-page="dashboard">
+      <div class="sidebar-menu">
+        <!-- Hauptmenü + ergänzte Punkte -->
+        <a class="sidebar-link">
           <span class="sidebar-icon">🏠</span>
           <span class="sidebar-label">Dashboard</span>
         </a>
-        <a class="sidebar-link" data-page="ranking">
+        <a class="sidebar-link">
           <span class="sidebar-icon">🏆</span>
           <span class="sidebar-label">Ranking</span>
         </a>
-        <a class="sidebar-link" data-page="statistik">
+        <a class="sidebar-link">
           <span class="sidebar-icon">📊</span>
           <span class="sidebar-label">Statistik</span>
         </a>
-        <a class="sidebar-link" data-page="kampagnen">
+        <a class="sidebar-link">
           <span class="sidebar-icon">🎯</span>
           <span class="sidebar-label">Kampagnen</span>
         </a>
-        <a class="sidebar-link" data-page="investments">
+        <a class="sidebar-link">
           <span class="sidebar-icon">💰</span>
           <span class="sidebar-label">Investments</span>
         </a>
-        <a class="sidebar-link" data-page="recruiting">
+        <a class="sidebar-link">
           <span class="sidebar-icon">👥</span>
           <span class="sidebar-label">Recruiting</span>
         </a>
-        <a class="sidebar-link" data-page="abrechnung">
+        <a class="sidebar-link">
           <span class="sidebar-icon">💼</span>
           <span class="sidebar-label">Abrechnung</span>
         </a>
-        <a class="sidebar-link" data-page="teamchef">
+        <a class="sidebar-link">
           <span class="sidebar-icon">🧑‍✈️</span>
           <span class="sidebar-label">Teamchef</span>
         </a>
 
-        <a class="sidebar-link" data-page="benutzer">
+        <!-- NEUE MENÜPUNKTE -->
+        <a class="sidebar-link">
           <span class="sidebar-icon">🧑</span>
           <span class="sidebar-label">Benutzer</span>
         </a>
-        <a class="sidebar-link" data-page="kunden">
+        <a class="sidebar-link">
           <span class="sidebar-icon">🏢</span>
           <span class="sidebar-label">Kunden</span>
         </a>
-        <a class="sidebar-link" data-page="formular">
+        <a class="sidebar-link">
           <span class="sidebar-icon">📝</span>
           <span class="sidebar-label">Formular</span>
         </a>
-        <a class="sidebar-link" data-page="teams">
+        <a class="sidebar-link">
           <span class="sidebar-icon">👨‍👩‍👧‍👦</span>
           <span class="sidebar-label">Teams</span>
         </a>
@@ -306,7 +332,6 @@
             <span class="settings-label">Einstellungen</span>
             <span class="settings-caret">▴</span>
           </button>
-
           <div id="settingsMenu" class="settings-menu">
             <a>Allgemein</a>
             <a>Benutzer & Rollen</a>
@@ -337,13 +362,11 @@
       </div>
     </header>
 
-    <!-- CONTENT (Iframe lädt die Seiten) -->
+    <!-- CONTENT -->
     <main class="main-content">
-      <iframe
-        id="contentFrame"
-        class="content-frame"
-        src="/dashboard/">
-      </iframe>
+      <div class="dummy-box">
+        <p>Platzhalter-Inhalt. Sidebar-Layout ist neu aufgebaut.</p>
+      </div>
     </main>
 
   </div>
@@ -358,39 +381,10 @@
     const topMenuButton = document.getElementById('topMenuButton');
     const topDropdown = document.getElementById('topDropdown');
 
-    const contentFrame = document.getElementById('contentFrame');
-
-    // Mapping: Menü -> Seite im Iframe
-    const pageMap = {
-      dashboard: '/dashboard/',
-      ranking: '/ranking/',
-      statistik: '/statistik/',
-      kampagnen: '/kampagnen/',
-      investments: '/investments/',
-      recruiting: '/recruiting/',
-      abrechnung: '/abrechnung/',
-      teamchef: '/teamchef/',
-      benutzer: '/benutzer/',
-      kunden: '/kunden/',
-      formular: '/formular/',
-      teams: '/teams/'
-    };
-
     // Sidebar ein/ausklappen
     sidebarToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       sidebar.classList.toggle('expanded');
-    });
-
-    // Klick auf Sidebar-Menüpunkte -> Iframe lädt Seite
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const page = link.dataset.page;
-        if (page && pageMap[page]) {
-          contentFrame.src = pageMap[page];
-        }
-      });
     });
 
     // Einstellungen Drop-Up
@@ -399,7 +393,7 @@
       settingsMenu.classList.toggle('open');
     });
 
-    // Top Dropdown rechts
+    // Top-Dropdown rechts
     topMenuButton.addEventListener('click', (e) => {
       e.stopPropagation();
       topDropdown.classList.toggle('open');
