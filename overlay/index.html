@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>RB-INSIDE Layout Prototyp</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f3f3ff; }
+
+    /* GESAMTE APP-FLÄCHE */
+    .app-wrapper {
+      min-height: 100vh;
+    }
+
+    /* KOPFLEISTE OBEN */
+    .topbar {
+      height: 60px;
+      background: #151a2b;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    .topbar-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .topbar-subtitle {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* RUNDER MENÜ-BUTTON RECHTS OBEN */
+    .menu-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: #ffffff22;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* HAUPTINHALT */
+    .main-content {
+      padding: 24px;
+    }
+    .page-heading {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .page-subheading {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 24px;
+    }
+    .dummy-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    /* SIDEBAR (ÜBER DEM INHALT) */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 240px;
+      background: #151a2b;
+      color: #fff;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+
+    .sidebar-header {
+      padding: 0 16px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidebar-link {
+      padding: 10px 16px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      display: block;
+      cursor: pointer;
+    }
+    .sidebar-link:hover {
+      background: #20263a;
+    }
+
+    /* BUTTON LINKS UNTEN */
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar-footer button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 999px;
+      border: none;
+      background: #00b894;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .sidebar-footer button:hover {
+      background: #00a383;
+    }
+
+    /* OVERLAY BEI OFFENER SIDEBAR */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (min-width: 900px) {
+      .main-content {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- SIDEBAR -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        RB-INSIDE Menü
+      </div>
+      <div class="sidebar-menu">
+        <a class="sidebar-link" data-page="dashboard">Dashboard</a>
+        <a class="sidebar-link" data-page="benutzer">Benutzer</a>
+        <a class="sidebar-link" data-page="kunden">Kunden</a>
+        <a class="sidebar-link" data-page="formulare">Formulare</a>
+        <a class="sidebar-link" data-page="berichte">Berichte</a>
+        <a class="sidebar-link" data-page="einstellungen">Einstellungen</a>
+      </div>
+      <div class="sidebar-footer">
+        <button type="button">Support kontaktieren</button>
+      </div>
+    </nav>
+
+    <!-- DUNKLES OVERLAY -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- KOPFLEISTE -->
+    <header class="topbar">
+      <div>
+        <div class="topbar-title">RB-INSIDE</div>
+        <div class="topbar-subtitle">Interne Verwaltungsoberfläche</div>
+      </div>
+      <button id="menuToggle" class="menu-button" aria-label="Menü öffnen">
+        ☰
+      </button>
+    </header>
+
+    <!-- INHALT -->
+    <main class="main-content">
+      <h1 class="page-heading">Willkommen im RB-INSIDE Portal</h1>
+      <p class="page-subheading">
+        Hier kommt später der dynamische Seiteninhalt (Benutzer, Kunden, Formulare usw.).
+      </p>
+      <div class="dummy-box">
+        <p>Dies ist nur ein Platzhalter-Block, damit du das Layout siehst.</p>
+        <p>Die Sidebar fährt über diesen Inhalt, ohne dass sich etwas verschiebt.</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const menuToggle = document.getElementById('menuToggle');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('visible');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    }
+
+    menuToggle.addEventListener('click', openSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    // später können wir hier auf data-page reagieren und Inhalte laden
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', () => {
+        // hier später: Seite wechseln
+        closeSidebar();
+      });
+    });
+  </script>
+</body>
+</html>
