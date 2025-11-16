@@ -196,8 +196,9 @@
 
     /* DROP-UP UNTEN LINKS */
     .settings-dropdown {
-      position: relative;
-    }
+  position: relative;
+  z-index: 2000; /* Drop-Up immer über Sidebar */
+}
 
     .settings-btn {
       width: 100%;
@@ -241,6 +242,7 @@
   left: 0;
   right: 0;
   width: 100%;
+  z-index: 2001; /* Hintergrund sichtbar, auch wenn Sidebar zu ist */
 
   background: #20263a;
   border-radius: 8px;
