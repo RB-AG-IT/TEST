@@ -2,515 +2,280 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE Layout</title>
-
-  <!-- WICHTIG FÜR APP / PWA -->
+  <title>RB-INSIDE Chat App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#151a2b">
-  <link rel="manifest" href="manifest.json">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f3f3ff; }
 
-    .app-wrapper {
-      min-height: 100vh;
-      padding-left: 0; /* Sidebar ist unsichtbar, kein Platz reservieren */
-    }
-
-    /* TOGGLE-BUTTON LINKS OBEN */
-    .sidebar-toggle-floating {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: #151a2b;
-      color: #fff;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1300;
-      padding: 0;
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050816;
+      color: #f9fafb;
     }
 
-    /* TOPBAR (etwas dünner) */
-    .topbar {
-      height: 60px;
-      background: #151a2b;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      position: sticky;
-      top: 0;
-      z-index: 1200;
-    }
-
-    .top-menu-button {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: #ffffff22;
-      color: #fff;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .top-right-wrapper {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .top-dropdown {
-      position: absolute;
-      right: 0;
-      top: 48px;
-      background: #ffffff;
-      color: #151a2b;
-      border-radius: 8px;
-      min-width: 190px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      padding: 4px 0;
-      display: none;
-      z-index: 1250;
-    }
-    .top-dropdown.open { display: block; }
-
-    .top-dropdown button {
-      width: 100%;
-      padding: 8px 12px;
-      border: none;
-      background: transparent;
-      text-align: left;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .top-dropdown button:hover { background: #f3f3ff; }
-
-    /* NEWS-BEREICH in dünnerer Topbar */
-    .news-center {
-      position: relative;
-      height: 60px;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin: 0 8px;
-    }
-
-    .news-frame {
-      width: 70%;
-      height: 60px;
-      border: none;
-      background: transparent;
-    }
-
-    .news-fade-left,
-    .news-fade-right {
-      position: absolute;
-      width: 120px;
-      height: 60px;
-      pointer-events: none;
-    }
-
-    .news-fade-left {
-      left: 0;
-      background: linear-gradient(to right, #151a2b 0%, #151a2b 40%, transparent 100%);
-    }
-    .news-fade-right {
-      right: 0;
-      background: linear-gradient(to left, #151a2b 0%, #151a2b 40%, transparent 100%);
-    }
-
-    /* OVERLAY-BACKDROP für Sidebar */
-    .sidebar-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 1100;
-      display: none;
-    }
-    .sidebar-backdrop.open {
-      display: block;
-    }
-
-    /* SIDEBAR als Overlay wie bei ChatGPT Mobile */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .app-shell {
+      max-width: 500px;
+      margin: 0 auto;
       height: 100vh;
-      width: 80vw;             /* fast kompletter Bildschirm */
-      max-width: 360px;        /* auf Tablet/PC */
-      background: #151a2b;
-      color: #fff;
-      z-index: 1200;
       display: flex;
       flex-direction: column;
-      padding: 60px 0 16px;    /* 60px Abstand (wie Topbar) */
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      overflow: hidden;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
     }
 
-    .sidebar.open {
-      transform: translateX(0);
+    /* TOP BAR */
+    .top-bar {
+      padding: 14px 16px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+      backdrop-filter: blur(18px);
+      background: rgba(15,23,42,0.9);
     }
 
-    .sidebar-menu {
-      flex: 1;
-      padding: 0;
+    .top-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #38bdf8, #6366f1, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .top-title {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scrollbar-width: none;
-    }
-    .sidebar-menu::-webkit-scrollbar {
-      display: none;
+      gap: 2px;
     }
 
-    .sidebar-link {
-      padding: 8px 16px;
-      color: #fff;
-      text-decoration: none;
+    .top-title-main {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .top-title-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .top-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .icon-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 14px;
       cursor: pointer;
+      background: rgba(15,23,42,0.8);
+    }
+
+    /* CHAT BEREICH */
+    .chat-area {
+      flex: 1;
+      padding: 12px 12px 8px;
+      overflow-y: auto;
       display: flex;
-      align-items: center;
-      white-space: nowrap;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
     }
 
-    .sidebar-icon {
-      font-size: 18px;
-      width: 32px;
+    .message-row {
       display: flex;
-      justify-content: center;
-      text-align: center;
-      flex-shrink: 0;
-      margin-right: 8px;
+      gap: 8px;
+      align-items: flex-end;
     }
 
-    .sidebar-label {
-      display: inline;
+    .message-row.user {
+      justify-content: flex-end;
     }
 
-    .sidebar-link:hover { background: #20263a; }
-
-    .sidebar-footer {
-      padding: 12px 16px 0;
-      position: relative;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
-
-    /* Settings-Button unten: runder Kreis */
-    .settings-dropdown {
-      position: relative;
-      z-index: 2000;
-    }
-
-    .settings-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      border: none;
-      background: #2d3347;
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .settings-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    /* Drop-Up direkt über dem Button innerhalb der Sidebar */
-    .settings-menu {
-      position: absolute;
-      left: 0;
-      bottom: 52px;
-      width: 220px;
-      max-width: 80vw;
-      z-index: 2001;
-      background: #20263a;
-      border-radius: 8px;
-      padding: 4px 0;
-      display: none;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.25);
-    }
-    .settings-menu.open {
-      display: block;
-    }
-
-    .settings-menu a {
-      display: block;
-      padding: 8px 12px;
-      color: #fff;
+    .bubble {
+      max-width: 78%;
+      padding: 9px 11px;
+      border-radius: 16px;
       font-size: 13px;
-      text-decoration: none;
-      white-space: nowrap;
+      line-height: 1.4;
     }
 
-    .settings-menu a:hover { background: #2d3347; }
-
-    /* CONTENT */
-    .main-content {
-      padding: 16px;
+    .bubble.bot {
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.3);
+      border-bottom-left-radius: 4px;
     }
 
-    .dummy-box {
-      background: #fff;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    .bubble.user {
+      background: linear-gradient(135deg, #22c55e, #3b82f6);
+      border-bottom-right-radius: 4px;
     }
 
-    /* Kleine Anpassungen für größere Screens */
-    @media (min-width: 1024px) {
-      .main-content {
-        padding: 24px 32px;
-      }
-      .news-frame {
-        width: 50%;
-      }
+    .small-label {
+      font-size: 10px;
+      color: #6b7280;
+      margin: 2px 4px;
     }
+
+    /* UNTERE EINGABEZEILE */
+    .input-bar {
+      padding: 8px 10px 12px;
+      border-top: 1px solid rgba(148,163,184,0.3);
+      background: rgba(15,23,42,0.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .input-inner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15,23,42,0.9);
+      border-radius: 999px;
+      padding: 6px 8px 6px 12px;
+      border: 1px solid rgba(75,85,99,0.8);
+    }
+
+    .input-inner input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #f9fafb;
+      font-size: 13px;
+    }
+
+    .input-inner input::placeholder {
+      color: #6b7280;
+    }
+
+    .send-btn {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: linear-gradient(135deg, #22c55e, #3b82f6);
+      font-size: 16px;
+      color: #f9fafb;
+      flex-shrink: 0;
+    }
+
+    .micro-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(75,85,99,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* KLEINE SCROLLBAR */
+    .chat-area::-webkit-scrollbar {
+      width: 4px;
+    }
+    .chat-area::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,0.5);
+      border-radius: 999px;
+    }
+
   </style>
 </head>
 <body>
-
-  <!-- TOGGLE -->
-  <button id="sidebarToggle" class="sidebar-toggle-floating">☰</button>
-
-  <!-- Backdrop für Overlay-Sidebar -->
-  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
-
-  <div class="app-wrapper">
-
-    <!-- SIDEBAR (Overlay) -->
-    <nav id="sidebar" class="sidebar">
-
-      <div class="sidebar-menu">
-        <!-- Hauptmenü + ergänzte Punkte -->
-        <a class="sidebar-link">
-          <span class="sidebar-icon">🏠</span>
-          <span class="sidebar-label">Dashboard</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">🏆</span>
-          <span class="sidebar-label">Ranking</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">📊</span>
-          <span class="sidebar-label">Statistik</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">🎯</span>
-          <span class="sidebar-label">Kampagnen</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">💰</span>
-          <span class="sidebar-label">Investments</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">👥</span>
-          <span class="sidebar-label">Recruiting</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">💼</span>
-          <span class="sidebar-label">Abrechnung</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">👔</span>
-          <span class="sidebar-label">Teamchef</span>
-        </a>
-
-        <!-- NEUE MENÜPUNKTE -->
-        <a class="sidebar-link">
-          <span class="sidebar-icon">🧑</span>
-          <span class="sidebar-label">Benutzer</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">🏢</span>
-          <span class="sidebar-label">Kunden</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">📝</span>
-          <span class="sidebar-label">Formular</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">👨‍👩‍👧‍👦</span>
-          <span class="sidebar-label">Teams</span>
-        </a>
-        <a class="sidebar-link">
-          <span class="sidebar-icon">📦</span>
-          <span class="sidebar-label">Lager</span>
-        </a>
-
-        <a class="sidebar-link">
-          <span class="sidebar-icon">📁</span>
-          <span class="sidebar-label">Archive</span>
-        </a>
-
-        <a class="sidebar-link">
-          <span class="sidebar-icon">⚡</span>
-          <span class="sidebar-label">Schnellzugriff</span>
-        </a>
+  <div class="app-shell">
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <div class="top-avatar">R</div>
+      <div class="top-title">
+        <div class="top-title-main">RB-INSIDE Assistent</div>
+        <div class="top-title-sub">Bereit für deine Fragen</div>
       </div>
-
-      <div class="sidebar-footer">
-        <div class="settings-dropdown">
-          <button id="settingsToggle" class="settings-btn">
-            <span class="settings-icon">⚙</span>
-          </button>
-          <div id="settingsMenu" class="settings-menu">
-            <a>Allgemein</a>
-            <a>Benutzer & Rollen</a>
-            <a>System</a>
-            <a id="refreshButtonSide">Jetzt aktualisieren</a>
-          </div>
-        </div>
-      </div>
-
-    </nav>
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="news-center">
-        <div class="news-fade-left"></div>
-        <iframe src="/news/" class="news-frame"></iframe>
-        <div class="news-fade-right"></div>
-      </div>
-
-      <div class="top-right-wrapper">
-        <button id="topMenuButton" class="top-menu-button">⚙</button>
-        <div id="topDropdown" class="top-dropdown">
-          <button>Profil</button>
-          <button>Benachrichtigungen</button>
-          <button>Hilfe</button>
-          <button>Einstellungen</button>
-          <button id="refreshButtonTop">Jetzt aktualisieren</button>
-          <button>Logout</button>
-        </div>
+      <div class="top-actions">
+        <div class="icon-button">⚙️</div>
       </div>
     </header>
 
-    <!-- CONTENT -->
-    <main class="main-content">
-      <div class="dummy-box">
-        <p>Platzhalter-Inhalt. Sidebar-Layout ist mobil optimiert.</p>
+    <!-- CHAT BEREICH -->
+    <main class="chat-area" id="chat">
+      <div class="small-label">Heute</div>
+
+      <div class="message-row user">
+        <div class="bubble user">
+          Wie kann ich meine Kunden in RB-INSIDE verwalten?
+        </div>
+      </div>
+
+      <div class="message-row">
+        <div class="bubble bot">
+          Du kannst in der Kundenübersicht neue Kunden anlegen, Daten bearbeiten
+          und filtern. Später verbinden wir das mit Supabase, damit alles
+          automatisch gespeichert wird.
+        </div>
       </div>
     </main>
 
+    <!-- INPUT -->
+    <footer class="input-bar">
+      <div class="input-inner">
+        <input id="messageInput" type="text" placeholder="Schreibe eine Nachricht..." />
+        <button class="micro-btn" type="button">🎤</button>
+        <button class="send-btn" type="button" id="sendBtn">➤</button>
+      </div>
+    </footer>
   </div>
 
   <script>
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const input = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const chat = document.getElementById('chat');
 
-    const settingsToggle = document.getElementById('settingsToggle');
-    const settingsMenu = document.getElementById('settingsMenu');
+    function addMessage(text, from = 'user') {
+      if (!text.trim()) return;
 
-    const topMenuButton = document.getElementById('topMenuButton');
-    const topDropdown = document.getElementById('topDropdown');
+      const row = document.createElement('div');
+      row.className = 'message-row ' + (from === 'user' ? 'user' : '');
 
-    const refreshButtonTop = document.getElementById('refreshButtonTop');
-    const refreshButtonSide = document.getElementById('refreshButtonSide');
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (from === 'user' ? 'user' : 'bot');
+      bubble.textContent = text;
 
-    // Sidebar öffnen/schließen (Overlay)
-    function openSidebar() {
-      sidebar.classList.add('open');
-      sidebarBackdrop.classList.add('open');
-    }
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      sidebarBackdrop.classList.remove('open');
+      row.appendChild(bubble);
+      chat.appendChild(row);
+      chat.scrollTop = chat.scrollHeight;
     }
 
-    sidebarToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (sidebar.classList.contains('open')) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    });
+    function sendMessage() {
+      const text = input.value;
+      addMessage(text, 'user');
+      input.value = '';
 
-    // Klick auf Sidebar selbst NICHT schließen
-    sidebar.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    // Klick auf Backdrop schließt Sidebar
-    sidebarBackdrop.addEventListener('click', () => {
-      closeSidebar();
-    });
-
-    // Einstellungen Drop-Up in Sidebar
-    settingsToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      settingsMenu.classList.toggle('open');
-    });
-
-    // Top-Dropdown rechts
-    topMenuButton.addEventListener('click', (e) => {
-      e.stopPropagation();
-      topDropdown.classList.toggle('open');
-    });
-
-    // „Jetzt aktualisieren“ – oben im Profil-Menü
-    if (refreshButtonTop) {
-      refreshButtonTop.addEventListener('click', (e) => {
-        e.stopPropagation();
-        window.location.reload();
-      });
+      // einfache Demo-Antwort
+      setTimeout(() => {
+        addMessage('Dies ist nur eine Demo-Antwort. Hier könnte deine Logik rein.', 'bot');
+      }, 400);
     }
 
-    // „Jetzt aktualisieren“ – unten links im Einstellungen-Menü
-    if (refreshButtonSide) {
-      refreshButtonSide.addEventListener('click', (e) => {
-        e.stopPropagation();
-        window.location.reload();
-      });
-    }
-
-    // Klick außerhalb: Menüs schließen (Sidebar bleibt über Backdrop-Logik)
-    document.addEventListener('click', () => {
-      settingsMenu.classList.remove('open');
-      topDropdown.classList.remove('open');
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
     });
-
-    // SERVICE WORKER REGISTRIEREN (für PWA / Installierbarkeit)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker
-          .register('./sw.js')
-          .catch((err) => {
-            console.log('Service Worker Fehler:', err);
-          });
-      });
-    }
   </script>
-
 </body>
 </html>
