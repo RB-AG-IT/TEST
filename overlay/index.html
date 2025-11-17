@@ -15,7 +15,7 @@
 
     .app-wrapper {
       min-height: 100vh;
-      padding-left: 60px; /* Platz für eingeklappte Sidebar (60px) */
+      padding-left: 0; /* Sidebar ist unsichtbar, kein Platz reservieren */
     }
 
     /* TOGGLE-BUTTON LINKS OBEN */
@@ -34,19 +34,22 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 1200;
+      z-index: 1300;
       padding: 0;
     }
 
-    /* TOPBAR */
+    /* TOPBAR (etwas dünner) */
     .topbar {
-      height: 90px;
+      height: 60px;
       background: #151a2b;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1200;
     }
 
     .top-menu-button {
@@ -66,6 +69,7 @@
 
     .top-right-wrapper {
       position: relative;
+      flex-shrink: 0;
     }
 
     .top-dropdown {
@@ -79,7 +83,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       padding: 4px 0;
       display: none;
-      z-index: 1100;
+      z-index: 1250;
     }
     .top-dropdown.open { display: block; }
 
@@ -94,20 +98,21 @@
     }
     .top-dropdown button:hover { background: #f3f3ff; }
 
-    /* NEWS-BEREICH */
+    /* NEWS-BEREICH in dünnerer Topbar */
     .news-center {
       position: relative;
-      height: 90px;
+      height: 60px;
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      margin: 0 8px;
     }
 
     .news-frame {
       width: 70%;
-      height: 90px;
+      height: 60px;
       border: none;
       background: transparent;
     }
@@ -115,8 +120,8 @@
     .news-fade-left,
     .news-fade-right {
       position: absolute;
-      width: 220px;
-      height: 90px;
+      width: 120px;
+      height: 60px;
       pointer-events: none;
     }
 
@@ -129,25 +134,39 @@
       background: linear-gradient(to left, #151a2b 0%, #151a2b 40%, transparent 100%);
     }
 
-    /* SIDEBAR */
+    /* OVERLAY-BACKDROP für Sidebar */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1100;
+      display: none;
+    }
+    .sidebar-backdrop.open {
+      display: block;
+    }
+
+    /* SIDEBAR als Overlay wie bei ChatGPT Mobile */
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
       height: 100vh;
-      width: 60px;              /* eingeklappt */
+      width: 80vw;             /* fast kompletter Bildschirm */
+      max-width: 360px;        /* auf Tablet/PC */
       background: #151a2b;
       color: #fff;
-      z-index: 1000;
+      z-index: 1200;
       display: flex;
       flex-direction: column;
-      padding: 90px 0 16px;     /* 90px Abstand (wie Topbar) */
-      transition: width 0.25s ease;
-      overflow: visible;        /* Drop-Up darf rausstehen */
+      padding: 60px 0 16px;    /* 60px Abstand (wie Topbar) */
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      overflow: hidden;
     }
 
-    .sidebar.expanded {
-      width: 220px;             /* ausgeklappt */
+    .sidebar.open {
+      transform: translateX(0);
     }
 
     .sidebar-menu {
@@ -158,18 +177,14 @@
       gap: 8px;
       overflow-y: auto;
       overflow-x: hidden;
-    }
-    .sidebar-menu {
-      scrollbar-width: none;      /* Firefox */
+      scrollbar-width: none;
     }
     .sidebar-menu::-webkit-scrollbar {
-      display: none;              /* Chrome, Safari, Edge */
+      display: none;
     }
 
-    /* Menüpunkte: Icon-Spalte ist immer 60px breit.
-       Icon bleibt damit IMMER an der gleichen Stelle. */
     .sidebar-link {
-      padding: 8px 0;
+      padding: 8px 16px;
       color: #fff;
       text-decoration: none;
       font-size: 14px;
@@ -181,36 +196,34 @@
 
     .sidebar-icon {
       font-size: 18px;
-      width: 60px;                /* ganze Sidebar-Breite im eingeklappten Zustand */
+      width: 32px;
       display: flex;
-      justify-content: center;    /* Icon mittig in der Spalte */
+      justify-content: center;
       text-align: center;
       flex-shrink: 0;
+      margin-right: 8px;
     }
 
     .sidebar-label {
-      display: none;
-    }
-    .sidebar.expanded .sidebar-label {
       display: inline;
     }
 
     .sidebar-link:hover { background: #20263a; }
 
     .sidebar-footer {
-      padding: 12px 0;
+      padding: 12px 16px 0;
       position: relative;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
+      align-items: center;
     }
 
-    /* DROP-UP UNTEN LINKS */
+    /* Settings-Button unten: runder Kreis */
     .settings-dropdown {
       position: relative;
       z-index: 2000;
     }
 
-    /* Zahnrad unten: perfekter Kreis, gleiche Logik wie oben rechts */
     .settings-btn {
       width: 42px;
       height: 42px;
@@ -231,9 +244,13 @@
       flex-shrink: 0;
     }
 
+    /* Drop-Up direkt über dem Button innerhalb der Sidebar */
     .settings-menu {
-      position: fixed;
+      position: absolute;
+      left: 0;
+      bottom: 52px;
       width: 220px;
+      max-width: 80vw;
       z-index: 2001;
       background: #20263a;
       border-radius: 8px;
@@ -258,7 +275,7 @@
 
     /* CONTENT */
     .main-content {
-      padding: 24px;
+      padding: 16px;
     }
 
     .dummy-box {
@@ -267,6 +284,16 @@
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
+    /* Kleine Anpassungen für größere Screens */
+    @media (min-width: 1024px) {
+      .main-content {
+        padding: 24px 32px;
+      }
+      .news-frame {
+        width: 50%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -274,9 +301,12 @@
   <!-- TOGGLE -->
   <button id="sidebarToggle" class="sidebar-toggle-floating">☰</button>
 
+  <!-- Backdrop für Overlay-Sidebar -->
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
   <div class="app-wrapper">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (Overlay) -->
     <nav id="sidebar" class="sidebar">
 
       <div class="sidebar-menu">
@@ -385,7 +415,7 @@
     <!-- CONTENT -->
     <main class="main-content">
       <div class="dummy-box">
-        <p>Platzhalter-Inhalt. Sidebar-Layout ist neu aufgebaut.</p>
+        <p>Platzhalter-Inhalt. Sidebar-Layout ist mobil optimiert.</p>
       </div>
     </main>
 
@@ -394,6 +424,7 @@
   <script>
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
     const settingsToggle = document.getElementById('settingsToggle');
     const settingsMenu = document.getElementById('settingsMenu');
@@ -401,38 +432,39 @@
     const topMenuButton = document.getElementById('topMenuButton');
     const topDropdown = document.getElementById('topDropdown');
 
-    // Sidebar ein/ausklappen
+    // Sidebar öffnen/schließen (Overlay)
+    function openSidebar() {
+      sidebar.classList.add('open');
+      sidebarBackdrop.classList.add('open');
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      sidebarBackdrop.classList.remove('open');
+    }
+
     sidebarToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      sidebar.classList.toggle('expanded');
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
     });
 
-    // Einstellungen Drop-Menü rechts von der Sidebar
+    // Klick auf Sidebar selbst NICHT schließen
+    sidebar.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
+    // Klick auf Backdrop schließt Sidebar
+    sidebarBackdrop.addEventListener('click', () => {
+      closeSidebar();
+    });
+
+    // Einstellungen Drop-Up in Sidebar
     settingsToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-
-      // Wenn offen -> schließen
-      if (settingsMenu.classList.contains('open')) {
-        settingsMenu.classList.remove('open');
-        return;
-      }
-
-      // Sidebar-Breite ermitteln (eingeklappt 60px, ausgeklappt 220px)
-      const sidebarWidth = sidebar.classList.contains('expanded') ? 220 : 60;
-
-      // Menü kurz öffnen, um die Höhe zu messen
-      settingsMenu.classList.add('open');
-      const btnRect = settingsToggle.getBoundingClientRect();
-      const menuRect = settingsMenu.getBoundingClientRect();
-
-      // 12px rechts neben der Sidebar, unten bündig mit dem Einstellungen-Button
-      const left = sidebarWidth + 12;
-
-      // Unterkante des Menüs = Unterkante des Buttons
-      const top = btnRect.bottom - menuRect.height;
-
-      settingsMenu.style.left = left + 'px';
-      settingsMenu.style.top  = top + 'px';
+      settingsMenu.classList.toggle('open');
     });
 
     // Top-Dropdown rechts
@@ -441,7 +473,7 @@
       topDropdown.classList.toggle('open');
     });
 
-    // Klick außerhalb: Menüs schließen
+    // Klick außerhalb: Menüs schließen (Sidebar bleibt über Backdrop-Logik)
     document.addEventListener('click', () => {
       settingsMenu.classList.remove('open');
       topDropdown.classList.remove('open');
