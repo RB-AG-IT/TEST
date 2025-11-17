@@ -5,6 +5,10 @@
   <title>RB-INSIDE App Rahmen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- PWA / WEB APP -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#020617">
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -235,7 +239,6 @@
       background: rgba(55,65,81,0.8);
       border-radius: 999px;
     }
-
   </style>
 </head>
 <body>
@@ -355,6 +358,7 @@
   </div>
 
   <script>
+    // Navigation
     const navItems = document.querySelectorAll('.nav-item');
     const screens = document.querySelectorAll('.screen');
 
@@ -362,11 +366,9 @@
       item.addEventListener('click', () => {
         const target = item.getAttribute('data-screen');
 
-        // Nav-Optik
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
 
-        // Screens umschalten
         screens.forEach(screen => {
           screen.classList.remove('active');
           if (screen.id === 'screen-' + target) {
@@ -375,6 +377,22 @@
         });
       });
     });
+
+    // Service Worker + Auto-Reload
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((registration) => {
+          registration.update();
+          setInterval(() => registration.update(), 60 * 60 * 1000); // 1x pro Stunde
+        }).catch((error) => {
+          console.error('SW Registrierung fehlgeschlagen:', error);
+        });
+      });
+
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
+    }
   </script>
 </body>
 </html>
