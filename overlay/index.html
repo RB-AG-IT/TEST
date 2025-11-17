@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>RB-INSIDE – Minimal Overlay XL</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- PWA / WEB APP -->
   <link rel="manifest" href="/manifest.json">
@@ -28,7 +29,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 14px 14px 10px;
+      padding: 14px 14px 80px; /* unten Platz für fixe Navigation */
       background: radial-gradient(circle at top, #111 0, #000 60%, #000 100%);
     }
 
@@ -112,7 +113,7 @@
 
     @media (max-width: 720px) {
       .app-shell {
-        padding: 10px 8px 8px;
+        padding: 10px 8px 80px;
       }
       .content {
         grid-template-columns: 1fr;
@@ -296,7 +297,18 @@
       border-top: 1px dashed #222;
     }
 
-    /* BOTTOM NAV */
+    /* BOTTOM NAV FIXED */
+    .bottom-nav-wrapper {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 8px;
+      width: 100%;
+      max-width: 900px;
+      padding: 0 14px;
+      pointer-events: none; /* Wrapper durchlässig */
+    }
+
     .bottom-nav {
       border-radius: 999px;
       border: 1px solid #333;
@@ -304,6 +316,7 @@
       display: flex;
       padding: 6px;
       gap: 6px;
+      pointer-events: auto; /* Buttons klickbar */
     }
 
     .nav-item {
@@ -451,8 +464,10 @@
         </div>
       </aside>
     </main>
+  </div>
 
-    <!-- BOTTOM NAV -->
+  <!-- FIXE BOTTOM NAV -->
+  <div class="bottom-nav-wrapper">
     <nav class="bottom-nav">
       <button class="nav-item active" type="button" data-screen="main">
         <span class="nav-icon">◎</span>
@@ -470,13 +485,13 @@
   </div>
 
   <script>
-    // Bottom-Navigation (Main / Side / Dummy – Layout bleibt 2-spaltig)
+    // Bottom-Navigation (Highlight, Panels bleiben 2-spaltig aktiv)
     const navItems = document.querySelectorAll('.nav-item');
     const screenMain = document.getElementById('screen-main');
     const screenSide = document.getElementById('screen-side');
 
     function showScreen(name) {
-      // Beide Panels bleiben aktiv, Navigation ist nur "Highlight"
+      // Panels bleiben sichtbar, Navigation ist nur visuelles Feedback
       screenMain.classList.add('active');
       screenSide.classList.add('active');
     }
@@ -559,6 +574,20 @@
         window.location.reload();
       });
     }
+
+    // iOS: Doppeltipp-Zoom & Gesten-Zoom verhindern
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+
+    document.addEventListener('gesturestart', function (event) {
+      event.preventDefault();
+    });
   </script>
 </body>
 </html>
