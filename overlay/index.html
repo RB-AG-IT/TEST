@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE Chat App</title>
+  <title>RB-INSIDE App Rahmen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -10,271 +10,370 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #050816;
-      color: #f9fafb;
-    }
-
-    .app-shell {
-      max-width: 500px;
-      margin: 0 auto;
-      height: 100vh;
+      background: #020617;
+      color: #e5e7eb;
       display: flex;
-      flex-direction: column;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-    }
-
-    /* TOP BAR */
-    .top-bar {
-      padding: 14px 16px 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 1px solid rgba(148,163,184,0.3);
-      backdrop-filter: blur(18px);
-      background: rgba(15,23,42,0.9);
-    }
-
-    .top-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #38bdf8, #6366f1, #a855f7);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
+      align-items: center;
+      min-height: 100vh;
     }
 
-    .top-title {
+    /* "HANDY" RAHMEN */
+    .device-frame {
+      width: 100%;
+      max-width: 430px;
+      height: 90vh;
+      max-height: 880px;
+      background: radial-gradient(circle at top, #0b1120 0, #020617 50%, #000 100%);
+      border-radius: 34px;
+      padding: 10px;
+      box-shadow:
+        0 0 0 1px rgba(148,163,184,0.35),
+        0 20px 40px rgba(0,0,0,0.9);
+      display: flex;
+    }
+
+    /* INNERE APP-HÜLLE */
+    .app-shell {
+      border-radius: 26px;
+      background: linear-gradient(145deg, #020617, #020617, #020617);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      width: 100%;
     }
 
-    .top-title-main {
-      font-size: 15px;
-      font-weight: 600;
-    }
-    .top-title-sub {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .top-actions {
-      margin-left: auto;
+    /* OBERER APP-BEREICH */
+    .top-bar {
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid rgba(31,41,55,1);
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 10px;
+      background: rgba(2,6,23,0.96);
     }
 
-    .icon-button {
-      width: 30px;
-      height: 30px;
+    .app-logo {
+      width: 26px;
+      height: 26px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.4);
+      background: radial-gradient(circle at 30% 30%, #22c55e, #22d3ee, #3b82f6);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      cursor: pointer;
-      background: rgba(15,23,42,0.8);
+      font-weight: 600;
+      color: #020617;
     }
 
-    /* CHAT BEREICH */
-    .chat-area {
-      flex: 1;
-      padding: 12px 12px 8px;
-      overflow-y: auto;
+    .app-title {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      scroll-behavior: smooth;
     }
 
-    .message-row {
+    .app-title-main {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .app-title-sub {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .top-right {
+      margin-left: auto;
       display: flex;
+      align-items: center;
       gap: 8px;
-      align-items: flex-end;
     }
 
-    .message-row.user {
-      justify-content: flex-end;
-    }
-
-    .bubble {
-      max-width: 78%;
-      padding: 9px 11px;
-      border-radius: 16px;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .bubble.bot {
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.3);
-      border-bottom-left-radius: 4px;
-    }
-
-    .bubble.user {
-      background: linear-gradient(135deg, #22c55e, #3b82f6);
-      border-bottom-right-radius: 4px;
-    }
-
-    .small-label {
+    .chip {
       font-size: 10px;
-      color: #6b7280;
-      margin: 2px 4px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      border: 1px solid rgba(55,65,81,1);
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    /* UNTERE EINGABEZEILE */
-    .input-bar {
-      padding: 8px 10px 12px;
-      border-top: 1px solid rgba(148,163,184,0.3);
-      background: rgba(15,23,42,0.92);
-      backdrop-filter: blur(18px);
-    }
-
-    .input-inner {
+    .top-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,1);
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(15,23,42,0.9);
-      border-radius: 999px;
-      padding: 6px 8px 6px 12px;
-      border: 1px solid rgba(75,85,99,0.8);
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
     }
 
-    .input-inner input {
+    /* CONTENT */
+    .screen-wrapper {
       flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: #f9fafb;
-      font-size: 13px;
+      padding: 12px 14px 8px;
+      overflow-y: auto;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
     }
 
-    .input-inner input::placeholder {
+    .screen {
+      display: none;
+      animation: fadeIn 0.18s ease-out;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    .headline {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .headline-sub {
+      font-size: 11px;
       color: #6b7280;
+      margin-bottom: 14px;
     }
 
-    .send-btn {
-      border: none;
-      outline: none;
-      border-radius: 999px;
-      width: 32px;
-      height: 32px;
+    .card {
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.12), rgba(15,23,42,1));
+      border: 1px solid rgba(31,41,55,1);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .card-value {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      color: #22c55e;
+      margin-top: 2px;
+    }
+
+    .card-muted {
+      background: linear-gradient(145deg, #020617, #020617);
+    }
+
+    .row {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+
+    .pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,1);
+      font-size: 11px;
+    }
+
+    /* UNTERE NAVIGATION */
+    .bottom-nav {
+      padding: 6px 10px 10px;
+      border-top: 1px solid rgba(31,41,55,1);
+      background: rgba(2,6,23,0.98);
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-item {
+      flex: 1;
+      border-radius: 999px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
       cursor: pointer;
-      background: linear-gradient(135deg, #22c55e, #3b82f6);
+      font-size: 11px;
+      color: #6b7280;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    .nav-item-icon {
       font-size: 16px;
-      color: #f9fafb;
-      flex-shrink: 0;
+      line-height: 1;
     }
 
-    .micro-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      border: 1px solid rgba(75,85,99,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      cursor: pointer;
-      flex-shrink: 0;
+    .nav-item.active {
+      background: radial-gradient(circle at top, rgba(34,197,94,0.2), rgba(15,23,42,1));
+      color: #e5e7eb;
+      transform: translateY(-1px);
     }
 
-    /* KLEINE SCROLLBAR */
-    .chat-area::-webkit-scrollbar {
+    .nav-item.active .nav-item-icon {
+      transform: translateY(-1px);
+    }
+
+    /* SCROLLBAR SCHMAL */
+    .screen-wrapper::-webkit-scrollbar {
       width: 4px;
     }
-    .chat-area::-webkit-scrollbar-thumb {
-      background: rgba(148,163,184,0.5);
+    .screen-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(55,65,81,0.8);
       border-radius: 999px;
     }
 
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- TOP BAR -->
-    <header class="top-bar">
-      <div class="top-avatar">R</div>
-      <div class="top-title">
-        <div class="top-title-main">RB-INSIDE Assistent</div>
-        <div class="top-title-sub">Bereit für deine Fragen</div>
-      </div>
-      <div class="top-actions">
-        <div class="icon-button">⚙️</div>
-      </div>
-    </header>
+  <div class="device-frame">
+    <div class="app-shell">
 
-    <!-- CHAT BEREICH -->
-    <main class="chat-area" id="chat">
-      <div class="small-label">Heute</div>
-
-      <div class="message-row user">
-        <div class="bubble user">
-          Wie kann ich meine Kunden in RB-INSIDE verwalten?
+      <!-- TOP -->
+      <header class="top-bar">
+        <div class="app-logo">R</div>
+        <div class="app-title">
+          <div class="app-title-main">RB-INSIDE</div>
+          <div class="app-title-sub">Demo App-Rahmen</div>
         </div>
-      </div>
-
-      <div class="message-row">
-        <div class="bubble bot">
-          Du kannst in der Kundenübersicht neue Kunden anlegen, Daten bearbeiten
-          und filtern. Später verbinden wir das mit Supabase, damit alles
-          automatisch gespeichert wird.
+        <div class="top-right">
+          <div class="chip">Preview</div>
+          <div class="top-icon">⚙️</div>
         </div>
-      </div>
-    </main>
+      </header>
 
-    <!-- INPUT -->
-    <footer class="input-bar">
-      <div class="input-inner">
-        <input id="messageInput" type="text" placeholder="Schreibe eine Nachricht..." />
-        <button class="micro-btn" type="button">🎤</button>
-        <button class="send-btn" type="button" id="sendBtn">➤</button>
-      </div>
-    </footer>
+      <!-- SCREENS -->
+      <main class="screen-wrapper">
+        <!-- DASHBOARD -->
+        <section id="screen-home" class="screen active">
+          <div class="headline">Übersicht</div>
+          <div class="headline-sub">Nur Test-Daten zum Design</div>
+
+          <div class="card">
+            <div class="card-title">Gesamtwert</div>
+            <div class="card-value">€ 12.340,21</div>
+            <div class="card-tag">+ 3,27 % heute</div>
+            <div class="row">
+              <span>Test Portfolio A</span>
+              <span class="pill">Demo</span>
+            </div>
+          </div>
+
+          <div class="card card-muted">
+            <div class="card-title">Test-Kachel</div>
+            <div class="row">
+              <span>Nur zum Füllen der Oberfläche.</span>
+              <span>▶</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="screen-portfolio" class="screen">
+          <div class="headline">Portfolio</div>
+          <div class="headline-sub">Test-Seite für Navigation</div>
+
+          <div class="card">
+            <div class="card-title">Beispiel-Position</div>
+            <div class="row">
+              <span>RB TEST AG</span>
+              <span>+ 5,10 %</span>
+            </div>
+          </div>
+
+          <div class="card card-muted">
+            <div class="card-title">Hinweis</div>
+            <div class="row">
+              <span>Hier später echte Daten.</span>
+              <span>…</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ORDERS -->
+        <section id="screen-orders" class="screen">
+          <div class="headline">Orders</div>
+          <div class="headline-sub">Nur Dummy-Inhalte</div>
+
+          <div class="card card-muted">
+            <div class="card-title">Keine echten Orders</div>
+            <div class="row">
+              <span>Dies ist nur eine Testansicht.</span>
+              <span>∞</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROFILE -->
+        <section id="screen-profile" class="screen">
+          <div class="headline">Profil</div>
+          <div class="headline-sub">Testbereich für Einstellungen</div>
+
+          <div class="card card-muted">
+            <div class="card-title">Demo-Benutzer</div>
+            <div class="row">
+              <span>user@test.de</span>
+              <span>⚙️</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- NAVIGATION -->
+      <nav class="bottom-nav">
+        <div class="nav-item active" data-screen="home">
+          <div class="nav-item-icon">◎</div>
+          <div>Home</div>
+        </div>
+        <div class="nav-item" data-screen="portfolio">
+          <div class="nav-item-icon">📊</div>
+          <div>Portfolio</div>
+        </div>
+        <div class="nav-item" data-screen="orders">
+          <div class="nav-item-icon">⇅</div>
+          <div>Orders</div>
+        </div>
+        <div class="nav-item" data-screen="profile">
+          <div class="nav-item-icon">👤</div>
+          <div>Profil</div>
+        </div>
+      </nav>
+    </div>
   </div>
 
   <script>
-    const input = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const chat = document.getElementById('chat');
+    const navItems = document.querySelectorAll('.nav-item');
+    const screens = document.querySelectorAll('.screen');
 
-    function addMessage(text, from = 'user') {
-      if (!text.trim()) return;
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const target = item.getAttribute('data-screen');
 
-      const row = document.createElement('div');
-      row.className = 'message-row ' + (from === 'user' ? 'user' : '');
+        // Nav-Optik
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
 
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble ' + (from === 'user' ? 'user' : 'bot');
-      bubble.textContent = text;
-
-      row.appendChild(bubble);
-      chat.appendChild(row);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function sendMessage() {
-      const text = input.value;
-      addMessage(text, 'user');
-      input.value = '';
-
-      // einfache Demo-Antwort
-      setTimeout(() => {
-        addMessage('Dies ist nur eine Demo-Antwort. Hier könnte deine Logik rein.', 'bot');
-      }, 400);
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendMessage();
+        // Screens umschalten
+        screens.forEach(screen => {
+          screen.classList.remove('active');
+          if (screen.id === 'screen-' + target) {
+            screen.classList.add('active');
+          }
+        });
+      });
     });
   </script>
 </body>
