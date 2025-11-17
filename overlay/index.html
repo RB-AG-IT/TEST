@@ -79,7 +79,7 @@
       background: #ffffff;
       color: #151a2b;
       border-radius: 8px;
-      min-width: 170px;
+      min-width: 190px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       padding: 4px 0;
       display: none;
@@ -386,6 +386,7 @@
             <a>Allgemein</a>
             <a>Benutzer & Rollen</a>
             <a>System</a>
+            <a id="refreshButtonSide">Jetzt aktualisieren</a>
           </div>
         </div>
       </div>
@@ -407,6 +408,7 @@
           <button>Benachrichtigungen</button>
           <button>Hilfe</button>
           <button>Einstellungen</button>
+          <button id="refreshButtonTop">Jetzt aktualisieren</button>
           <button>Logout</button>
         </div>
       </div>
@@ -431,6 +433,9 @@
 
     const topMenuButton = document.getElementById('topMenuButton');
     const topDropdown = document.getElementById('topDropdown');
+
+    const refreshButtonTop = document.getElementById('refreshButtonTop');
+    const refreshButtonSide = document.getElementById('refreshButtonSide');
 
     // Sidebar öffnen/schließen (Overlay)
     function openSidebar() {
@@ -472,6 +477,22 @@
       e.stopPropagation();
       topDropdown.classList.toggle('open');
     });
+
+    // „Jetzt aktualisieren“ – oben im Profil-Menü
+    if (refreshButtonTop) {
+      refreshButtonTop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.reload();
+      });
+    }
+
+    // „Jetzt aktualisieren“ – unten links im Einstellungen-Menü
+    if (refreshButtonSide) {
+      refreshButtonSide.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.reload();
+      });
+    }
 
     // Klick außerhalb: Menüs schließen (Sidebar bleibt über Backdrop-Logik)
     document.addEventListener('click', () => {
