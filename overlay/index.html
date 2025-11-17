@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE App Rahmen</title>
+  <title>RB-INSIDE – Open Style App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- PWA / WEB APP -->
@@ -14,167 +14,157 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #020617;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
       color: #e5e7eb;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      align-items: stretch;
     }
 
-    /* "HANDY" RAHMEN */
-    .device-frame {
-      width: 100%;
-      max-width: 430px;
-      height: 90vh;
-      max-height: 880px;
-      background: radial-gradient(circle at top, #0b1120 0, #020617 50%, #000 100%);
-      border-radius: 34px;
-      padding: 10px;
-      box-shadow:
-        0 0 0 1px rgba(148,163,184,0.35),
-        0 20px 40px rgba(0,0,0,0.9);
-      display: flex;
-    }
-
-    /* INNERE APP-HÜLLE */
     .app-shell {
-      border-radius: 26px;
-      background: linear-gradient(145deg, #020617, #020617, #020617);
-      overflow: hidden;
+      width: 100%;
+      max-width: 900px;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      width: 100%;
+      padding: 12px 12px 10px;
     }
 
-    /* OBERER APP-BEREICH */
+    /* TOPBAR */
     .top-bar {
-      padding: 12px 16px 10px;
-      border-bottom: 1px solid rgba(31,41,55,1);
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(2,6,23,0.96);
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,41,55,1);
+      background: rgba(15,23,42,0.96);
+      backdrop-filter: blur(14px);
+      margin-bottom: 10px;
     }
 
-    .app-logo {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #22c55e, #22d3ee, #3b82f6);
+    .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 20% 20%, #22d3ee, #6366f1, #22c55e);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 16px;
       color: #020617;
     }
 
-    .app-title {
+    .top-text {
       display: flex;
       flex-direction: column;
     }
 
-    .app-title-main {
-      font-size: 14px;
+    .top-title {
+      font-size: 15px;
       font-weight: 600;
-      letter-spacing: 0.03em;
     }
-
-    .app-title-sub {
+    .top-sub {
       font-size: 11px;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
     .top-right {
       margin-left: auto;
       display: flex;
-      align-items: center;
       gap: 8px;
+      align-items: center;
     }
 
-    .chip {
+    .badge {
       font-size: 10px;
-      border-radius: 999px;
       padding: 3px 8px;
+      border-radius: 999px;
       border: 1px solid rgba(55,65,81,1);
-      color: #9ca3af;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      color: #9ca3af;
     }
 
-    .top-icon {
-      width: 24px;
-      height: 24px;
+    .icon-btn {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,1);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
     }
 
-    /* CONTENT */
-    .screen-wrapper {
+    /* CONTENT LAYOUT */
+    .content {
       flex: 1;
-      padding: 12px 14px 8px;
-      overflow-y: auto;
-      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    .screen {
-      display: none;
-      animation: fadeIn 0.18s ease-out;
-    }
-    .screen.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px);}
-      to { opacity: 1; transform: translateY(0);}
+    @media (max-width: 720px) {
+      .app-shell {
+        padding: 10px 8px 8px;
+      }
+      .content {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .headline {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .headline-sub {
-      font-size: 11px;
-      color: #6b7280;
-      margin-bottom: 14px;
-    }
-
-    .card {
-      border-radius: 18px;
-      background: radial-gradient(circle at top left, rgba(34,197,94,0.12), rgba(15,23,42,1));
+    .panel {
+      border-radius: 16px;
       border: 1px solid rgba(31,41,55,1);
-      padding: 12px 14px;
-      margin-bottom: 12px;
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.1), rgba(15,23,42,1));
+      padding: 14px 14px 12px;
     }
 
-    .card-title {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 4px;
+    .panel.muted {
+      background: linear-gradient(145deg, #020617, #020617);
     }
 
-    .card-value {
-      font-size: 20px;
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .panel-title {
+      font-size: 14px;
       font-weight: 600;
     }
 
-    .card-tag {
+    .panel-sub {
       font-size: 11px;
-      color: #22c55e;
-      margin-top: 2px;
+      color: #9ca3af;
     }
 
-    .card-muted {
-      background: linear-gradient(145deg, #020617, #020617);
+    .chip-small {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,1);
+      color: #9ca3af;
+    }
+
+    .big-value {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .big-change {
+      font-size: 12px;
+      color: #22c55e;
+      margin-bottom: 12px;
     }
 
     .row {
@@ -193,12 +183,33 @@
       font-size: 11px;
     }
 
-    /* UNTERE NAVIGATION */
-    .bottom-nav {
-      padding: 6px 10px 10px;
-      border-top: 1px solid rgba(31,41,55,1);
-      background: rgba(2,6,23,0.98);
+    .list {
+      margin-top: 6px;
       display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(31,41,55,0.7);
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      border-radius: 14px;
+      border: 1px solid rgba(31,41,55,1);
+      background: rgba(15,23,42,0.96);
+      display: flex;
+      padding: 6px;
       gap: 6px;
     }
 
@@ -210,157 +221,182 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      cursor: pointer;
       font-size: 11px;
       color: #6b7280;
+      cursor: pointer;
       transition: background 0.15s, color 0.15s, transform 0.1s;
     }
 
-    .nav-item-icon {
+    .nav-icon {
       font-size: 16px;
       line-height: 1;
     }
 
     .nav-item.active {
-      background: radial-gradient(circle at top, rgba(34,197,94,0.2), rgba(15,23,42,1));
+      background: radial-gradient(circle at top, rgba(59,130,246,0.25), rgba(15,23,42,1));
       color: #e5e7eb;
       transform: translateY(-1px);
     }
 
-    .nav-item.active .nav-item-icon {
+    .nav-item.active .nav-icon {
       transform: translateY(-1px);
     }
 
-    /* SCROLLBAR SCHMAL */
-    .screen-wrapper::-webkit-scrollbar {
-      width: 4px;
+    /* SCREENS */
+    .screen {
+      display: none;
+      animation: fadeIn 0.18s ease-out;
     }
-    .screen-wrapper::-webkit-scrollbar-thumb {
-      background: rgba(55,65,81,0.8);
-      border-radius: 999px;
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="device-frame">
-    <div class="app-shell">
+  <div class="app-shell">
+    <!-- TOP -->
+    <header class="top-bar">
+      <div class="logo">R</div>
+      <div class="top-text">
+        <div class="top-title">RB-INSIDE</div>
+        <div class="top-sub">Open Style Demo Web App</div>
+      </div>
+      <div class="top-right">
+        <div class="badge">Preview</div>
+        <button class="icon-btn" type="button">⚙️</button>
+      </div>
+    </header>
 
-      <!-- TOP -->
-      <header class="top-bar">
-        <div class="app-logo">R</div>
-        <div class="app-title">
-          <div class="app-title-main">RB-INSIDE</div>
-          <div class="app-title-sub">Demo App-Rahmen</div>
-        </div>
-        <div class="top-right">
-          <div class="chip">Preview</div>
-          <div class="top-icon">⚙️</div>
-        </div>
-      </header>
-
-      <!-- SCREENS -->
-      <main class="screen-wrapper">
-        <!-- DASHBOARD -->
-        <section id="screen-home" class="screen active">
-          <div class="headline">Übersicht</div>
-          <div class="headline-sub">Nur Test-Daten zum Design</div>
-
-          <div class="card">
-            <div class="card-title">Gesamtwert</div>
-            <div class="card-value">€ 12.340,21</div>
-            <div class="card-tag">+ 3,27 % heute</div>
-            <div class="row">
-              <span>Test Portfolio A</span>
-              <span class="pill">Demo</span>
-            </div>
+    <!-- CONTENT -->
+    <main class="content">
+      <!-- LINKER BEREICH: SCREEN-WECHSEL -->
+      <section class="panel" id="screen-home">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Übersicht</div>
+            <div class="panel-sub">Nur Test-Daten, nur Rahmen</div>
           </div>
-
-          <div class="card card-muted">
-            <div class="card-title">Test-Kachel</div>
-            <div class="row">
-              <span>Nur zum Füllen der Oberfläche.</span>
-              <span>▶</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- PORTFOLIO -->
-        <section id="screen-portfolio" class="screen">
-          <div class="headline">Portfolio</div>
-          <div class="headline-sub">Test-Seite für Navigation</div>
-
-          <div class="card">
-            <div class="card-title">Beispiel-Position</div>
-            <div class="row">
-              <span>RB TEST AG</span>
-              <span>+ 5,10 %</span>
-            </div>
-          </div>
-
-          <div class="card card-muted">
-            <div class="card-title">Hinweis</div>
-            <div class="row">
-              <span>Hier später echte Daten.</span>
-              <span>…</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- ORDERS -->
-        <section id="screen-orders" class="screen">
-          <div class="headline">Orders</div>
-          <div class="headline-sub">Nur Dummy-Inhalte</div>
-
-          <div class="card card-muted">
-            <div class="card-title">Keine echten Orders</div>
-            <div class="row">
-              <span>Dies ist nur eine Testansicht.</span>
-              <span>∞</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- PROFILE -->
-        <section id="screen-profile" class="screen">
-          <div class="headline">Profil</div>
-          <div class="headline-sub">Testbereich für Einstellungen</div>
-
-          <div class="card card-muted">
-            <div class="card-title">Demo-Benutzer</div>
-            <div class="row">
-              <span>user@test.de</span>
-              <span>⚙️</span>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <!-- NAVIGATION -->
-      <nav class="bottom-nav">
-        <div class="nav-item active" data-screen="home">
-          <div class="nav-item-icon">◎</div>
-          <div>Home</div>
+          <div class="chip-small">Home</div>
         </div>
-        <div class="nav-item" data-screen="portfolio">
-          <div class="nav-item-icon">📊</div>
-          <div>Portfolio</div>
+
+        <div class="big-value">€ 12.340,21</div>
+        <div class="big-change">+ 3,27 % heute</div>
+
+        <div class="row">
+          <span>Test-Portfolio A</span>
+          <span class="pill">Demo</span>
         </div>
-        <div class="nav-item" data-screen="orders">
-          <div class="nav-item-icon">⇅</div>
-          <div>Orders</div>
+
+        <div class="list">
+          <div class="list-item">
+            <span>Beispiel-Kachel 1</span>
+            <span>▶</span>
+          </div>
+          <div class="list-item">
+            <span>Beispiel-Kachel 2</span>
+            <span>▶</span>
+          </div>
         </div>
-        <div class="nav-item" data-screen="profile">
-          <div class="nav-item-icon">👤</div>
-          <div>Profil</div>
+      </section>
+
+      <section class="panel" id="screen-dashboard" style="display:none;">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Dashboard</div>
+            <div class="panel-sub">Nur Dummy-Inhalte</div>
+          </div>
+          <div class="chip-small">Test</div>
         </div>
-      </nav>
-    </div>
+
+        <div class="row">
+          <span>Widgets, Charts, Karten ...</span>
+          <span>∞</span>
+        </div>
+        <div class="list">
+          <div class="list-item">
+            <span>Widget A</span>
+            <span>+ 1,2 %</span>
+          </div>
+          <div class="list-item">
+            <span>Widget B</span>
+            <span>- 0,4 %</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECHTER BEREICH: NEBENINFO / PROFIL -->
+      <aside class="panel muted">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Profil / Info</div>
+            <div class="panel-sub">Testbereich</div>
+          </div>
+          <div class="chip-small">User</div>
+        </div>
+
+        <div class="list">
+          <div class="list-item">
+            <span>Benutzer:</span>
+            <span>user@test.de</span>
+          </div>
+          <div class="list-item">
+            <span>Status:</span>
+            <span>Aktiv</span>
+          </div>
+          <div class="list-item">
+            <span>Rolle:</span>
+            <span>Demo-Admin</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" type="button" data-screen="home">
+        <span class="nav-icon">◎</span>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" type="button" data-screen="dashboard">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" type="button" data-screen="dummy">
+        <span class="nav-icon">⇅</span>
+        <span>Orders (Test)</span>
+      </button>
+      <button class="nav-item" type="button" data-screen="profile">
+        <span class="nav-icon">👤</span>
+        <span>Profil (Test)</span>
+      </button>
+    </nav>
   </div>
 
   <script>
-    // Navigation
+    // Navigation – einfache Screen-Umschaltung
     const navItems = document.querySelectorAll('.nav-item');
-    const screens = document.querySelectorAll('.screen');
+    const screenHome = document.getElementById('screen-home');
+    const screenDashboard = document.getElementById('screen-dashboard');
+
+    function showScreen(name) {
+      // Nur zwei echte Screens als Demo
+      if (name === 'home') {
+        screenHome.style.display = 'block';
+        screenDashboard.style.display = 'none';
+      } else if (name === 'dashboard') {
+        screenHome.style.display = 'none';
+        screenDashboard.style.display = 'block';
+      } else {
+        // Dummy-Screens: einfach Home anzeigen lassen
+        screenHome.style.display = 'block';
+        screenDashboard.style.display = 'none';
+      }
+    }
 
     navItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -369,16 +405,11 @@
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
 
-        screens.forEach(screen => {
-          screen.classList.remove('active');
-          if (screen.id === 'screen-' + target) {
-            screen.classList.add('active');
-          }
-        });
+        showScreen(target);
       });
     });
 
-    // Service Worker + Auto-Reload
+    // Service Worker + Auto-Reload (Standard-Block)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then((registration) => {
