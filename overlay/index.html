@@ -2,20 +2,20 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE – Open Style App</title>
+  <title>RB-INSIDE – Minimal Overlay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- PWA / WEB APP -->
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#020617">
+  <meta name="theme-color" content="#000000">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
-      color: #e5e7eb;
+      background: #000;
+      color: #f5f5f5;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -28,90 +28,91 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 12px 12px 10px;
+      padding: 10px 10px 8px;
+      background: radial-gradient(circle at top, #111 0, #000 60%, #000 100%);
     }
 
-    /* TOPBAR */
+    /* TOP BAR */
     .top-bar {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(31,41,55,1);
-      background: rgba(15,23,42,0.96);
-      backdrop-filter: blur(14px);
-      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #333;
+      background: rgba(0,0,0,0.85);
+      margin-bottom: 8px;
     }
 
     .logo {
-      width: 30px;
-      height: 30px;
-      border-radius: 10px;
-      background: radial-gradient(circle at 20% 20%, #22d3ee, #6366f1, #22c55e);
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid #666;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      color: #020617;
+      font-weight: 600;
+      font-size: 14px;
     }
 
     .top-text {
       display: flex;
       flex-direction: column;
     }
-
     .top-title {
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
     .top-sub {
-      font-size: 11px;
-      color: #9ca3af;
+      font-size: 10px;
+      color: #9f9f9f;
     }
 
     .top-right {
       margin-left: auto;
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
 
-    .badge {
-      font-size: 10px;
+    .chip {
+      font-size: 9px;
       padding: 3px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(55,65,81,1);
+      border: 1px solid #444;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9ca3af;
+      letter-spacing: 0.12em;
+      color: #cfcfcf;
     }
 
     .icon-btn {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 999px;
-      border: 1px solid rgba(55,65,81,1);
+      border: 1px solid #444;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 14px;
       cursor: pointer;
+      background: transparent;
+      color: #f5f5f5;
     }
 
-    /* CONTENT LAYOUT */
+    /* CONTENT GRID */
     .content {
       flex: 1;
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 8px;
     }
 
     @media (max-width: 720px) {
       .app-shell {
-        padding: 10px 8px 8px;
+        padding: 8px 6px 6px;
       }
       .content {
         grid-template-columns: 1fr;
@@ -120,121 +121,269 @@
 
     .panel {
       border-radius: 16px;
-      border: 1px solid rgba(31,41,55,1);
-      background: radial-gradient(circle at top left, rgba(34,197,94,0.1), rgba(15,23,42,1));
-      padding: 14px 14px 12px;
+      border: 1px solid #222;
+      background: radial-gradient(circle at top left, #111 0, #050505 50%, #000 100%);
+      padding: 12px;
     }
 
-    .panel.muted {
-      background: linear-gradient(145deg, #020617, #020617);
+    .panel-muted {
+      background: linear-gradient(145deg, #050505, #000);
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
+      margin-bottom: 8px;
+      gap: 6px;
     }
 
     .panel-title {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #e5e5e5;
     }
 
     .panel-sub {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .chip-small {
       font-size: 10px;
-      padding: 2px 7px;
+      color: #9f9f9f;
+    }
+
+    .badge-mini {
+      font-size: 9px;
+      padding: 2px 6px;
       border-radius: 999px;
-      border: 1px solid rgba(55,65,81,1);
-      color: #9ca3af;
+      border: 1px solid #333;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #bfbfbf;
     }
 
-    .big-value {
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 4px;
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      padding: 3px;
+      border: 1px solid #222;
+      background: #050505;
     }
 
-    .big-change {
-      font-size: 12px;
-      color: #22c55e;
-      margin-bottom: 12px;
+    .tab {
+      flex: 1;
+      padding: 4px 0;
+      font-size: 11px;
+      text-align: center;
+      border-radius: 999px;
+      cursor: pointer;
+      color: #a5a5a5;
     }
 
-    .row {
+    .tab.active {
+      background: #f5f5f5;
+      color: #000;
+    }
+
+    /* STAT LINE */
+    .metric-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 6px;
+      align-items: baseline;
+      margin-bottom: 8px;
     }
 
-    .pill {
-      padding: 3px 8px;
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9f9f9f;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .metric-delta {
+      font-size: 10px;
+      color: #9f9f9f;
+    }
+
+    .metric-dot {
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
-      border: 1px solid rgba(55,65,81,1);
-      font-size: 11px;
+      border: 1px solid #555;
     }
 
+    /* LISTEN / LOGS */
     .list {
       margin-top: 6px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
+      font-size: 11px;
     }
 
     .list-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(31,41,55,0.7);
+      padding: 5px 0;
+      border-bottom: 1px dashed #222;
     }
 
     .list-item:last-child {
       border-bottom: none;
     }
 
+    .tag {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #333;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* FORM / CONTROLS */
+    .control-group {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a5a5a5;
+    }
+
+    .input, .select {
+      width: 100%;
+      background: #050505;
+      border-radius: 999px;
+      border: 1px solid #333;
+      padding: 7px 10px;
+      font-size: 11px;
+      color: #f5f5f5;
+      outline: none;
+    }
+
+    .input:focus, .select:focus {
+      border-color: #f5f5f5;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .toggle {
+      width: 34px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid #444;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .toggle-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: #f5f5f5;
+      transform: translateX(0);
+      transition: transform 0.14s;
+    }
+
+    .toggle.on {
+      border-color: #f5f5f5;
+    }
+    .toggle.on .toggle-thumb {
+      transform: translateX(14px);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 0;
+      border-radius: 999px;
+      border: 1px solid #444;
+      background: #050505;
+      color: #f5f5f5;
+      font-size: 11px;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+
+    .btn-outline {
+      background: transparent;
+    }
+
+    .btn-ghost {
+      border-style: dashed;
+      opacity: 0.7;
+    }
+
+    /* STATUS STRIP */
+    .status-strip {
+      margin-top: 8px;
+      font-size: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #a5a5a5;
+    }
+
     /* BOTTOM NAV */
     .bottom-nav {
-      border-radius: 14px;
-      border: 1px solid rgba(31,41,55,1);
-      background: rgba(15,23,42,0.96);
+      border-radius: 999px;
+      border: 1px solid #333;
+      background: rgba(0,0,0,0.9);
       display: flex;
-      padding: 6px;
-      gap: 6px;
+      padding: 4px;
+      gap: 4px;
     }
 
     .nav-item {
       flex: 1;
       border-radius: 999px;
-      padding: 6px 4px;
+      padding: 5px 2px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      font-size: 11px;
-      color: #6b7280;
+      font-size: 10px;
+      color: #777;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s, transform 0.1s;
+      transition: background 0.12s, color 0.12s, transform 0.08s;
+      background: transparent;
+      border: none;
     }
 
     .nav-icon {
-      font-size: 16px;
+      font-size: 14px;
       line-height: 1;
     }
 
     .nav-item.active {
-      background: radial-gradient(circle at top, rgba(59,130,246,0.25), rgba(15,23,42,1));
-      color: #e5e7eb;
+      background: #f5f5f5;
+      color: #000;
       transform: translateY(-1px);
     }
 
@@ -245,15 +394,21 @@
     /* SCREENS */
     .screen {
       display: none;
-      animation: fadeIn 0.18s ease-out;
+      animation: fadeIn 0.14s ease-out;
     }
     .screen.active {
       display: block;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+      from { opacity: 0; transform: translateY(3px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MINI LOG / NOTIFICATIONS */
+    .mono {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 10px;
     }
   </style>
 </head>
@@ -264,149 +419,330 @@
       <div class="logo">R</div>
       <div class="top-text">
         <div class="top-title">RB-INSIDE</div>
-        <div class="top-sub">Open Style Demo Web App</div>
+        <div class="top-sub">Minimal Overlay v0.1</div>
       </div>
       <div class="top-right">
-        <div class="badge">Preview</div>
-        <button class="icon-btn" type="button">⚙️</button>
+        <div class="chip">Web App</div>
+        <button class="icon-btn" type="button" id="btn-quick-settings">⚙️</button>
       </div>
     </header>
 
     <!-- CONTENT -->
     <main class="content">
-      <!-- LINKER BEREICH: SCREEN-WECHSEL -->
-      <section class="panel" id="screen-home">
+      <!-- LINKES PANEL: TABS + STATS + FORM -->
+      <section class="panel screen active" id="screen-main">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Übersicht</div>
-            <div class="panel-sub">Nur Test-Daten, nur Rahmen</div>
+            <div class="panel-title">Session</div>
+            <div class="panel-sub">Test-Steuerzentrale</div>
           </div>
-          <div class="chip-small">Home</div>
+          <div class="badge-mini">Live</div>
         </div>
 
-        <div class="big-value">€ 12.340,21</div>
-        <div class="big-change">+ 3,27 % heute</div>
-
-        <div class="row">
-          <span>Test-Portfolio A</span>
-          <span class="pill">Demo</span>
+        <!-- Tabs -->
+        <div class="tabs" id="main-tabs">
+          <button class="tab active" data-tab="overview" type="button">Overview</button>
+          <button class="tab" data-tab="signals" type="button">Signals</button>
+          <button class="tab" data-tab="forms" type="button">Form Test</button>
         </div>
 
-        <div class="list">
-          <div class="list-item">
-            <span>Beispiel-Kachel 1</span>
-            <span>▶</span>
+        <!-- Tab: Overview -->
+        <div class="tab-screen" data-tab-screen="overview">
+          <div class="metric-row">
+            <div>
+              <div class="metric-label">Testwert</div>
+              <div class="metric-value" id="metric-value">42.000</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="metric-delta" id="metric-delta">+0.00% heute</div>
+              <div class="metric-dot"></div>
+            </div>
           </div>
-          <div class="list-item">
-            <span>Beispiel-Kachel 2</span>
-            <span>▶</span>
+
+          <div class="list">
+            <div class="list-item">
+              <span>Ping Overlay</span>
+              <span class="tag">Trigger</span>
+            </div>
+            <div class="list-item">
+              <span>Dummy Job 01</span>
+              <span>queued</span>
+            </div>
+            <div class="list-item">
+              <span>Dummy Job 02</span>
+              <span>done</span>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn" type="button" id="btn-randomize">Random Wert</button>
+            <button class="btn btn-outline" type="button" id="btn-log">Log Demo</button>
+          </div>
+
+          <div class="status-strip mono" id="status-strip">
+            <span>status: idle</span>
+            <span>last: –</span>
+          </div>
+        </div>
+
+        <!-- Tab: Signals -->
+        <div class="tab-screen" data-tab-screen="signals" style="display:none;">
+          <div class="list">
+            <div class="list-item">
+              <span>Signal A / risk-low</span>
+              <span class="tag">+1</span>
+            </div>
+            <div class="list-item">
+              <span>Signal B / risk-mid</span>
+              <span class="tag">0</span>
+            </div>
+            <div class="list-item">
+              <span>Signal C / risk-high</span>
+              <span class="tag">-1</span>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <span>Auto-Refresh</span>
+            <div class="toggle" id="toggle-refresh">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <span>Dark Terminal Mode</span>
+            <div class="toggle" id="toggle-terminal">
+              <div class="toggle-thumb"></div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-ghost" type="button" id="btn-clear-log">Log leeren</button>
+          </div>
+        </div>
+
+        <!-- Tab: Form Test -->
+        <div class="tab-screen" data-tab-screen="forms" style="display:none;">
+          <div class="control-group">
+            <label class="label" for="input-name">Testfeld Name</label>
+            <input class="input" id="input-name" type="text" placeholder="z.B. Session A">
+          </div>
+          <div class="control-group">
+            <label class="label" for="select-mode">Modus</label>
+            <select class="select" id="select-mode">
+              <option value="observe">Observe only</option>
+              <option value="simulate">Simulate</option>
+              <option value="live">Live (Test)</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label class="label" for="input-value">Zahl (Test)</label>
+            <input class="input" id="input-value" type="number" step="1" placeholder="0">
+          </div>
+
+          <div class="btn-row">
+            <button class="btn" type="button" id="btn-form-save">Eingabe testen</button>
+          </div>
+
+          <div class="status-strip mono" id="form-status">
+            <span>form: leer</span>
+            <span>mode: –</span>
           </div>
         </div>
       </section>
 
-      <section class="panel" id="screen-dashboard" style="display:none;">
+      <!-- RECHTES PANEL: USER, NOTIFICATIONS, MINI-LOG -->
+      <aside class="panel panel-muted screen active" id="screen-side">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Dashboard</div>
-            <div class="panel-sub">Nur Dummy-Inhalte</div>
+            <div class="panel-title">Overlay Info</div>
+            <div class="panel-sub">User + Log</div>
           </div>
-          <div class="chip-small">Test</div>
-        </div>
-
-        <div class="row">
-          <span>Widgets, Charts, Karten ...</span>
-          <span>∞</span>
-        </div>
-        <div class="list">
-          <div class="list-item">
-            <span>Widget A</span>
-            <span>+ 1,2 %</span>
-          </div>
-          <div class="list-item">
-            <span>Widget B</span>
-            <span>- 0,4 %</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- RECHTER BEREICH: NEBENINFO / PROFIL -->
-      <aside class="panel muted">
-        <div class="panel-header">
-          <div>
-            <div class="panel-title">Profil / Info</div>
-            <div class="panel-sub">Testbereich</div>
-          </div>
-          <div class="chip-small">User</div>
+          <div class="badge-mini">User</div>
         </div>
 
         <div class="list">
           <div class="list-item">
-            <span>Benutzer:</span>
-            <span>user@test.de</span>
+            <span>ID:</span>
+            <span class="mono">user@test</span>
           </div>
           <div class="list-item">
-            <span>Status:</span>
-            <span>Aktiv</span>
+            <span>Session:</span>
+            <span class="mono" id="session-id">RB-MIN-001</span>
           </div>
           <div class="list-item">
-            <span>Rolle:</span>
-            <span>Demo-Admin</span>
+            <span>State:</span>
+            <span>connected</span>
           </div>
+        </div>
+
+        <div class="panel-header" style="margin-top:10px;">
+          <div>
+            <div class="panel-title">Notifications</div>
+            <div class="panel-sub">Test-Einträge</div>
+          </div>
+        </div>
+        <div class="list" id="notif-list">
+          <div class="list-item">
+            <span>Overlay gestartet</span>
+            <span class="tag">now</span>
+          </div>
+        </div>
+
+        <div class="panel-header" style="margin-top:10px;">
+          <div>
+            <div class="panel-title">Console</div>
+            <div class="panel-sub">Mini Log</div>
+          </div>
+        </div>
+        <div class="mono" id="console-log" style="font-size:10px; max-height:120px; overflow:auto; padding-top:2px;">
+          &gt; ready<br>
         </div>
       </aside>
     </main>
 
     <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
-      <button class="nav-item active" type="button" data-screen="home">
+      <button class="nav-item active" type="button" data-screen="main">
         <span class="nav-icon">◎</span>
-        <span>Home</span>
+        <span>Main</span>
       </button>
-      <button class="nav-item" type="button" data-screen="dashboard">
-        <span class="nav-icon">📊</span>
-        <span>Dashboard</span>
+      <button class="nav-item" type="button" data-screen="side">
+        <span class="nav-icon">☰</span>
+        <span>Info</span>
       </button>
-      <button class="nav-item" type="button" data-screen="dummy">
-        <span class="nav-icon">⇅</span>
-        <span>Orders (Test)</span>
+      <button class="nav-item" type="button" data-screen="dummy-1">
+        <span class="nav-icon">✱</span>
+        <span>Dummy 1</span>
       </button>
-      <button class="nav-item" type="button" data-screen="profile">
-        <span class="nav-icon">👤</span>
-        <span>Profil (Test)</span>
+      <button class="nav-item" type="button" data-screen="dummy-2">
+        <span class="nav-icon">…</span>
+        <span>Dummy 2</span>
       </button>
     </nav>
   </div>
 
   <script>
-    // Navigation – einfache Screen-Umschaltung
+    // Bottom-Navigation / Screen Umschaltung (Main / Side / Dummy)
     const navItems = document.querySelectorAll('.nav-item');
-    const screenHome = document.getElementById('screen-home');
-    const screenDashboard = document.getElementById('screen-dashboard');
+    const screenMain = document.getElementById('screen-main');
+    const screenSide = document.getElementById('screen-side');
 
     function showScreen(name) {
-      // Nur zwei echte Screens als Demo
-      if (name === 'home') {
-        screenHome.style.display = 'block';
-        screenDashboard.style.display = 'none';
-      } else if (name === 'dashboard') {
-        screenHome.style.display = 'none';
-        screenDashboard.style.display = 'block';
+      screenMain.classList.remove('active');
+      screenSide.classList.remove('active');
+
+      if (name === 'main') {
+        screenMain.classList.add('active');
+        screenSide.classList.add('active'); // immer sichtbar, App bleibt 2-spaltig
+      } else if (name === 'side') {
+        screenMain.classList.add('active');
+        screenSide.classList.add('active');
       } else {
-        // Dummy-Screens: einfach Home anzeigen lassen
-        screenHome.style.display = 'block';
-        screenDashboard.style.display = 'none';
+        // Dummy: nichts Besonderes, alles bleibt
+        screenMain.classList.add('active');
+        screenSide.classList.add('active');
       }
     }
 
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         const target = item.getAttribute('data-screen');
-
         navItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
-
         showScreen(target);
       });
+    });
+
+    // Tabs oben links
+    const tabButtons = document.querySelectorAll('.tab');
+    const tabScreens = document.querySelectorAll('.tab-screen');
+
+    tabButtons.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-tab');
+        tabButtons.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        tabScreens.forEach(s => {
+          const name = s.getAttribute('data-tab-screen');
+          s.style.display = (name === target) ? 'block' : 'none';
+        });
+      });
+    });
+
+    // Kleine Test-Funktionen / Logik
+    const metricValueEl = document.getElementById('metric-value');
+    const metricDeltaEl = document.getElementById('metric-delta');
+    const statusStripEl = document.getElementById('status-strip');
+    const consoleLogEl = document.getElementById('console-log');
+    const notifListEl = document.getElementById('notif-list');
+
+    function addLog(line) {
+      consoleLogEl.innerHTML += '&gt; ' + line + '<br>';
+      consoleLogEl.scrollTop = consoleLogEl.scrollHeight;
+    }
+
+    function addNotif(text) {
+      const item = document.createElement('div');
+      item.className = 'list-item';
+      item.innerHTML = '<span>' + text + '</span><span class="tag">log</span>';
+      notifListEl.prepend(item);
+    }
+
+    document.getElementById('btn-randomize').addEventListener('click', () => {
+      const base = 10000 + Math.floor(Math.random() * 90000);
+      const delta = (Math.random() * 4 - 2).toFixed(2);
+      metricValueEl.textContent = base.toLocaleString('de-DE');
+      metricDeltaEl.textContent = (delta >= 0 ? '+' : '') + delta + '% heute';
+      statusStripEl.innerHTML = '<span>status: random</span><span>delta: ' + delta + '%</span>';
+      addLog('randomize value -> ' + base + ' / ' + delta + '%');
+      addNotif('Wert aktualisiert');
+    });
+
+    document.getElementById('btn-log').addEventListener('click', () => {
+      addLog('manual log trigger');
+      addNotif('Manueller Logeintrag');
+      statusStripEl.innerHTML = '<span>status: log</span><span>last: manual</span>';
+    });
+
+    // Toggles
+    function bindToggle(id, label) {
+      const t = document.getElementById(id);
+      t.addEventListener('click', () => {
+        t.classList.toggle('on');
+        const state = t.classList.contains('on') ? 'on' : 'off';
+        addLog(label + ' -> ' + state);
+      });
+    }
+
+    bindToggle('toggle-refresh', 'auto-refresh');
+    bindToggle('toggle-terminal', 'terminal-mode');
+
+    document.getElementById('btn-clear-log').addEventListener('click', () => {
+      consoleLogEl.innerHTML = '&gt; cleared<br>';
+      addNotif('Log geleert');
+    });
+
+    // Form Test
+    const inputName = document.getElementById('input-name');
+    const inputValue = document.getElementById('input-value');
+    const selectMode = document.getElementById('select-mode');
+    const formStatus = document.getElementById('form-status');
+
+    document.getElementById('btn-form-save').addEventListener('click', () => {
+      const name = inputName.value || 'unnamed';
+      const val = inputValue.value || '0';
+      const mode = selectMode.value;
+      formStatus.innerHTML = '<span>form: ' + name + ' = ' + val + '</span><span>mode: ' + mode + '</span>';
+      addLog('form test: ' + name + ' / ' + val + ' / ' + mode);
+      addNotif('Form Test gespeichert');
+    });
+
+    // Quick Settings Button (oben rechts) => nur Log / Notification
+    document.getElementById('btn-quick-settings').addEventListener('click', () => {
+      addLog('quick-settings tapped');
+      addNotif('Quick Settings geöffnet (dummy)');
     });
 
     // Service Worker + Auto-Reload (Standard-Block)
