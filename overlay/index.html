@@ -118,6 +118,9 @@
       .content {
         grid-template-columns: 1fr;
       }
+      #screen-dummy {
+        grid-column: 1 / -1;
+      }
     }
 
     .panel {
@@ -297,6 +300,182 @@
       border-top: 1px dashed #222;
     }
 
+    /* DUMMY-SCREEN STUFF */
+    #screen-dummy {
+      grid-column: 1 / -1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dummy-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+
+    .dummy-title {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .dummy-sub {
+      font-size: 11px;
+      color: #9f9f9f;
+    }
+
+    .dummy-orbit {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px dashed #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .dummy-core {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid #777;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      animation: pulseCore 2s infinite ease-in-out;
+    }
+
+    .dummy-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #555;
+      background: #000;
+      animation: orbit 6s linear infinite;
+      transform-origin: 60px 60px;
+    }
+
+    .dummy-dot:nth-child(2) { animation-duration: 7.5s; }
+    .dummy-dot:nth-child(3) { animation-duration: 9s; }
+
+    .dummy-dot::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: #f5f5f5;
+    }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateX(60px); }
+      to   { transform: rotate(360deg) translateX(60px); }
+    }
+
+    @keyframes pulseCore {
+      0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.1); }
+      50%     { box-shadow: 0 0 20px 4px rgba(255,255,255,0.3); }
+    }
+
+    .dummy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .dummy-cell {
+      border-radius: 12px;
+      border: 1px solid #222;
+      padding: 10px 8px;
+      font-size: 11px;
+      text-align: center;
+      background: #050505;
+    }
+
+    .dummy-cell-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9f9f9f;
+      margin-bottom: 4px;
+    }
+
+    .dummy-cell-value {
+      font-size: 14px;
+    }
+
+    .scan-lines {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px dashed #222;
+      padding: 10px;
+      margin-bottom: 14px;
+      font-size: 10px;
+    }
+
+    .scan-lines::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -50%;
+      height: 40px;
+      background: linear-gradient(to bottom,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0));
+      animation: scanMove 3s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(180%); }
+    }
+
+    .scan-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .progress-wrap {
+      margin-top: 6px;
+    }
+
+    .progress-bar {
+      height: 5px;
+      border-radius: 999px;
+      border: 1px solid #444;
+      padding: 1px;
+      overflow: hidden;
+    }
+
+    .progress-inner {
+      height: 100%;
+      border-radius: 999px;
+      background: #f5f5f5;
+      transform-origin: left;
+      transform: scaleX(0.2);
+      transition: transform 0.3s;
+    }
+
+    .dummy-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 10px;
+      color: #a5a5a5;
+    }
+
     /* BOTTOM NAV FIXED */
     .bottom-nav-wrapper {
       position: fixed;
@@ -382,7 +561,7 @@
 
     <!-- CONTENT -->
     <main class="content">
-      <!-- LINKES PANEL: GROSSE ANZEIGE -->
+      <!-- MAIN / INFO SCREEN -->
       <section class="panel screen active" id="screen-main">
         <div class="panel-header">
           <div>
@@ -422,7 +601,6 @@
         </div>
       </section>
 
-      <!-- RECHTES PANEL: GROBE INFOS -->
       <aside class="panel panel-muted screen active" id="screen-side">
         <div class="panel-header">
           <div>
@@ -463,6 +641,73 @@
           &gt; ready<br>
         </div>
       </aside>
+
+      <!-- DUMMY SCREEN: VOLLE BREITE, ANIMATIONEN -->
+      <section class="panel screen" id="screen-dummy">
+        <div class="dummy-header-line">
+          <div>
+            <div class="dummy-title">Dummy Space</div>
+            <div class="dummy-sub">Nur Hülle · Visual Test</div>
+          </div>
+          <div class="badge-mini">Dummy</div>
+        </div>
+
+        <div style="display:flex; gap:18px; flex-wrap:wrap; align-items:center;">
+          <div class="dummy-orbit">
+            <div class="dummy-core">RB</div>
+            <div class="dummy-dot"></div>
+            <div class="dummy-dot"></div>
+            <div class="dummy-dot"></div>
+          </div>
+
+          <div style="flex:1; min-width:140px;">
+            <div class="dummy-grid">
+              <div class="dummy-cell">
+                <div class="dummy-cell-label">Channel</div>
+                <div class="dummy-cell-value" id="dummy-channel">#01</div>
+              </div>
+              <div class="dummy-cell">
+                <div class="dummy-cell-label">Signal</div>
+                <div class="dummy-cell-value" id="dummy-signal">+0.0</div>
+              </div>
+              <div class="dummy-cell">
+                <div class="dummy-cell-label">Mode</div>
+                <div class="dummy-cell-value" id="dummy-mode">IDLE</div>
+              </div>
+            </div>
+
+            <div class="scan-lines" id="scan-box">
+              <div class="scan-row">
+                <span>LINE 01</span>
+                <span>OK</span>
+              </div>
+              <div class="scan-row">
+                <span>LINE 02</span>
+                <span>OK</span>
+              </div>
+              <div class="scan-row">
+                <span>LINE 03</span>
+                <span>OK</span>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-bar">
+                  <div class="progress-inner" id="dummy-progress"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn" type="button" id="btn-dummy-pulse">Pulse</button>
+              <button class="btn btn-outline" type="button" id="btn-dummy-random">Random</button>
+            </div>
+
+            <div class="dummy-footer mono" id="dummy-footer">
+              <span>dummy: idle</span>
+              <span>frame: 000</span>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -478,22 +723,32 @@
         <span>Info</span>
       </button>
       <button class="nav-item" type="button" data-screen="dummy">
-        <span class="nav-icon">…</span>
+        <span class="nav-icon">✱</span>
         <span>Dummy</span>
       </button>
     </nav>
   </div>
 
   <script>
-    // Bottom-Navigation (Highlight, Panels bleiben 2-spaltig aktiv)
+    // Bottom-Navigation: jetzt echte Screens (Dummy = eigene Ansicht)
     const navItems = document.querySelectorAll('.nav-item');
     const screenMain = document.getElementById('screen-main');
     const screenSide = document.getElementById('screen-side');
+    const screenDummy = document.getElementById('screen-dummy');
 
     function showScreen(name) {
-      // Panels bleiben sichtbar, Navigation ist nur visuelles Feedback
-      screenMain.classList.add('active');
-      screenSide.classList.add('active');
+      // alle verstecken
+      screenMain.classList.remove('active');
+      screenSide.classList.remove('active');
+      screenDummy.classList.remove('active');
+
+      if (name === 'dummy') {
+        screenDummy.classList.add('active');
+      } else {
+        // Main & Side = Standardansicht
+        screenMain.classList.add('active');
+        screenSide.classList.add('active');
+      }
     }
 
     navItems.forEach(item => {
@@ -505,7 +760,7 @@
       });
     });
 
-    // Kleine Test-Funktionen / Logik
+    // Kleine Test-Funktionen / Logik (Main)
     const metricValueEl = document.getElementById('metric-value');
     const metricDeltaEl = document.getElementById('metric-delta');
     const statusStripEl = document.getElementById('status-strip');
@@ -540,7 +795,7 @@
       statusStripEl.innerHTML = '<span>status: ping</span><span>last: test</span>';
     });
 
-    // Toggles
+    // Toggles (Main)
     function bindToggle(id, label) {
       const t = document.getElementById(id);
       t.addEventListener('click', () => {
@@ -558,6 +813,76 @@
       addLog('quick-settings tapped');
       addNotif('Quick Settings (dummy)');
     });
+
+    // DUMMY LOGIK
+    const dummyChannelEl = document.getElementById('dummy-channel');
+    const dummySignalEl = document.getElementById('dummy-signal');
+    const dummyModeEl   = document.getElementById('dummy-mode');
+    const dummyProgress = document.getElementById('dummy-progress');
+    const dummyFooter   = document.getElementById('dummy-footer');
+    const scanBox       = document.getElementById('scan-box');
+
+    let dummyFrame = 0;
+    let dummyTimer = null;
+
+    function updateDummyFrame() {
+      dummyFrame++;
+      const ch = String(dummyFrame % 8).padStart(2, '0');
+      const sig = (Math.random() * 2 - 1).toFixed(1);
+      const p = (Math.sin(dummyFrame / 10) + 1) / 2; // 0..1
+      dummyChannelEl.textContent = '#' + ch;
+      dummySignalEl.textContent = (sig >= 0 ? '+' : '') + sig;
+      dummyProgress.style.transform = 'scaleX(' + (0.2 + 0.7 * p) + ')';
+      dummyFooter.innerHTML = '<span>dummy: running</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
+    }
+
+    function startDummyLoop() {
+      if (dummyTimer) return;
+      dummyTimer = setInterval(updateDummyFrame, 200);
+    }
+
+    function stopDummyLoop() {
+      if (!dummyTimer) return;
+      clearInterval(dummyTimer);
+      dummyTimer = null;
+      dummyFooter.innerHTML = '<span>dummy: paused</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
+    }
+
+    document.getElementById('btn-dummy-pulse').addEventListener('click', () => {
+      if (dummyTimer) {
+        stopDummyLoop();
+      } else {
+        startDummyLoop();
+      }
+    });
+
+    document.getElementById('btn-dummy-random').addEventListener('click', () => {
+      // kurzer „Glitch“
+      scanBox.classList.remove('glitch');
+      void scanBox.offsetWidth; // reflow für restart
+      scanBox.classList.add('glitch');
+
+      const sig = (Math.random() * 2 - 1).toFixed(1);
+      const mode = ['IDLE','SCAN','SYNC'][Math.floor(Math.random()*3)];
+      dummySignalEl.textContent = (sig >= 0 ? '+' : '') + sig;
+      dummyModeEl.textContent = mode;
+      dummyProgress.style.transform = 'scaleX(' + (0.2 + Math.random() * 0.7) + ')';
+      dummyFooter.innerHTML = '<span>dummy: impulse</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
+    });
+
+    // leichter Glitch-Effekt via CSS (kurz einfach nur Filter)
+    const style = document.createElement('style');
+    style.textContent = `
+      .glitch {
+        animation: glitchFlash 0.25s linear;
+      }
+      @keyframes glitchFlash {
+        0% { filter: contrast(1) brightness(1); }
+        50% { filter: contrast(1.4) brightness(1.2); }
+        100% { filter: contrast(1) brightness(1); }
+      }
+    `;
+    document.head.appendChild(style);
 
     // Service Worker + Auto-Reload (Standard-Block)
     if ('serviceWorker' in navigator) {
