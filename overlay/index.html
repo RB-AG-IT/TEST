@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>RB-INSIDE Layout</title>
+
+  <!-- WICHTIG FÜR APP / PWA -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#151a2b">
+  <link rel="manifest" href="manifest.json">
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f3f3ff; }
@@ -440,6 +446,17 @@
       settingsMenu.classList.remove('open');
       topDropdown.classList.remove('open');
     });
+
+    // SERVICE WORKER REGISTRIEREN (für PWA / Installierbarkeit)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('./sw.js')
+          .catch((err) => {
+            console.log('Service Worker Fehler:', err);
+          });
+      });
+    }
   </script>
 
 </body>
