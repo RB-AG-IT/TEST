@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>RB-INSIDE – Minimal Overlay XL</title>
+  <title>RB-INSIDE – Kachel Overlay</title>
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -29,7 +29,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 14px 14px 80px; /* unten Platz für fixe Navigation */
+      padding: 14px 14px 80px; /* Platz für fixe Navigation */
       background: radial-gradient(circle at top, #111 0, #000 60%, #000 100%);
     }
 
@@ -106,7 +106,7 @@
     .content {
       flex: 1;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.3fr 0.9fr;
       gap: 12px;
       margin-bottom: 10px;
     }
@@ -117,9 +117,6 @@
       }
       .content {
         grid-template-columns: 1fr;
-      }
-      #screen-dummy {
-        grid-column: 1 / -1;
       }
     }
 
@@ -164,316 +161,109 @@
       color: #bfbfbf;
     }
 
-    /* GROSSE METRIC */
-    .metric-block {
-      margin-top: 4px;
-      margin-bottom: 16px;
+    /* KACHELN LINKS (HAUPT) */
+    .tile-grid-main {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
     }
 
-    .metric-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #9f9f9f;
-      margin-bottom: 6px;
+    @media (max-width: 720px) {
+      .tile-grid-main {
+        grid-template-columns: 1fr;
+      }
     }
 
-    .metric-value {
-      font-size: 34px;
-      font-weight: 600;
-      margin-bottom: 4px;
+    .tile {
+      border-radius: 14px;
+      border: 1px solid #222;
+      background: #050505;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 90px;
     }
 
-    .metric-delta {
-      font-size: 12px;
-      color: #b5b5b5;
-    }
-
-    /* TOGGLES & BUTTONS GROSS */
-    .toggle-row {
+    .tile-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 6px;
+      gap: 6px;
+    }
+
+    .tile-title {
       font-size: 13px;
-      margin-top: 10px;
     }
 
-    .toggle {
-      width: 46px;
-      height: 24px;
+    .tile-tag {
+      font-size: 10px;
+      padding: 3px 8px;
       border-radius: 999px;
-      border: 1px solid #444;
-      padding: 3px;
+      border: 1px solid #333;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #b5b5b5;
+    }
+
+    .tile-body {
+      font-size: 12px;
+      color: #a5a5a5;
+    }
+
+    .tile-footer {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #777;
       display: flex;
-      align-items: center;
-      cursor: pointer;
+      justify-content: space-between;
     }
 
-    .toggle-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: #f5f5f5;
-      transform: translateX(0);
-      transition: transform 0.14s;
-    }
-
-    .toggle.on {
-      border-color: #f5f5f5;
-    }
-    .toggle.on .toggle-thumb {
-      transform: translateX(20px);
-    }
-
-    .btn-col {
-      margin-top: 18px;
+    /* KACHELN RECHTS (INFO / FILTER) */
+    .tile-grid-side {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .btn {
-      border-radius: 999px;
-      border: 1px solid #444;
-      background: #050505;
-      color: #f5f5f5;
-      font-size: 14px;
-      padding: 10px 0;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .btn-outline {
-      background: transparent;
-    }
-
-    /* STATUS */
-    .status-strip {
-      margin-top: 18px;
+    .side-block-title {
       font-size: 11px;
-      display: flex;
-      justify-content: space-between;
-      color: #a5a5a5;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9f9f9f;
+      margin-bottom: 4px;
     }
 
-    /* RECHTES PANEL – WENIG TEXTE, GROSS */
-    .list {
-      margin-top: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 13px;
-    }
-
-    .list-item {
+    .side-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      font-size: 12px;
       padding: 4px 0;
       border-bottom: 1px dashed #222;
     }
 
-    .list-item:last-child {
+    .side-row:last-child {
       border-bottom: none;
     }
 
-    .tag {
+    .side-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .side-chip {
       font-size: 11px;
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 999px;
       border: 1px solid #333;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
     }
 
     .mono {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       font-size: 11px;
-    }
-
-    .console-box {
-      margin-top: 14px;
-      font-size: 11px;
-      max-height: 120px;
-      overflow: auto;
-      padding-top: 4px;
-      border-top: 1px dashed #222;
-    }
-
-    /* DUMMY-SCREEN STUFF */
-    #screen-dummy {
-      grid-column: 1 / -1;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dummy-header-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 16px;
-    }
-
-    .dummy-title {
-      font-size: 16px;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .dummy-sub {
-      font-size: 11px;
-      color: #9f9f9f;
-    }
-
-    .dummy-orbit {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 1px dashed #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    .dummy-core {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 1px solid #777;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      animation: pulseCore 2s infinite ease-in-out;
-    }
-
-    .dummy-dot {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid #555;
-      background: #000;
-      animation: orbit 6s linear infinite;
-      transform-origin: 60px 60px;
-    }
-
-    .dummy-dot:nth-child(2) { animation-duration: 7.5s; }
-    .dummy-dot:nth-child(3) { animation-duration: 9s; }
-
-    .dummy-dot::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 50%;
-      background: #f5f5f5;
-    }
-
-    @keyframes orbit {
-      from { transform: rotate(0deg) translateX(60px); }
-      to   { transform: rotate(360deg) translateX(60px); }
-    }
-
-    @keyframes pulseCore {
-      0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.1); }
-      50%     { box-shadow: 0 0 20px 4px rgba(255,255,255,0.3); }
-    }
-
-    .dummy-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .dummy-cell {
-      border-radius: 12px;
-      border: 1px solid #222;
-      padding: 10px 8px;
-      font-size: 11px;
-      text-align: center;
-      background: #050505;
-    }
-
-    .dummy-cell-label {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9f9f9f;
-      margin-bottom: 4px;
-    }
-
-    .dummy-cell-value {
-      font-size: 14px;
-    }
-
-    .scan-lines {
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-      border: 1px dashed #222;
-      padding: 10px;
-      margin-bottom: 14px;
-      font-size: 10px;
-    }
-
-    .scan-lines::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: -50%;
-      height: 40px;
-      background: linear-gradient(to bottom,
-        rgba(255,255,255,0.15),
-        rgba(255,255,255,0));
-      animation: scanMove 3s linear infinite;
-      pointer-events: none;
-    }
-
-    @keyframes scanMove {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(180%); }
-    }
-
-    .scan-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .progress-wrap {
-      margin-top: 6px;
-    }
-
-    .progress-bar {
-      height: 5px;
-      border-radius: 999px;
-      border: 1px solid #444;
-      padding: 1px;
-      overflow: hidden;
-    }
-
-    .progress-inner {
-      height: 100%;
-      border-radius: 999px;
-      background: #f5f5f5;
-      transform-origin: left;
-      transform: scaleX(0.2);
-      transition: transform 0.3s;
-    }
-
-    .dummy-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-      font-size: 10px;
-      color: #a5a5a5;
     }
 
     /* BOTTOM NAV FIXED */
@@ -529,18 +319,12 @@
       transform: translateY(-1px);
     }
 
-    /* SCREENS */
+    /* SCREENS (nur einfache Umschaltung) */
     .screen {
       display: none;
-      animation: fadeIn 0.14s ease-out;
     }
     .screen.active {
       display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(3px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -551,7 +335,7 @@
       <div class="logo">R</div>
       <div class="top-text">
         <div class="top-title">RB-INSIDE</div>
-        <div class="top-sub">Minimal Overlay XL</div>
+        <div class="top-sub">Kachel Overlay</div>
       </div>
       <div class="top-right">
         <div class="chip">Web App</div>
@@ -561,151 +345,244 @@
 
     <!-- CONTENT -->
     <main class="content">
-      <!-- MAIN / INFO SCREEN -->
+      <!-- SCREEN: KACHELN (Main) -->
       <section class="panel screen active" id="screen-main">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Session</div>
-            <div class="panel-sub">Teststeuerung</div>
+            <div class="panel-title">Übersicht</div>
+            <div class="panel-sub">Kacheln · nur Hülle</div>
           </div>
-          <div class="badge-mini">Live</div>
+          <div class="badge-mini">Main</div>
         </div>
 
-        <div class="metric-block">
-          <div class="metric-label">Testwert</div>
-          <div class="metric-value" id="metric-value">42.000</div>
-          <div class="metric-delta" id="metric-delta">+0,00 % heute</div>
-        </div>
+        <div class="tile-grid-main">
+          <!-- Reihe 1 -->
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dashboard A</div>
+              <div class="tile-tag">TEST</div>
+            </div>
+            <div class="tile-body">
+              Platz für Kennzahlen oder kleine Infos.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 1</span>
+              <span class="mono">A-01</span>
+            </div>
+          </article>
 
-        <div class="toggle-row">
-          <span>Auto-Update</span>
-          <div class="toggle" id="toggle-refresh">
-            <div class="toggle-thumb"></div>
-          </div>
-        </div>
-        <div class="toggle-row">
-          <span>Silent Mode</span>
-          <div class="toggle" id="toggle-silent">
-            <div class="toggle-thumb"></div>
-          </div>
-        </div>
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dashboard B</div>
+              <div class="tile-tag">TEST</div>
+            </div>
+            <div class="tile-body">
+              Später z.B. Mini-Listen oder Status.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 2</span>
+              <span class="mono">B-01</span>
+            </div>
+          </article>
 
-        <div class="btn-col">
-          <button class="btn" type="button" id="btn-randomize">Wert neu würfeln</button>
-          <button class="btn btn-outline" type="button" id="btn-log">Test-Ping</button>
-        </div>
+          <!-- Reihe 2 -->
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 3</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Nur Design – Inhalt kann frei belegt werden.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 3</span>
+              <span class="mono">C-01</span>
+            </div>
+          </article>
 
-        <div class="status-strip mono" id="status-strip">
-          <span>status: idle</span>
-          <span>last: –</span>
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 4</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Zum Beispiel später für Charts / Listen.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 4</span>
+              <span class="mono">D-01</span>
+            </div>
+          </article>
+
+          <!-- Reihe 3 -->
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 5</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Scroll-Bereich demonstrieren.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 5</span>
+              <span class="mono">E-01</span>
+            </div>
+          </article>
+
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 6</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Weitere Flächen für Module.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 6</span>
+              <span class="mono">F-01</span>
+            </div>
+          </article>
+
+          <!-- Reihe 4 -->
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 7</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Extra-Kachel, damit die Seite länger wird.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 7</span>
+              <span class="mono">G-01</span>
+            </div>
+          </article>
+
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Kachel 8</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">
+              Noch mehr Platz zum Scrollen.
+            </div>
+            <div class="tile-footer">
+              <span>Slot 8</span>
+              <span class="mono">H-01</span>
+            </div>
+          </article>
         </div>
       </section>
 
+      <!-- SCREEN: INFO / FILTER RECHTS (bleibt gleich) -->
       <aside class="panel panel-muted screen active" id="screen-side">
         <div class="panel-header">
           <div>
-            <div class="panel-title">User</div>
-            <div class="panel-sub">Überblick</div>
+            <div class="panel-title">Info</div>
+            <div class="panel-sub">User · Filter · Status</div>
           </div>
-          <div class="badge-mini">ID</div>
+          <div class="badge-mini">Info</div>
         </div>
 
-        <div class="list">
-          <div class="list-item">
-            <span>Benutzer</span>
-            <span class="mono">user@test</span>
-          </div>
-          <div class="list-item">
-            <span>Session</span>
-            <span class="mono" id="session-id">RB-MIN-XL</span>
-          </div>
-          <div class="list-item">
-            <span>Status</span>
-            <span>connected</span>
-          </div>
-        </div>
-
-        <div class="panel-header" style="margin-top:14px;">
+        <div class="tile-grid-side">
           <div>
-            <div class="panel-title">Meldungen</div>
+            <div class="side-block-title">User</div>
+            <div class="side-row">
+              <span>Benutzer</span>
+              <span class="mono">user@test</span>
+            </div>
+            <div class="side-row">
+              <span>Session</span>
+              <span class="mono">RB-KACH-01</span>
+            </div>
+            <div class="side-row">
+              <span>Status</span>
+              <span>connected</span>
+            </div>
           </div>
-        </div>
-        <div class="list" id="notif-list">
-          <div class="list-item">
-            <span>Overlay gestartet</span>
-            <span class="tag">now</span>
-          </div>
-        </div>
 
-        <div class="console-box mono" id="console-log">
-          &gt; ready<br>
+          <div>
+            <div class="side-block-title">Filter (Dummy)</div>
+            <div class="side-chip-row">
+              <div class="side-chip">Heute</div>
+              <div class="side-chip">Woche</div>
+              <div class="side-chip">Monat</div>
+              <div class="side-chip">Custom</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="side-block-title">System</div>
+            <div class="side-row">
+              <span>Version</span>
+              <span class="mono">v0.1</span>
+            </div>
+            <div class="side-row">
+              <span>Modus</span>
+              <span>Dummy</span>
+            </div>
+          </div>
         </div>
       </aside>
 
-      <!-- DUMMY SCREEN: VOLLE BREITE, ANIMATIONEN -->
+      <!-- SCREEN: DUMMY TILES (volle Breite, andere Seite) -->
       <section class="panel screen" id="screen-dummy">
-        <div class="dummy-header-line">
+        <div class="panel-header">
           <div>
-            <div class="dummy-title">Dummy Space</div>
-            <div class="dummy-sub">Nur Hülle · Visual Test</div>
+            <div class="panel-title">Dummy Page</div>
+            <div class="panel-sub">Nur Kacheln · Seite 2</div>
           </div>
           <div class="badge-mini">Dummy</div>
         </div>
 
-        <div style="display:flex; gap:18px; flex-wrap:wrap; align-items:center;">
-          <div class="dummy-orbit">
-            <div class="dummy-core">RB</div>
-            <div class="dummy-dot"></div>
-            <div class="dummy-dot"></div>
-            <div class="dummy-dot"></div>
-          </div>
-
-          <div style="flex:1; min-width:140px;">
-            <div class="dummy-grid">
-              <div class="dummy-cell">
-                <div class="dummy-cell-label">Channel</div>
-                <div class="dummy-cell-value" id="dummy-channel">#01</div>
-              </div>
-              <div class="dummy-cell">
-                <div class="dummy-cell-label">Signal</div>
-                <div class="dummy-cell-value" id="dummy-signal">+0.0</div>
-              </div>
-              <div class="dummy-cell">
-                <div class="dummy-cell-label">Mode</div>
-                <div class="dummy-cell-value" id="dummy-mode">IDLE</div>
-              </div>
+        <div class="tile-grid-main">
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 1</div>
+              <div class="tile-tag">DUMMY</div>
             </div>
+            <div class="tile-body">Später z.B. Orders hier.</div>
+          </article>
 
-            <div class="scan-lines" id="scan-box">
-              <div class="scan-row">
-                <span>LINE 01</span>
-                <span>OK</span>
-              </div>
-              <div class="scan-row">
-                <span>LINE 02</span>
-                <span>OK</span>
-              </div>
-              <div class="scan-row">
-                <span>LINE 03</span>
-                <span>OK</span>
-              </div>
-              <div class="progress-wrap">
-                <div class="progress-bar">
-                  <div class="progress-inner" id="dummy-progress"></div>
-                </div>
-              </div>
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 2</div>
+              <div class="tile-tag">DUMMY</div>
             </div>
+            <div class="tile-body">Andere Ansicht, gleiche Optik.</div>
+          </article>
 
-            <div style="display:flex; gap:8px; margin-top:10px;">
-              <button class="btn" type="button" id="btn-dummy-pulse">Pulse</button>
-              <button class="btn btn-outline" type="button" id="btn-dummy-random">Random</button>
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 3</div>
+              <div class="tile-tag">FREE</div>
             </div>
+            <div class="tile-body">Nur Platzhalter.</div>
+          </article>
 
-            <div class="dummy-footer mono" id="dummy-footer">
-              <span>dummy: idle</span>
-              <span>frame: 000</span>
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 4</div>
+              <div class="tile-tag">FREE</div>
             </div>
-          </div>
+            <div class="tile-body">Noch mehr Platz.</div>
+          </article>
+
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 5</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">Scroll-Test.</div>
+          </article>
+
+          <article class="tile">
+            <div class="tile-header">
+              <div class="tile-title">Dummy Kachel 6</div>
+              <div class="tile-tag">FREE</div>
+            </div>
+            <div class="tile-body">Alles nur Hülle.</div>
+          </article>
         </div>
       </section>
     </main>
@@ -723,31 +600,31 @@
         <span>Info</span>
       </button>
       <button class="nav-item" type="button" data-screen="dummy">
-        <span class="nav-icon">✱</span>
+        <span class="nav-icon">▢</span>
         <span>Dummy</span>
       </button>
     </nav>
   </div>
 
   <script>
-    // Bottom-Navigation: jetzt echte Screens (Dummy = eigene Ansicht)
+    // Screens umschalten (Main = links+rechts, Info = nur rechts, Dummy = Dummy-Kacheln)
     const navItems = document.querySelectorAll('.nav-item');
     const screenMain = document.getElementById('screen-main');
     const screenSide = document.getElementById('screen-side');
     const screenDummy = document.getElementById('screen-dummy');
 
     function showScreen(name) {
-      // alle verstecken
       screenMain.classList.remove('active');
       screenSide.classList.remove('active');
       screenDummy.classList.remove('active');
 
-      if (name === 'dummy') {
-        screenDummy.classList.add('active');
-      } else {
-        // Main & Side = Standardansicht
+      if (name === 'main') {
         screenMain.classList.add('active');
         screenSide.classList.add('active');
+      } else if (name === 'side') {
+        screenSide.classList.add('active');
+      } else if (name === 'dummy') {
+        screenDummy.classList.add('active');
       }
     }
 
@@ -760,136 +637,17 @@
       });
     });
 
-    // Kleine Test-Funktionen / Logik (Main)
-    const metricValueEl = document.getElementById('metric-value');
-    const metricDeltaEl = document.getElementById('metric-delta');
-    const statusStripEl = document.getElementById('status-strip');
-    const consoleLogEl = document.getElementById('console-log');
-    const notifListEl = document.getElementById('notif-list');
-
-    function addLog(line) {
-      consoleLogEl.innerHTML += '&gt; ' + line + '<br>';
-      consoleLogEl.scrollTop = consoleLogEl.scrollHeight;
-    }
-
-    function addNotif(text) {
-      const item = document.createElement('div');
-      item.className = 'list-item';
-      item.innerHTML = '<span>' + text + '</span><span class="tag">log</span>';
-      notifListEl.prepend(item);
-    }
-
-    document.getElementById('btn-randomize').addEventListener('click', () => {
-      const base = 10000 + Math.floor(Math.random() * 90000);
-      const delta = (Math.random() * 4 - 2).toFixed(2);
-      metricValueEl.textContent = base.toLocaleString('de-DE');
-      metricDeltaEl.textContent = (delta >= 0 ? '+' : '') + delta + '% heute';
-      statusStripEl.innerHTML = '<span>status: random</span><span>delta: ' + delta + '%</span>';
-      addLog('randomize value -> ' + base + ' / ' + delta + '%');
-      addNotif('Wert aktualisiert');
-    });
-
-    document.getElementById('btn-log').addEventListener('click', () => {
-      addLog('test-ping');
-      addNotif('Test-Ping gesendet');
-      statusStripEl.innerHTML = '<span>status: ping</span><span>last: test</span>';
-    });
-
-    // Toggles (Main)
-    function bindToggle(id, label) {
-      const t = document.getElementById(id);
-      t.addEventListener('click', () => {
-        t.classList.toggle('on');
-        const state = t.classList.contains('on') ? 'on' : 'off';
-        addLog(label + ' -> ' + state);
-      });
-    }
-
-    bindToggle('toggle-refresh', 'auto-update');
-    bindToggle('toggle-silent', 'silent-mode');
-
-    // Quick Settings Button
+    // Quick Settings Button – aktuell nur Platzhalter
     document.getElementById('btn-quick-settings').addEventListener('click', () => {
-      addLog('quick-settings tapped');
-      addNotif('Quick Settings (dummy)');
+      alert('Quick Settings (Dummy) – nur Hülle.');
     });
 
-    // DUMMY LOGIK
-    const dummyChannelEl = document.getElementById('dummy-channel');
-    const dummySignalEl = document.getElementById('dummy-signal');
-    const dummyModeEl   = document.getElementById('dummy-mode');
-    const dummyProgress = document.getElementById('dummy-progress');
-    const dummyFooter   = document.getElementById('dummy-footer');
-    const scanBox       = document.getElementById('scan-box');
-
-    let dummyFrame = 0;
-    let dummyTimer = null;
-
-    function updateDummyFrame() {
-      dummyFrame++;
-      const ch = String(dummyFrame % 8).padStart(2, '0');
-      const sig = (Math.random() * 2 - 1).toFixed(1);
-      const p = (Math.sin(dummyFrame / 10) + 1) / 2; // 0..1
-      dummyChannelEl.textContent = '#' + ch;
-      dummySignalEl.textContent = (sig >= 0 ? '+' : '') + sig;
-      dummyProgress.style.transform = 'scaleX(' + (0.2 + 0.7 * p) + ')';
-      dummyFooter.innerHTML = '<span>dummy: running</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
-    }
-
-    function startDummyLoop() {
-      if (dummyTimer) return;
-      dummyTimer = setInterval(updateDummyFrame, 200);
-    }
-
-    function stopDummyLoop() {
-      if (!dummyTimer) return;
-      clearInterval(dummyTimer);
-      dummyTimer = null;
-      dummyFooter.innerHTML = '<span>dummy: paused</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
-    }
-
-    document.getElementById('btn-dummy-pulse').addEventListener('click', () => {
-      if (dummyTimer) {
-        stopDummyLoop();
-      } else {
-        startDummyLoop();
-      }
-    });
-
-    document.getElementById('btn-dummy-random').addEventListener('click', () => {
-      // kurzer „Glitch“
-      scanBox.classList.remove('glitch');
-      void scanBox.offsetWidth; // reflow für restart
-      scanBox.classList.add('glitch');
-
-      const sig = (Math.random() * 2 - 1).toFixed(1);
-      const mode = ['IDLE','SCAN','SYNC'][Math.floor(Math.random()*3)];
-      dummySignalEl.textContent = (sig >= 0 ? '+' : '') + sig;
-      dummyModeEl.textContent = mode;
-      dummyProgress.style.transform = 'scaleX(' + (0.2 + Math.random() * 0.7) + ')';
-      dummyFooter.innerHTML = '<span>dummy: impulse</span><span>frame: ' + String(dummyFrame).padStart(3,'0') + '</span>';
-    });
-
-    // leichter Glitch-Effekt via CSS (kurz einfach nur Filter)
-    const style = document.createElement('style');
-    style.textContent = `
-      .glitch {
-        animation: glitchFlash 0.25s linear;
-      }
-      @keyframes glitchFlash {
-        0% { filter: contrast(1) brightness(1); }
-        50% { filter: contrast(1.4) brightness(1.2); }
-        100% { filter: contrast(1) brightness(1); }
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Service Worker + Auto-Reload (Standard-Block)
+    // Service Worker + Auto-Reload
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then((registration) => {
           registration.update();
-          setInterval(() => registration.update(), 60 * 60 * 1000); // 1x pro Stunde
+          setInterval(() => registration.update(), 60 * 60 * 1000);
         }).catch((error) => {
           console.error('SW Registrierung fehlgeschlagen:', error);
         });
